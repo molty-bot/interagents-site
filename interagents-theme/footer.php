@@ -29,13 +29,6 @@
 			</div>
 		</div>
 
-		<div class="footer-links">
-			<a href="#uslugi"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a>
-			<a href="#jak-dzialamy"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a>
-			<a href="#dlaczego-my"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a>
-			<a href="#kontakt"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a>
-		</div>
-
 		<div class="footer-bottom">
 			<p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> InterAgents.ai. <?php echo esc_html( ia_t(
 				'Wszelkie prawa zastrzeżone.',

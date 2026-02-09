@@ -308,6 +308,7 @@
 .footer-links {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 16px;
 }
 
@@ -688,12 +689,15 @@ div.wpforms-container-full .wpforms-form .wpforms-one-half {
   background: rgba(200, 150, 62, 0.1);
 }
 
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   .lang-toggle {
-    position: absolute;
-    top: 50%;
-    right: 56px;
-    transform: translateY(-50%);
-    margin-left: 0;
+    order: 10;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-nav {
+    flex: 0 0 auto;
+    gap: 8px;
   }
 }

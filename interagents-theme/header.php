@@ -21,6 +21,9 @@
 		<?php endif; ?>
 
 		<nav class="site-nav" role="navigation" aria-label="<?php echo esc_attr( ia_t( 'Menu główne', 'Main menu' ) ); ?>">
+			<button class="lang-toggle" id="lang-toggle" aria-label="<?php echo esc_attr( ia_t( 'Switch to English', 'Przełącz na polski' ) ); ?>" title="<?php echo esc_attr( ia_t( 'English', 'Polski' ) ); ?>">
+				<?php echo ia_get_lang() === 'pl' ? '🇬🇧' : '🇵🇱'; ?>
+			</button>
 			<button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
 				<span class="nav-toggle__label"><?php esc_html_e( 'Menu', 'interagents' ); ?></span>
 				<span class="nav-toggle__icon" aria-hidden="true"></span>
@@ -31,9 +34,6 @@
 				<li><a href="#dlaczego-my"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
 				<li><a href="#kontakt" class="btn btn--primary"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a></li>
 			</ul>
-			<button class="lang-toggle" id="lang-toggle" aria-label="<?php echo esc_attr( ia_t( 'Switch to English', 'Przełącz na polski' ) ); ?>" title="<?php echo esc_attr( ia_t( 'English', 'Polski' ) ); ?>">
-				<?php echo ia_get_lang() === 'pl' ? '🇬🇧' : '🇵🇱'; ?>
-			</button>
 		</nav>
 	</div>
 </header>
