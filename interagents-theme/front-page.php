@@ -152,8 +152,8 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 		<div class="cta-box reveal">
 			<h2><?php esc_html_e( 'Gotowy na transformację?', 'interagents' ); ?></h2>
 			<p><?php esc_html_e( 'Porozmawiajmy o tym, jak AI może przyspieszyć Twój biznes.', 'interagents' ); ?></p>
-			<div class="cta-actions">
-				<a href="mailto:<?php echo esc_attr( $contact_email ); ?>" class="btn btn--primary"><?php esc_html_e( 'Napisz do nas', 'interagents' ); ?></a>
+			<div class="contact-form-wrap">
+				<?php echo do_shortcode( '[wpforms id="85" title="false" description="false"]' ); ?>
 			</div>
 		</div>
 	</div>

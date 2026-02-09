@@ -146,7 +146,8 @@ a:hover {
 }
 
 .header-inner {
-  width: 100%;
+  width: min(var(--container), calc(100% - (var(--gutter) * 2)));
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
