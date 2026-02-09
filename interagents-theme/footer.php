@@ -16,16 +16,16 @@
 			<div class="footer-company">
 				<h4><?php echo esc_html( ia_t( 'Polska', 'Poland' ) ); ?></h4>
 				<p class="company-name">SKANDO Sp. z o.o.</p>
-				<p class="company-detail">NIP: 7831870581</p>
-				<p class="company-detail">ul. Wierzbięcice 44A/40A<br>61-568 Poznań</p>
-				<p class="company-detail"><a href="tel:+48570914134">Tel. +48 570 914 134</a></p>
+				<p class="company-detail"><?php echo ia_t( 'NIP:', 'Tax ID:' ); ?> 7831870581</p>
+				<p class="company-detail">Wierzbięcice 44A/40A<br>61-568 Poznań</p>
+				<p class="company-detail"><a href="tel:+48570914134"><?php echo ia_t( 'Tel.', 'Phone:' ); ?> +48 570 914 134</a></p>
 			</div>
 			<div class="footer-company">
 				<h4><?php echo esc_html( ia_t( 'Norwegia', 'Norway' ) ); ?></h4>
 				<p class="company-name">Demring Consult AS</p>
-				<p class="company-detail">Org. nr. 932 394 235</p>
+				<p class="company-detail"><?php echo ia_t( 'Org. nr.', 'Reg. no.' ); ?> 932 394 235</p>
 				<p class="company-detail">Tellnes Næringspark 1<br>5357 Fjell</p>
-				<p class="company-detail"><a href="tel:+4746702028">Tel. +47 467 02 028</a></p>
+				<p class="company-detail"><a href="tel:+4746702028"><?php echo ia_t( 'Tel.', 'Phone:' ); ?> +47 467 02 028</a></p>
 			</div>
 		</div>
 

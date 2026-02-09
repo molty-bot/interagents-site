@@ -20,7 +20,8 @@
   margin: 0 0 48px;
   font-size: clamp(16px, 2vw, 20px);
   color: var(--color-muted);
-  max-width: 56ch;
+  max-width: none;
+  text-wrap: balance;
 }
 
 /* Service Cards */

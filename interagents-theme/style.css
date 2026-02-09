@@ -52,6 +52,7 @@ Tags: dark, custom-logo, responsive-layout, accessibility-ready
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-h);
+  background-color: var(--color-bg);
 }
 
 body {
@@ -412,6 +413,7 @@ a:hover {
   max-width: 62ch;
   font-size: clamp(16px, 2.4vw, 20px);
   color: var(--color-muted);
+  text-wrap: balance;
 }
 
 .hero-tagline {
