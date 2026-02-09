@@ -152,11 +152,24 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 		<div class="cta-box reveal">
 			<h2><?php esc_html_e( 'Gotowy na transformację?', 'interagents' ); ?></h2>
 			<p><?php esc_html_e( 'Porozmawiajmy o tym, jak AI może przyspieszyć Twój biznes.', 'interagents' ); ?></p>
-			<div class="contact-form-wrap">
-				<?php echo do_shortcode( '[wpforms id="85" title="false" description="false"]' ); ?>
+			<div class="cta-actions">
+				<button type="button" class="btn btn--primary" id="open-contact-form"><?php esc_html_e( 'Napisz do nas', 'interagents' ); ?></button>
 			</div>
 		</div>
 	</div>
 </section>
+
+<!-- Contact Form Modal -->
+<div class="modal-overlay" id="contact-modal" aria-hidden="true" role="dialog" aria-label="<?php esc_attr_e( 'Formularz kontaktowy', 'interagents' ); ?>">
+	<div class="modal-backdrop"></div>
+	<div class="modal-content">
+		<button type="button" class="modal-close" aria-label="<?php esc_attr_e( 'Zamknij', 'interagents' ); ?>">&times;</button>
+		<h3 class="modal-title"><?php esc_html_e( 'Napisz do nas', 'interagents' ); ?></h3>
+		<p class="modal-subtitle"><?php esc_html_e( 'Wypełnij formularz, a odezwiemy się najszybciej jak to możliwe.', 'interagents' ); ?></p>
+		<div class="contact-form-wrap">
+			<?php echo do_shortcode( '[wpforms id="85" title="false" description="false"]' ); ?>
+		</div>
+	</div>
+</div>
 
 <?php get_footer(); ?>

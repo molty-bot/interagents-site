@@ -51,6 +51,125 @@
     });
   }
 
+  // -- Contact form modal --
+  const modal = document.getElementById('contact-modal');
+  const openBtn = document.getElementById('open-contact-form');
+  // Also catch hero CTA that links to #kontakt
+  const heroCTA = document.querySelector('a.btn--primary[href="#kontakt"]');
+
+  function openModal() {
+    if (!modal) return;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (heroCTA) {
+    heroCTA.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  }
+
+  if (modal) {
+    // Close button
+    const closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    // Backdrop click
+    const backdrop = modal.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  }
+
+  // -- Fix WPForms sublabels & layout --
+  // Rename English sublabels to Polish
+  document.querySelectorAll('.wpforms-field-name .wpforms-field-sublabel').forEach((sub) => {
+    const t = sub.textContent.trim().toLowerCase();
+    if (t === 'first') sub.textContent = 'Imię';
+    if (t === 'last') sub.textContent = 'Nazwisko';
+  });
+
+  // Pair phone + email fields side by side
+  const phoneField = document.querySelector('.wpforms-field-phone');
+  const emailField = document.querySelector('.wpforms-field-email');
+  if (phoneField && emailField && phoneField.parentElement === emailField.parentElement) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'form-row-pair';
+    phoneField.parentElement.insertBefore(wrapper, phoneField);
+    wrapper.appendChild(phoneField);
+    wrapper.appendChild(emailField);
+  }
+
+  // -- Character counter on message textarea --
+  const MAX_CHARS = 1000;
+  const msgTextarea = document.querySelector('.wpforms-field-textarea textarea');
+  if (msgTextarea) {
+    msgTextarea.setAttribute('maxlength', MAX_CHARS);
+
+    const counter = document.createElement('div');
+    counter.className = 'char-counter';
+    counter.textContent = '0 / ' + MAX_CHARS;
+    msgTextarea.parentElement.appendChild(counter);
+
+    msgTextarea.addEventListener('input', () => {
+      const len = msgTextarea.value.length;
+      counter.textContent = len + ' / ' + MAX_CHARS;
+      counter.classList.toggle('is-near', len > MAX_CHARS * 0.85);
+      counter.classList.toggle('is-over', len >= MAX_CHARS);
+    });
+  }
+
+  // -- Show success state after form submit --
+  // WPForms fires 'wpformsAjaxSubmitSuccess' on the document
+  document.addEventListener('wpformsAjaxSubmitSuccess', () => {
+    if (!modal) return;
+    const formWrap = modal.querySelector('.contact-form-wrap');
+    const titleEl = modal.querySelector('.modal-title');
+    const subEl = modal.querySelector('.modal-subtitle');
+
+    if (formWrap) formWrap.style.display = 'none';
+    if (titleEl) titleEl.style.display = 'none';
+    if (subEl) subEl.style.display = 'none';
+
+    // Create success message
+    let success = modal.querySelector('.modal-success');
+    if (!success) {
+      success = document.createElement('div');
+      success.className = 'modal-success';
+      success.innerHTML =
+        '<div class="success-icon">✓</div>' +
+        '<h4>Dziękujemy!</h4>' +
+        '<p>Twoja wiadomość została wysłana.<br>Skontaktujemy się z Tobą najszybciej jak to możliwe.</p>';
+      modal.querySelector('.modal-content').appendChild(success);
+    }
+    success.classList.add('is-visible');
+
+    // Auto-close after 4 seconds
+    setTimeout(() => {
+      closeModal();
+      // Reset after close animation
+      setTimeout(() => {
+        if (formWrap) formWrap.style.display = '';
+        if (titleEl) titleEl.style.display = '';
+        if (subEl) subEl.style.display = '';
+        success.classList.remove('is-visible');
+      }, 500);
+    }, 4000);
+  });
+
   // -- Scroll reveal with Intersection Observer --
   const reveals = document.querySelectorAll('.reveal');
 
