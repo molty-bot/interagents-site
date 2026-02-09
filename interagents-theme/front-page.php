@@ -7,8 +7,8 @@
 
 get_header();
 
-$hero_title    = get_theme_mod( 'hero_title', 'Tworzymy inteligentne rozwiązania AI' );
-$hero_subtitle = get_theme_mod( 'hero_subtitle', 'Projektujemy agentów AI i budujemy platformy łączące Twoje systemy w jedną, spójną całość.' );
+$hero_title    = get_theme_mod( 'hero_title', 'AI, które zastępuje cały zespół' );
+$hero_subtitle = get_theme_mod( 'hero_subtitle', 'Projektujemy agentów AI, którzy pracują 24/7 bez urlopów, bez błędów i za ułamek kosztów Twojego zespołu.' );
 $hero_cta_text = get_theme_mod( 'hero_cta_text', 'Porozmawiajmy' );
 $hero_cta_url  = get_theme_mod( 'hero_cta_url', '#kontakt' );
 $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
@@ -30,7 +30,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 <section class="section section--services" id="uslugi">
 	<div class="container">
 		<h2 class="section-title reveal"><?php esc_html_e( 'Nasze usługi', 'interagents' ); ?></h2>
-		<p class="section-subtitle reveal" style="--delay: 60ms"><?php esc_html_e( 'Kompleksowe rozwiązania AI dopasowane do Twoich potrzeb', 'interagents' ); ?></p>
+		<p class="section-subtitle reveal" style="--delay: 60ms"><?php esc_html_e( 'Twoja konkurencja już to wdraża. Pytanie, czy zdążysz.', 'interagents' ); ?></p>
 		<div class="cards-grid">
 			<article class="card reveal" style="--delay: 100ms">
 				<div class="card-icon">
@@ -43,7 +43,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Agenci AI', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Projektujemy i wdrażamy inteligentnych agentów AI, którzy automatyzują procesy i wspierają Twój zespół.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Projektujemy i wdrażamy inteligentnych agentów AI, którzy zastępują powtarzalne role w Twojej firmie. Bez zwolnień lekarskich, bez błędów, bez limitu godzin.', 'interagents' ); ?></p>
 			</article>
 			<article class="card reveal" style="--delay: 180ms">
 				<div class="card-icon">
@@ -55,7 +55,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Integracja Systemów', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Łączymy Twoje narzędzia i systemy w jedną, wydajną platformę. API, automatyzacje, przepływ danych.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Łączymy Twoje narzędzia w jedną maszynę. Zero ręcznego przeklepywania danych, zero ludzkich pomyłek, pełna automatyzacja.', 'interagents' ); ?></p>
 			</article>
 			<article class="card reveal" style="--delay: 260ms">
 				<div class="card-icon">
@@ -65,7 +65,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Rozwiązania na Miarę', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Każdy biznes jest inny. Tworzymy dedykowane rozwiązania dopasowane do Twoich potrzeb.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Każdy biznes jest inny — ale każdy ma procesy, które pożerają czas i pieniądze. Budujemy AI, które je eliminuje.', 'interagents' ); ?></p>
 			</article>
 		</div>
 	</div>
@@ -75,22 +75,22 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 <section class="section section--process" id="jak-dzialamy">
 	<div class="container">
 		<h2 class="section-title reveal"><?php esc_html_e( 'Jak działamy', 'interagents' ); ?></h2>
-		<p class="section-subtitle reveal" style="--delay: 60ms"><?php esc_html_e( 'Trzy proste kroki do inteligentnego rozwiązania', 'interagents' ); ?></p>
+		<p class="section-subtitle reveal" style="--delay: 60ms"><?php esc_html_e( 'Od analizy do wdrożenia — szybciej niż rekrutacja jednego pracownika', 'interagents' ); ?></p>
 		<div class="steps-grid">
 			<div class="step reveal" style="--delay: 100ms">
 				<div class="step-number">01</div>
 				<h3><?php esc_html_e( 'Analiza', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Poznajemy Twój biznes, procesy i potrzeby. Identyfikujemy obszary, gdzie AI przyniesie największą wartość.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Prześwietlamy Twój biznes i wskazujemy, gdzie tracisz pieniądze na zadania, które AI zrobi 10x szybciej.', 'interagents' ); ?></p>
 			</div>
 			<div class="step reveal" style="--delay: 200ms">
 				<div class="step-number">02</div>
 				<h3><?php esc_html_e( 'Projektowanie', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Tworzymy architekturę i prototyp rozwiązania. Testujesz je zanim przejdziemy do wdrożenia.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Tworzymy działający prototyp, który od razu przynosi wartość. Płacisz za efekt, nie za obietnice.', 'interagents' ); ?></p>
 			</div>
 			<div class="step reveal" style="--delay: 300ms">
 				<div class="step-number">03</div>
 				<h3><?php esc_html_e( 'Wdrożenie', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Implementujemy, testujemy i uruchamiamy. Zapewniamy wsparcie i optymalizację po starcie.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Uruchamiamy, testujemy i optymalizujemy. Twoi nowi „pracownicy" zaczynają od pierwszego dnia na 100%.', 'interagents' ); ?></p>
 			</div>
 		</div>
 	</div>
@@ -100,7 +100,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 <section class="section section--features" id="dlaczego-my">
 	<div class="container">
 		<h2 class="section-title reveal"><?php esc_html_e( 'Dlaczego my', 'interagents' ); ?></h2>
-		<p class="section-subtitle reveal" style="--delay: 60ms"><?php esc_html_e( 'Twój sukces to nasz priorytet', 'interagents' ); ?></p>
+		<p class="section-subtitle reveal" style="--delay: 60ms"><?php esc_html_e( 'Bo tani zespół to nadal zespół. AI to inna liga.', 'interagents' ); ?></p>
 		<div class="features-grid">
 			<div class="feature reveal" style="--delay: 100ms">
 				<div class="feature-icon">
@@ -110,7 +110,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Doświadczenie w AI', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Praktyczna wiedza w projektowaniu i wdrażaniu rozwiązań opartych na sztucznej inteligencji.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Nie uczymy się na Twoim budżecie. Wdrażamy sprawdzone rozwiązania, które już działają w innych firmach.', 'interagents' ); ?></p>
 			</div>
 			<div class="feature reveal" style="--delay: 180ms">
 				<div class="feature-icon">
@@ -120,7 +120,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Nowoczesne technologie', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Korzystamy z najnowszych narzędzi i frameworków, by dostarczać rozwiązania na najwyższym poziomie.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'LLM, agenci autonomiczni, automatyzacja procesów — używamy tego, co za 2 lata będzie standardem. Ty masz to dzisiaj.', 'interagents' ); ?></p>
 			</div>
 			<div class="feature reveal" style="--delay: 260ms">
 				<div class="feature-icon">
@@ -130,7 +130,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Indywidualne podejście', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Nie ma dwóch takich samych firm. Każde rozwiązanie projektujemy od podstaw, specjalnie dla Ciebie.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'Nie sprzedajemy pudełkowego softu. Każde rozwiązanie projektujemy pod Twój biznes, Twoje procesy, Twoje marże.', 'interagents' ); ?></p>
 			</div>
 			<div class="feature reveal" style="--delay: 340ms">
 				<div class="feature-icon">
@@ -140,7 +140,7 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 					</svg>
 				</div>
 				<h3><?php esc_html_e( 'Wsparcie po wdrożeniu', 'interagents' ); ?></h3>
-				<p><?php esc_html_e( 'Nie zostawiamy Cię samego. Monitorujemy, optymalizujemy i rozwijamy rozwiązanie razem z Tobą.', 'interagents' ); ?></p>
+				<p><?php esc_html_e( 'AI się nie zwalnia, ale wymaga opieki. Monitorujemy, optymalizujemy i skalujemy razem z Tobą.', 'interagents' ); ?></p>
 			</div>
 		</div>
 	</div>
@@ -150,8 +150,8 @@ $contact_email = get_theme_mod( 'contact_email', 'hello@interagents.ai' );
 <section class="section section--cta" id="kontakt">
 	<div class="container">
 		<div class="cta-box reveal">
-			<h2><?php esc_html_e( 'Gotowy na transformację?', 'interagents' ); ?></h2>
-			<p><?php esc_html_e( 'Porozmawiajmy o tym, jak AI może przyspieszyć Twój biznes.', 'interagents' ); ?></p>
+			<h2><?php esc_html_e( 'Ile kosztuje Cię zespół, który AI może zastąpić?', 'interagents' ); ?></h2>
+			<p><?php esc_html_e( 'Policz to z nami. Jedna rozmowa może zmienić Twój rachunek kosztów.', 'interagents' ); ?></p>
 			<div class="cta-actions">
 				<button type="button" class="btn btn--primary" id="open-contact-form"><?php esc_html_e( 'Napisz do nas', 'interagents' ); ?></button>
 			</div>

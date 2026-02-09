@@ -516,6 +516,15 @@ div.wpforms-container-full .wpforms-form .wpforms-field-sublabel {
   display: none;
 }
 
+/* Promoted sublabels (via JS) styled like regular field labels */
+div.wpforms-container-full .wpforms-form .wpforms-field-label--sub {
+  display: block !important;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
 /* Inputs */
 div.wpforms-container-full .wpforms-form input[type="text"],
 div.wpforms-container-full .wpforms-form input[type="email"],

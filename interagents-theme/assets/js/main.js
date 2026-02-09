@@ -123,8 +123,34 @@
     }
   });
 
-  // Imię + Nazwisko side by side
-  pairFieldEls(findFieldByLabel('Imię'), findFieldByLabel('Nazwisko'));
+  // Name field: show "Imię" and "Nazwisko" as proper labels above each input
+  const nameField = document.querySelector('.wpforms-field-name');
+  if (nameField) {
+    // Hide the combined "Imię i nazwisko" label
+    const mainLabel = nameField.querySelector('.wpforms-field-label');
+    if (mainLabel) mainLabel.style.display = 'none';
+
+    // Promote sublabels to look like field labels
+    nameField.querySelectorAll('.wpforms-field-row-block').forEach((block) => {
+      const sublabel = block.querySelector('.wpforms-field-sublabel');
+      const input = block.querySelector('input');
+      if (sublabel && input) {
+        // Create a proper label element styled like other field labels
+        const label = document.createElement('label');
+        label.className = 'wpforms-field-label wpforms-field-label--sub';
+        label.textContent = sublabel.textContent.trim();
+        label.setAttribute('for', input.id);
+        // Add required asterisk if the main field was required
+        if (mainLabel && mainLabel.querySelector('.wpforms-required-label')) {
+          const req = document.createElement('span');
+          req.className = 'wpforms-required-label';
+          req.textContent = ' *';
+          label.appendChild(req);
+        }
+        block.insertBefore(label, input);
+      }
+    });
+  }
   // Telefon + E-mail side by side
   pairFieldEls(findFieldByLabel('Telefon'), findFieldByLabel('E-mail'));
 
