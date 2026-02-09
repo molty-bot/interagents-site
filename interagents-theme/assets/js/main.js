@@ -94,24 +94,23 @@
     });
   }
 
-  // -- Fix WPForms sublabels & layout --
-  // Rename English sublabels to Polish
-  document.querySelectorAll('.wpforms-field-name .wpforms-field-sublabel').forEach((sub) => {
-    const t = sub.textContent.trim().toLowerCase();
-    if (t === 'first') sub.textContent = 'Imię';
-    if (t === 'last') sub.textContent = 'Nazwisko';
-  });
-
-  // Pair phone + email fields side by side
-  const phoneField = document.querySelector('.wpforms-field-phone');
-  const emailField = document.querySelector('.wpforms-field-email');
-  if (phoneField && emailField && phoneField.parentElement === emailField.parentElement) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'form-row-pair';
-    phoneField.parentElement.insertBefore(wrapper, phoneField);
-    wrapper.appendChild(phoneField);
-    wrapper.appendChild(emailField);
+  // -- Fix WPForms layout: pair fields side by side --
+  function pairFields(field1Selector, field2Selector) {
+    const f1 = document.querySelector(field1Selector);
+    const f2 = document.querySelector(field2Selector);
+    if (f1 && f2 && f1.parentElement === f2.parentElement) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'form-row-pair';
+      f1.parentElement.insertBefore(wrapper, f1);
+      wrapper.appendChild(f1);
+      wrapper.appendChild(f2);
+    }
   }
+
+  // Imię + Nazwisko side by side (field IDs 6 and 7)
+  pairFields('#wpforms-85-field_6-container', '#wpforms-85-field_7-container');
+  // Phone + Email side by side
+  pairFields('.wpforms-field-phone', '.wpforms-field-email');
 
   // -- Character counter on message textarea --
   const MAX_CHARS = 1000;
