@@ -668,3 +668,32 @@ div.wpforms-container-full .wpforms-form .wpforms-one-half {
   width: 100% !important;
   float: none !important;
 }
+
+/* Language toggle */
+.lang-toggle {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm, 6px);
+  padding: 4px 8px;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  transition: border-color var(--dur-1, 0.2s) ease, background var(--dur-1, 0.2s) ease;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.lang-toggle:hover {
+  border-color: var(--color-accent, #c8963e);
+  background: rgba(200, 150, 62, 0.1);
+}
+
+@media (max-width: 768px) {
+  .lang-toggle {
+    position: absolute;
+    top: 50%;
+    right: 56px;
+    transform: translateY(-50%);
+    margin-left: 0;
+  }
+}

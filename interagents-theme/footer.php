@@ -6,19 +6,22 @@
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-title" rel="home">
 				inter<span class="brand-accent">agents</span>.ai
 			</a>
-			<p class="footer-tagline"><?php esc_html_e( 'Inteligentne rozwiązania AI dla Twojego biznesu', 'interagents' ); ?></p>
+			<p class="footer-tagline"><?php echo esc_html( ia_t(
+				'Inteligentne rozwiązania AI dla Twojego biznesu',
+				'Intelligent AI solutions for your business'
+			) ); ?></p>
 		</div>
 
 		<div class="footer-companies">
 			<div class="footer-company">
-				<h4>Polska</h4>
+				<h4><?php echo esc_html( ia_t( 'Polska', 'Poland' ) ); ?></h4>
 				<p class="company-name">SKANDO Sp. z o.o.</p>
 				<p class="company-detail">NIP: 7831870581</p>
 				<p class="company-detail">ul. Wierzbięcice 44A/40A<br>61-568 Poznań</p>
 				<p class="company-detail"><a href="tel:+48570914134">Tel. +48 570 914 134</a></p>
 			</div>
 			<div class="footer-company">
-				<h4>Norwegia</h4>
+				<h4><?php echo esc_html( ia_t( 'Norwegia', 'Norway' ) ); ?></h4>
 				<p class="company-name">Demring Consult AS</p>
 				<p class="company-detail">Org. nr. 932 394 235</p>
 				<p class="company-detail">Tellnes Næringspark 1<br>5357 Fjell</p>
@@ -27,14 +30,17 @@
 		</div>
 
 		<div class="footer-links">
-			<a href="#uslugi"><?php esc_html_e( 'Usługi', 'interagents' ); ?></a>
-			<a href="#jak-dzialamy"><?php esc_html_e( 'Jak działamy', 'interagents' ); ?></a>
-			<a href="#dlaczego-my"><?php esc_html_e( 'Dlaczego my', 'interagents' ); ?></a>
-			<a href="#kontakt"><?php esc_html_e( 'Kontakt', 'interagents' ); ?></a>
+			<a href="#uslugi"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a>
+			<a href="#jak-dzialamy"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a>
+			<a href="#dlaczego-my"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a>
+			<a href="#kontakt"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a>
 		</div>
 
 		<div class="footer-bottom">
-			<p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> InterAgents.ai. <?php esc_html_e( 'Wszelkie prawa zastrzeżone.', 'interagents' ); ?></p>
+			<p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> InterAgents.ai. <?php echo esc_html( ia_t(
+				'Wszelkie prawa zastrzeżone.',
+				'All rights reserved.'
+			) ); ?></p>
 		</div>
 	</div>
 </footer>

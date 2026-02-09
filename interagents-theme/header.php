@@ -5,10 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> data-lang="<?php echo esc_attr( ia_get_lang() ); ?>">
 <?php wp_body_open(); ?>
 
-<a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Przejdź do treści', 'interagents' ); ?></a>
+<a class="skip-link screen-reader-text" href="#main"><?php echo esc_html( ia_t( 'Przejdź do treści', 'Skip to content' ) ); ?></a>
 
 <header class="site-header" role="banner">
 	<div class="container header-inner">
@@ -20,17 +20,20 @@
 			</a>
 		<?php endif; ?>
 
-		<nav class="site-nav" role="navigation" aria-label="<?php esc_attr_e( 'Menu główne', 'interagents' ); ?>">
+		<nav class="site-nav" role="navigation" aria-label="<?php echo esc_attr( ia_t( 'Menu główne', 'Main menu' ) ); ?>">
 			<button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
 				<span class="nav-toggle__label"><?php esc_html_e( 'Menu', 'interagents' ); ?></span>
 				<span class="nav-toggle__icon" aria-hidden="true"></span>
 			</button>
 			<ul id="primary-menu" class="menu">
-				<li><a href="#uslugi"><?php esc_html_e( 'Usługi', 'interagents' ); ?></a></li>
-				<li><a href="#jak-dzialamy"><?php esc_html_e( 'Jak działamy', 'interagents' ); ?></a></li>
-				<li><a href="#dlaczego-my"><?php esc_html_e( 'Dlaczego my', 'interagents' ); ?></a></li>
-				<li><a href="#kontakt" class="btn btn--primary"><?php esc_html_e( 'Kontakt', 'interagents' ); ?></a></li>
+				<li><a href="#uslugi"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a></li>
+				<li><a href="#jak-dzialamy"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
+				<li><a href="#dlaczego-my"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
+				<li><a href="#kontakt" class="btn btn--primary"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a></li>
 			</ul>
+			<button class="lang-toggle" id="lang-toggle" aria-label="<?php echo esc_attr( ia_t( 'Switch to English', 'Przełącz na polski' ) ); ?>" title="<?php echo esc_attr( ia_t( 'English', 'Polski' ) ); ?>">
+				<?php echo ia_get_lang() === 'pl' ? '🇬🇧' : '🇵🇱'; ?>
+			</button>
 		</nav>
 	</div>
 </header>

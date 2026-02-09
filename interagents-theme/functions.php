@@ -9,7 +9,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '1.4.1' );
+define( 'INTERAGENTS_VERSION', '1.5.0' );
+
+/**
+ * Language detection: cookie > Accept-Language header
+ * If browser language starts with 'pl', show Polish. Otherwise English.
+ */
+function ia_get_lang() {
+	static $lang = null;
+	if ( $lang !== null ) return $lang;
+
+	// Cookie override
+	if ( ! empty( $_COOKIE['ia_lang'] ) && in_array( $_COOKIE['ia_lang'], array( 'pl', 'en' ), true ) ) {
+		$lang = $_COOKIE['ia_lang'];
+		return $lang;
+	}
+
+	// Accept-Language header
+	$accept = isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
+	$lang = ( strpos( strtolower( $accept ), 'pl' ) === 0 ) ? 'pl' : 'en';
+	return $lang;
+}
+
+/**
+ * Bilingual text helper — returns Polish or English based on detected language.
+ */
+function ia_t( $pl, $en ) {
+	return ia_get_lang() === 'pl' ? $pl : $en;
+}
 
 /**
  * Theme setup
