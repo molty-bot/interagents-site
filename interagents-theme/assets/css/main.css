@@ -1,0 +1,298 @@
+/* ==========================================================================
+   InterAgents.ai — Sections & Components
+   ========================================================================== */
+
+/* Sections */
+.section {
+  padding: clamp(80px, 12vw, 140px) 0;
+  position: relative;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.section-subtitle {
+  margin: 0 0 48px;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--color-muted);
+  max-width: 56ch;
+}
+
+/* Service Cards */
+.cards-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  padding: 36px 28px;
+  border-radius: var(--radius-lg);
+  background: rgba(22, 22, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform var(--dur-2) var(--ease-spring),
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background var(--dur-2) var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(232, 184, 94, 0.3);
+  background: rgba(22, 22, 42, 0.75);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(232, 184, 94, 0.08);
+}
+
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(200, 150, 62, 0.15), rgba(232, 184, 94, 0.08));
+  border: 1px solid rgba(232, 184, 94, 0.15);
+  color: var(--color-accent-2);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.card p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Steps (How We Work) */
+.section--process {
+  background: linear-gradient(180deg, 
+    rgba(22, 22, 42, 0.4) 0%, 
+    rgba(10, 10, 26, 0.2) 100%);
+}
+
+.steps-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+  counter-reset: step;
+}
+
+@media (min-width: 768px) {
+  .steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+.step {
+  position: relative;
+  padding: 32px 24px;
+  border-radius: var(--radius-lg);
+  background: rgba(22, 22, 42, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+  color: #0b0b17;
+  box-shadow: 0 8px 24px rgba(200, 150, 62, 0.25);
+}
+
+.step h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.step p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Features (Why Us) */
+.features-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.feature {
+  padding: 28px 24px;
+  border-radius: var(--radius-md);
+  background: rgba(22, 22, 42, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+
+.feature:hover {
+  border-color: rgba(232, 184, 94, 0.2);
+}
+
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: rgba(200, 150, 62, 0.1);
+  color: var(--color-accent-2);
+}
+
+.feature h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.feature p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* CTA Section */
+.section--cta {
+  padding: clamp(60px, 10vw, 120px) 0;
+}
+
+.cta-box {
+  text-align: center;
+  padding: clamp(48px, 8vw, 80px) clamp(24px, 5vw, 60px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, 
+    rgba(200, 150, 62, 0.12) 0%, 
+    rgba(22, 22, 42, 0.65) 50%, 
+    rgba(232, 184, 94, 0.08) 100%);
+  border: 1px solid rgba(232, 184, 94, 0.15);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.3);
+}
+
+.cta-box h2 {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.cta-box p {
+  margin: 0 0 28px;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--color-muted);
+}
+
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Footer */
+.site-footer {
+  padding: 48px 0 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-inner {
+  display: grid;
+  gap: 24px;
+}
+
+.footer-tagline {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-links a {
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--color-muted);
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.footer-links a:hover {
+  color: var(--color-accent-2);
+}
+
+.footer-bottom {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  .footer-inner {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: start;
+  }
+
+  .footer-links {
+    justify-self: end;
+  }
+
+  .footer-bottom {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Smooth reveal stagger for grids */
+.cards-grid .card:nth-child(2) { --delay: 80ms; }
+.cards-grid .card:nth-child(3) { --delay: 160ms; }
+.steps-grid .step:nth-child(2) { --delay: 100ms; }
+.steps-grid .step:nth-child(3) { --delay: 200ms; }
