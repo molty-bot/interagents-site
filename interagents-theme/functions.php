@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '1.2.0' );
+define( 'INTERAGENTS_VERSION', '1.3.0' );
 
 /**
  * Theme setup
