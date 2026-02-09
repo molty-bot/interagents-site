@@ -107,8 +107,11 @@
     }
   }
 
-  // Imię + Nazwisko side by side (field IDs 6 and 7)
-  pairFields('#wpforms-85-field_6-container', '#wpforms-85-field_7-container');
+  // Imię + Nazwisko side by side (first two text fields in the form)
+  const textFields = document.querySelectorAll('.wpforms-form .wpforms-field-text');
+  if (textFields.length >= 2) {
+    pairFields('#' + textFields[0].id, '#' + textFields[1].id);
+  }
   // Phone + Email side by side
   pairFields('.wpforms-field-phone', '.wpforms-field-email');
 
