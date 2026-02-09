@@ -10,6 +10,12 @@
 
   function t(pl, en) { return LANG === 'pl' ? pl : en; }
 
+  // -- Scroll to top on page load (prevent browser restoring scroll position) --
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   // -- Language toggle --
   var langBtn = document.getElementById('lang-toggle');
   if (langBtn) {
@@ -70,6 +76,18 @@
 
   function openModal() {
     if (!modal) return;
+    // Reset form state if previously submitted
+    var formWrap = modal.querySelector('.contact-form-wrap');
+    var titleEl = modal.querySelector('.modal-title');
+    var subEl = modal.querySelector('.modal-subtitle');
+    var success = modal.querySelector('.modal-success');
+    if (formWrap) formWrap.style.display = '';
+    if (titleEl) titleEl.style.display = '';
+    if (subEl) subEl.style.display = '';
+    if (success) success.classList.remove('is-visible');
+    // Reset the form fields
+    var form = modal.querySelector('.wpforms-form');
+    if (form) form.reset();
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -240,10 +258,10 @@
       success.className = 'modal-success';
       success.innerHTML =
         '<div class="success-icon">✓</div>' +
-        '<h4>' + t('Dziękujemy!', 'Thank you!') + '</h4>' +
+        '<h4>' + t('Dziękujemy za wiadomość!', 'Thank you for reaching out!') + '</h4>' +
         '<p>' + t(
-          'Twoja wiadomość została wysłana.<br>Skontaktujemy się z Tobą najszybciej jak to możliwe.',
-          'Your message has been sent.<br>We\'ll get back to you as soon as possible.'
+          'Otrzymaliśmy Twoją wiadomość i odezwiemy się najszybciej jak to możliwe.',
+          'We\'ve received your message and will get back to you shortly.'
         ) + '</p>';
       modal.querySelector('.modal-content').appendChild(success);
     }

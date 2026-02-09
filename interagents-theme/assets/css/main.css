@@ -537,7 +537,7 @@ div.wpforms-container-full .wpforms-form textarea {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
-  color: var(--color-text);
+  color: var(--color-text) !important;
   padding: 12px 14px;
   font-size: 15px;
   font-family: inherit;

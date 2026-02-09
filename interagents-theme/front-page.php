@@ -25,9 +25,13 @@ $hero_cta_url  = get_theme_mod( 'hero_cta_url', '#kontakt' );
 <!-- Hero -->
 <section class="hero" id="hero">
 	<div class="container hero-inner">
-		<h1 class="reveal"><?php echo esc_html( $hero_title ); ?></h1>
-		<p class="reveal" style="--delay: 80ms"><?php echo esc_html( $hero_subtitle ); ?></p>
-		<div class="hero-actions reveal" style="--delay: 160ms">
+		<p class="hero-tagline reveal"><?php echo esc_html( ia_t(
+			'Agenci AI • Integracja systemów • Automatyzacja procesów',
+			'AI Agents • System Integration • Process Automation'
+		) ); ?></p>
+		<h1 class="reveal" style="--delay: 60ms"><?php echo esc_html( $hero_title ); ?></h1>
+		<p class="reveal" style="--delay: 120ms"><?php echo esc_html( $hero_subtitle ); ?></p>
+		<div class="hero-actions reveal" style="--delay: 200ms">
 			<a href="<?php echo esc_url( $hero_cta_url ); ?>" class="btn btn--primary"><?php echo esc_html( $hero_cta_text ); ?></a>
 			<a href="#uslugi" class="btn"><?php echo esc_html( ia_t( 'Poznaj nas', 'Learn more' ) ); ?></a>
 		</div>
