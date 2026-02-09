@@ -21,8 +21,11 @@
   if (langBtn) {
     langBtn.addEventListener('click', function () {
       var newLang = LANG === 'pl' ? 'en' : 'pl';
-      document.cookie = 'ia_lang=' + newLang + ';path=/;max-age=31536000;SameSite=Lax';
-      window.location.reload();
+      document.cookie = 'ia_lang=' + newLang + ';path=/;max-age=31536000;SameSite=Lax;Secure';
+      // Use full URL reload to bust any page cache
+      var url = new URL(window.location.href);
+      url.searchParams.set('lang', newLang);
+      window.location.href = url.toString();
     });
   }
 

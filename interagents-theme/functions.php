@@ -19,6 +19,12 @@ function ia_get_lang() {
 	static $lang = null;
 	if ( $lang !== null ) return $lang;
 
+	// URL param override (cache-busting)
+	if ( ! empty( $_GET['lang'] ) && in_array( $_GET['lang'], array( 'pl', 'en' ), true ) ) {
+		$lang = $_GET['lang'];
+		return $lang;
+	}
+
 	// Cookie override
 	if ( ! empty( $_COOKIE['ia_lang'] ) && in_array( $_COOKIE['ia_lang'], array( 'pl', 'en' ), true ) ) {
 		$lang = $_COOKIE['ia_lang'];
@@ -36,6 +42,16 @@ function ia_get_lang() {
  */
 function ia_t( $pl, $en ) {
 	return ia_get_lang() === 'pl' ? $pl : $en;
+}
+
+/**
+ * Bypass page cache when user has explicitly chosen a language.
+ * SpeedyCache (and most caching plugins) respect DONOTCACHEPAGE.
+ */
+if ( ! empty( $_COOKIE['ia_lang'] ) ) {
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
 }
 
 /**
