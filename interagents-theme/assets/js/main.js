@@ -95,25 +95,38 @@
   }
 
   // -- Fix WPForms layout: pair fields side by side --
-  function pairFields(field1Selector, field2Selector) {
-    const f1 = document.querySelector(field1Selector);
-    const f2 = document.querySelector(field2Selector);
-    if (f1 && f2 && f1.parentElement === f2.parentElement) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'form-row-pair';
-      f1.parentElement.insertBefore(wrapper, f1);
-      wrapper.appendChild(f1);
-      wrapper.appendChild(f2);
-    }
+  function pairFieldEls(f1, f2) {
+    if (!f1 || !f2) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'form-row-pair';
+    f1.parentElement.insertBefore(wrapper, f1);
+    wrapper.appendChild(f1);
+    wrapper.appendChild(f2);
   }
 
-  // Imię + Nazwisko side by side (first two text fields in the form)
-  const textFields = document.querySelectorAll('.wpforms-form .wpforms-field-text');
-  if (textFields.length >= 2) {
-    pairFields('#' + textFields[0].id, '#' + textFields[1].id);
+  // Find fields by label text
+  function findFieldByLabel(text) {
+    const labels = document.querySelectorAll('.wpforms-form .wpforms-field-label');
+    for (const label of labels) {
+      const t = label.textContent.replace(/\s*\*/g, '').trim();
+      if (t === text) return label.closest('.wpforms-field');
+    }
+    return null;
   }
-  // Phone + Email side by side
-  pairFields('.wpforms-field-phone', '.wpforms-field-email');
+
+  // Hide ghost/empty fields (fields with no visible label)
+  document.querySelectorAll('.wpforms-form .wpforms-field').forEach((field) => {
+    const label = field.querySelector('.wpforms-field-label');
+    const text = label ? label.textContent.replace(/\s*\*/g, '').trim() : '';
+    if (!text || text === 'Single Line Text' || text === 'Paragraph Text') {
+      field.style.display = 'none';
+    }
+  });
+
+  // Imię + Nazwisko side by side
+  pairFieldEls(findFieldByLabel('Imię'), findFieldByLabel('Nazwisko'));
+  // Telefon + E-mail side by side
+  pairFieldEls(findFieldByLabel('Telefon'), findFieldByLabel('E-mail'));
 
   // -- Character counter on message textarea --
   const MAX_CHARS = 1000;
