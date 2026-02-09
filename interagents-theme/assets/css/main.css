@@ -645,3 +645,17 @@ div.wpforms-container-full .wpforms-form .iti__country.iti__highlight {
   div.wpforms-container-full .wpforms-form .wpforms-field-name .wpforms-field-row,
   .form-row-pair { grid-template-columns: 1fr !important; }
 }
+
+/* Fix WPForms field widths — override medium/large constraints */
+div.wpforms-container-full .wpforms-form .wpforms-field-row.wpforms-field-medium,
+div.wpforms-container-full .wpforms-form .wpforms-field-row.wpforms-field-large,
+div.wpforms-container-full .wpforms-form .wpforms-field-medium,
+div.wpforms-container-full .wpforms-form .wpforms-field-large {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+div.wpforms-container-full .wpforms-form .wpforms-one-half {
+  width: 100% !important;
+  float: none !important;
+}
