@@ -78,6 +78,10 @@
   var heroCTA = document.querySelector('a.btn--primary[href="#kontakt"]');
 
   function openModal() {
+    // GA4: Track CTA click
+    if (typeof gtag === 'function') {
+      gtag('event', 'cta_click', { event_category: 'Engagement', event_label: 'Contact Modal Open' });
+    }
     if (!modal) return;
     // Reset form state if previously submitted
     var formWrap = modal.querySelector('.contact-form-wrap');
@@ -246,6 +250,14 @@
 
   // -- Show success state after form submit --
   document.addEventListener('wpformsAjaxSubmitSuccess', function () {
+    // GA4: Track form submission as generate_lead event
+    if (typeof gtag === 'function') {
+      gtag('event', 'generate_lead', {
+        event_category: 'Contact',
+        event_label: 'Contact Form Submit',
+        value: 1
+      });
+    }
     if (!modal) return;
     var formWrap = modal.querySelector('.contact-form-wrap');
     var titleEl = modal.querySelector('.modal-title');
