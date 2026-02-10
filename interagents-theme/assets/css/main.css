@@ -702,3 +702,11 @@ div.wpforms-container-full .wpforms-form .wpforms-one-half {
     gap: 8px;
   }
 }
+
+/* Hide reCAPTCHA v3 badge — required by Google TOS to add text notice instead */
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: fixed !important;
+  right: -9999px !important;
+}

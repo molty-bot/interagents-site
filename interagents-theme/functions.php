@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '1.5.3' );
+define( 'INTERAGENTS_VERSION', '1.7.0' );
 
 /**
  * Language detection: cookie > Accept-Language header
@@ -292,6 +292,68 @@ remove_action( 'wp_head', 'wp_generator' );
  * Disable XML-RPC for security
  */
 add_filter( 'xmlrpc_enabled', '__return_false' );
+
+/**
+ * Fix GA4: Site Kit only configures GT-5NTGF3JS but never adds the GA4 measurement ID.
+ * Inject gtag("config", "G-96DLWCDZJE") with custom dimensions after Site Kit's tag.
+ */
+function ia_ga4_fix() {
+	if ( is_admin() ) return;
+	$lang = ia_get_lang();
+	?>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	// Configure GA4 measurement ID (missing from Site Kit's GT tag)
+	gtag('config', 'G-96DLWCDZJE', {
+		'custom_map': {
+			'dimension1': 'language',
+			'dimension2': 'user_type',
+			'dimension3': 'form_step'
+		},
+		'language': '<?php echo esc_js( $lang ); ?>',
+		'content_group': 'homepage'
+	});
+	// Consent Mode v2: default denied for EEA, granted elsewhere
+	// Google's behavioral modeling fills gaps for denied users
+	gtag('consent', 'default', {
+		'analytics_storage': 'denied',
+		'ad_storage': 'denied',
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'wait_for_update': 500,
+		'region': ['BE','BG','CZ','DK','DE','EE','IE','EL','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE','IS','LI','NO','CH','GB']
+	});
+	// Non-EEA: default granted (no consent banner needed)
+	gtag('consent', 'default', {
+		'analytics_storage': 'granted',
+		'ad_storage': 'granted',
+		'ad_user_data': 'granted',
+		'ad_personalization': 'granted'
+	});
+	// Listen for CookieAdmin consent
+	document.addEventListener('cookie_admin_consent', function(e) {
+		if (e.detail && e.detail.analytics) {
+			gtag('consent', 'update', {
+				'analytics_storage': 'granted'
+			});
+		}
+		if (e.detail && e.detail.marketing) {
+			gtag('consent', 'update', {
+				'ad_storage': 'granted',
+				'ad_user_data': 'granted',
+				'ad_personalization': 'granted'
+			});
+		}
+	});
+	// Fallback: if CookieAdmin sets cookies directly
+	if (document.cookie.indexOf('cookie_admin_analytics=1') !== -1) {
+		gtag('consent', 'update', { 'analytics_storage': 'granted' });
+	}
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'ia_ga4_fix', 99 );
 
 /**
  * Load customizer

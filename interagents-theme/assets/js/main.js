@@ -78,10 +78,8 @@
   var heroCTA = document.querySelector('a.btn--primary[href="#kontakt"]');
 
   function openModal() {
-    // GA4: Track CTA click
-    if (typeof gtag === 'function') {
-      gtag('event', 'cta_click', { event_category: 'Engagement', event_label: 'Contact Modal Open' });
-    }
+    ga4('cta_click', { event_category: 'Engagement', event_label: 'Contact Modal Open', language: LANG });
+    ga4('form_step', { form_step: 'modal_open', language: LANG });
     if (!modal) return;
     // Reset form state if previously submitted
     var formWrap = modal.querySelector('.contact-form-wrap');
@@ -250,14 +248,8 @@
 
   // -- Show success state after form submit --
   document.addEventListener('wpformsAjaxSubmitSuccess', function () {
-    // GA4: Track form submission as generate_lead event
-    if (typeof gtag === 'function') {
-      gtag('event', 'generate_lead', {
-        event_category: 'Contact',
-        event_label: 'Contact Form Submit',
-        value: 1
-      });
-    }
+    ga4('generate_lead', { event_category: 'Contact', event_label: 'Contact Form Submit', value: 1, language: LANG });
+    ga4('form_step', { form_step: 'submitted', language: LANG });
     if (!modal) return;
     var formWrap = modal.querySelector('.contact-form-wrap');
     var titleEl = modal.querySelector('.modal-title');
@@ -291,6 +283,100 @@
         success.classList.remove('is-visible');
       }, 500);
     }, 4000);
+  });
+
+  // -- GA4 Enhanced Event Tracking --
+  function ga4(event, params) {
+    if (typeof gtag === 'function') gtag('event', event, params || {});
+  }
+
+  // Track which sections users actually see
+  var sectionNames = {
+    'hero': 'Hero',
+    'services': 'Uslugi',
+    'process': 'Jak Dzialamy',
+    'why-us': 'Dlaczego My',
+    'cta': 'CTA',
+    'footer': 'Footer'
+  };
+
+  var trackedSections = {};
+  var sectionEls = document.querySelectorAll('section[id], .site-footer');
+  if ('IntersectionObserver' in window && sectionEls.length) {
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id || 'footer';
+          if (!trackedSections[id]) {
+            trackedSections[id] = true;
+            ga4('section_view', {
+              section_name: sectionNames[id] || id,
+              language: LANG
+            });
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+    sectionEls.forEach(function (el) { sectionObserver.observe(el); });
+  }
+
+  // Track scroll depth milestones (25%, 50%, 75%, 100%)
+  var scrollMilestones = {};
+  window.addEventListener('scroll', function () {
+    var scrollPct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+    [25, 50, 75, 100].forEach(function (m) {
+      if (scrollPct >= m && !scrollMilestones[m]) {
+        scrollMilestones[m] = true;
+        ga4('scroll_depth', { percent: m, language: LANG });
+      }
+    });
+  }, { passive: true });
+
+  // Track time on page (30s, 60s, 120s, 300s)
+  var timeMilestones = [30, 60, 120, 300];
+  var timeIdx = 0;
+  var pageTimer = setInterval(function () {
+    if (timeIdx >= timeMilestones.length) { clearInterval(pageTimer); return; }
+    ga4('time_on_page', { seconds: timeMilestones[timeIdx], language: LANG });
+    timeIdx++;
+  }, (timeMilestones[0]) * 1000);
+  // Adjust interval for subsequent milestones
+  var pageStart = Date.now();
+  clearInterval(pageTimer);
+  timeMilestones.forEach(function (sec) {
+    setTimeout(function () {
+      ga4('time_on_page', { seconds: sec, language: LANG });
+    }, sec * 1000);
+  });
+
+  // Track outbound link clicks
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href]');
+    if (link && link.hostname && link.hostname !== location.hostname) {
+      ga4('outbound_click', { url: link.href, link_text: (link.textContent || '').trim().substring(0, 50) });
+    }
+  });
+
+  // Track language toggle
+  if (langBtn) {
+    langBtn.addEventListener('click', function () {
+      ga4('language_switch', { from_lang: LANG, to_lang: LANG === 'pl' ? 'en' : 'pl' });
+    });
+  }
+
+  // Form funnel tracking
+  var formTracked = { focus: false, started: false };
+  document.addEventListener('focusin', function (e) {
+    if (e.target.closest && e.target.closest('.wpforms-form') && !formTracked.focus) {
+      formTracked.focus = true;
+      ga4('form_step', { form_step: 'field_focus', language: LANG });
+    }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.closest && e.target.closest('.wpforms-form') && !formTracked.started) {
+      formTracked.started = true;
+      ga4('form_step', { form_step: 'started_typing', language: LANG });
+    }
   });
 
   // -- Scroll reveal with Intersection Observer --
