@@ -33,7 +33,7 @@ $hero_cta_url  = get_theme_mod( 'hero_cta_url', '#kontakt' );
 		<p class="reveal" style="--delay: 120ms"><?php echo esc_html( $hero_subtitle ); ?></p>
 		<div class="hero-actions reveal" style="--delay: 200ms">
 			<a href="<?php echo esc_url( $hero_cta_url ); ?>" class="btn btn--primary"><?php echo esc_html( $hero_cta_text ); ?></a>
-			<a href="#uslugi" class="btn"><?php echo esc_html( ia_t( 'Poznaj nas', 'Learn more' ) ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/offer/' ) ); ?>" class="btn"><?php echo esc_html( ia_t( 'Zobacz ofertę', 'See our offer' ) ); ?></a>
 		</div>
 	</div>
 </section>

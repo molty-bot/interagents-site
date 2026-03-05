@@ -120,6 +120,23 @@ function interagents_scripts() {
 		INTERAGENTS_VERSION,
 		true
 	);
+
+	// Offer Builder (only on pages using the offer template)
+	if ( is_page_template( 'page-offer.php' ) ) {
+		wp_enqueue_style(
+			'interagents-offer',
+			get_template_directory_uri() . '/assets/css/offer.css',
+			array( 'interagents-main' ),
+			INTERAGENTS_VERSION
+		);
+		wp_enqueue_script(
+			'interagents-offer',
+			get_template_directory_uri() . '/assets/js/offer.js',
+			array(),
+			INTERAGENTS_VERSION,
+			true
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'interagents_scripts' );
 
@@ -294,16 +311,44 @@ remove_action( 'wp_head', 'wp_generator' );
 add_filter( 'xmlrpc_enabled', '__return_false' );
 
 /**
- * Fix GA4: Site Kit only configures GT-5NTGF3JS but never adds the GA4 measurement ID.
- * Inject gtag("config", "G-96DLWCDZJE") with custom dimensions after Site Kit's tag.
+ * Consent Mode v2 defaults — MUST run before any gtag config (before Site Kit).
+ * Uses dataLayer.push so it works even before gtag.js loads.
  */
-function ia_ga4_fix() {
+function ia_consent_defaults() {
 	if ( is_admin() ) return;
-	$lang = ia_get_lang();
 	?>
 	<script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
+	// Consent defaults: denied for EEA, granted elsewhere
+	gtag('consent', 'default', {
+		'analytics_storage': 'denied',
+		'ad_storage': 'denied',
+		'ad_user_data': 'denied',
+		'ad_personalization': 'denied',
+		'wait_for_update': 500,
+		'region': ['BE','BG','CZ','DK','DE','EE','IE','EL','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE','IS','LI','NO','CH','GB']
+	});
+	gtag('consent', 'default', {
+		'analytics_storage': 'granted',
+		'ad_storage': 'granted',
+		'ad_user_data': 'granted',
+		'ad_personalization': 'granted'
+	});
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'ia_consent_defaults', 1 );
+
+/**
+ * Fix GA4: Site Kit only configures GT-5NTGF3JS but never adds the GA4 measurement ID.
+ * Runs AFTER Site Kit loads gtag.js (priority 99).
+ */
+function ia_ga4_config() {
+	if ( is_admin() ) return;
+	$lang = ia_get_lang();
+	?>
+	<script>
 	// Configure GA4 measurement ID (missing from Site Kit's GT tag)
 	gtag('config', 'G-96DLWCDZJE', {
 		'custom_map': {
@@ -314,46 +359,49 @@ function ia_ga4_fix() {
 		'language': '<?php echo esc_js( $lang ); ?>',
 		'content_group': 'homepage'
 	});
-	// Consent Mode v2: default denied for EEA, granted elsewhere
-	// Google's behavioral modeling fills gaps for denied users
-	gtag('consent', 'default', {
-		'analytics_storage': 'denied',
-		'ad_storage': 'denied',
-		'ad_user_data': 'denied',
-		'ad_personalization': 'denied',
-		'wait_for_update': 500,
-		'region': ['BE','BG','CZ','DK','DE','EE','IE','EL','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE','IS','LI','NO','CH','GB']
-	});
-	// Non-EEA: default granted (no consent banner needed)
-	gtag('consent', 'default', {
-		'analytics_storage': 'granted',
-		'ad_storage': 'granted',
-		'ad_user_data': 'granted',
-		'ad_personalization': 'granted'
-	});
-	// Listen for CookieAdmin consent
-	document.addEventListener('cookie_admin_consent', function(e) {
-		if (e.detail && e.detail.analytics) {
-			gtag('consent', 'update', {
-				'analytics_storage': 'granted'
-			});
+	// CookieAdmin integration: read cookieadmin_consent cookie
+	(function() {
+		var m = document.cookie.match(/cookieadmin_consent=([^;]+)/);
+		if (m) {
+			try {
+				var c = JSON.parse(decodeURIComponent(m[1]));
+				if (c.accept === 'true' || c.accept === true) {
+					// User clicked "Accept All"
+					gtag('consent', 'update', {
+						'analytics_storage': 'granted',
+						'ad_storage': 'granted',
+						'ad_user_data': 'granted',
+						'ad_personalization': 'granted'
+					});
+				} else {
+					// Check individual categories
+					if (c.analytics === 'true' || c.analytics === true) {
+						gtag('consent', 'update', { 'analytics_storage': 'granted' });
+					}
+					if (c.marketing === 'true' || c.marketing === true) {
+						gtag('consent', 'update', { 'ad_storage': 'granted', 'ad_user_data': 'granted', 'ad_personalization': 'granted' });
+					}
+				}
+			} catch(e) {}
 		}
-		if (e.detail && e.detail.marketing) {
-			gtag('consent', 'update', {
-				'ad_storage': 'granted',
-				'ad_user_data': 'granted',
-				'ad_personalization': 'granted'
-			});
-		}
-	});
-	// Fallback: if CookieAdmin sets cookies directly
-	if (document.cookie.indexOf('cookie_admin_analytics=1') !== -1) {
-		gtag('consent', 'update', { 'analytics_storage': 'granted' });
-	}
+		// Also watch for clicks on Accept buttons (for same-page consent)
+		document.addEventListener('click', function(e) {
+			if (e.target && e.target.classList && e.target.classList.contains('cookieadmin_accept_btn')) {
+				setTimeout(function() {
+					gtag('consent', 'update', {
+						'analytics_storage': 'granted',
+						'ad_storage': 'granted',
+						'ad_user_data': 'granted',
+						'ad_personalization': 'granted'
+					});
+				}, 100);
+			}
+		});
+	})();
 	</script>
 	<?php
 }
-add_action( 'wp_head', 'ia_ga4_fix', 99 );
+add_action( 'wp_head', 'ia_ga4_config', 99 );
 
 /**
  * Load customizer
