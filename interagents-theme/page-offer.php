@@ -162,29 +162,29 @@ $pricing = array(
 
 			<!-- Management -->
 			<div class="offer-config-group">
-				<label class="offer-config-label"><?php echo esc_html( ia_t( 'Zarządzanie', 'Management' ) ); ?></label>
+				<label class="offer-config-label"><?php echo esc_html( ia_t( 'Obsługa', 'Support' ) ); ?></label>
 				<div class="offer-toggle-group" data-config="managed">
 					<button class="offer-toggle" data-value="self" type="button">
-						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Samodzielnie', 'Self-managed' ) ); ?></span>
+						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Sam/a się zajmuję', 'I\'ll handle it myself' ) ); ?></span>
 						<span class="offer-toggle-price"><?php echo esc_html( ia_t( '0 PLN/mies.', '0 EUR/mo' ) ); ?></span>
 					</button>
 					<button class="offer-toggle active" data-value="managed" type="button">
-						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Zarządzany', 'Managed' ) ); ?></span>
+						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Zajmijcie się wszystkim', 'Take care of everything' ) ); ?></span>
 						<span class="offer-toggle-badge"><?php echo esc_html( ia_t( 'Polecany', 'Recommended' ) ); ?></span>
 					</button>
 				</div>
 			</div>
 
-			<!-- API (only visible when managed) -->
+			<!-- AI Credits (only visible when managed) -->
 			<div class="offer-config-group" id="offer-api-group">
-				<label class="offer-config-label"><?php echo esc_html( ia_t( 'Klucze API', 'API Keys' ) ); ?></label>
+				<label class="offer-config-label"><?php echo esc_html( ia_t( 'Kredyty AI', 'AI Credits' ) ); ?></label>
 				<div class="offer-toggle-group" data-config="api">
 					<button class="offer-toggle" data-value="own" type="button">
-						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Własny klucz API', 'Own API key' ) ); ?></span>
+						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Mam własne konto AI', 'I have my own AI account' ) ); ?></span>
 						<span class="offer-toggle-price">-<?php echo number_format( $pricing['openclaw']['no_api_discount'], 0, '', $is_pl ? ' ' : ',' ); ?> <?php echo $currency; ?>/<?php echo esc_html( ia_t( 'mies.', 'mo' ) ); ?></span>
 					</button>
 					<button class="offer-toggle active" data-value="included" type="button">
-						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Wliczone (wartość €200)', 'Included (€200 value)' ) ); ?></span>
+						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Wszystko w cenie', 'Everything included' ) ); ?></span>
 						<span class="offer-toggle-badge"><?php echo esc_html( ia_t( 'Najlepsza wartość', 'Best value' ) ); ?></span>
 					</button>
 				</div>
@@ -214,28 +214,28 @@ $pricing = array(
 					<h4><?php echo esc_html( ia_t( 'W cenie', 'Included' ) ); ?></h4>
 					<ul id="offer-includes-list">
 						<li><?php echo esc_html( ia_t(
-							'1 orkiestrator + wielu agentów AI (do 8 jednocześnie)',
-							'1 orchestrator + multiple AI agents (up to 8 concurrent)'
+							'Zespół agentów AI pracujących dla Ciebie (do 8 naraz)',
+							'A team of AI agents working for you (up to 8 at once)'
 						) ); ?></li>
 						<li><?php echo esc_html( ia_t(
-							'Konfiguracja agentów pod Twoje potrzeby',
-							'Agent configuration tailored to your needs'
+							'Agenty skonfigurowane pod Twoje potrzeby',
+							'Agents configured for your needs'
 						) ); ?></li>
 						<li><?php echo esc_html( ia_t(
-							'Aplikacja InterAgents (iOS) — do 2 użytkowników',
-							'InterAgents app (iOS) — up to 2 users'
+							'Aplikacja InterAgents na iPhone — do 2 osób',
+							'InterAgents iPhone app — up to 2 people'
 						) ); ?></li>
 						<li><?php echo esc_html( ia_t(
-							'Task Hub — zarządzanie zadaniami agentów',
-							'Task Hub — agent task management'
+							'Panel do zlecania i śledzenia zadań',
+							'Dashboard to assign and track tasks'
 						) ); ?></li>
 						<li><?php echo esc_html( ia_t(
-							'Sesja onboardingowa',
-							'Onboarding session'
+							'Sesja szkoleniowa na start',
+							'Training session to get you started'
 						) ); ?></li>
 						<li id="offer-include-api" style="display:list-item"><?php echo esc_html( ia_t(
-							'€200 wartości tokenów Claude/API miesięcznie',
-							'€200 worth of Claude/API tokens monthly'
+							'€200 kredytów AI miesięcznie w cenie',
+							'€200 AI credits included monthly'
 						) ); ?></li>
 						<li id="offer-include-managed" style="display:list-item"><?php echo esc_html( ia_t(
 							'Aktualizacje, monitoring, wsparcie',
@@ -422,13 +422,13 @@ window.offerConfig = {
 		perMonth: '<?php echo esc_js( ia_t( '/mies.', '/mo' ) ); ?>',
 		plusPerMonth: '<?php echo esc_js( ia_t( '+ /mies.', '+ /mo' ) ); ?>',
 		copied: '<?php echo esc_js( ia_t( 'Link skopiowany!', 'Link copied!' ) ); ?>',
-		selfManaged: '<?php echo esc_js( ia_t( 'Samodzielnie (bez wsparcia, własny klucz API)', 'Self-managed (no support, own API key)' ) ); ?>',
-		managed: '<?php echo esc_js( ia_t( 'Zarządzany', 'Managed' ) ); ?>',
+		selfManaged: '<?php echo esc_js( ia_t( 'Sam/a się zajmuję', 'I\'ll handle it myself' ) ); ?>',
+		managed: '<?php echo esc_js( ia_t( 'Zajmijcie się wszystkim', 'Take care of everything' ) ); ?>',
 		hostingMac: '<?php echo esc_js( ia_t( 'Twój Mac', 'Your Mac' ) ); ?>',
 		hostingVps: '<?php echo esc_js( ia_t( 'Twój VPS', 'Your VPS' ) ); ?>',
 		hostingMini: '<?php echo esc_js( ia_t( 'Nasz Mac Mini', 'Our Mac Mini' ) ); ?>',
-		apiOwn: '<?php echo esc_js( ia_t( 'Własny klucz API', 'Own API key' ) ); ?>',
-		apiIncluded: '<?php echo esc_js( ia_t( 'Wliczone tokeny API (€200)', 'API tokens included (€200)' ) ); ?>',
+		apiOwn: '<?php echo esc_js( ia_t( 'Mam własne konto AI', 'I have my own AI account' ) ); ?>',
+		apiIncluded: '<?php echo esc_js( ia_t( 'Wszystko w cenie', 'Everything included' ) ); ?>',
 		emailSubject: '<?php echo esc_js( ia_t( 'Wycena OpenClaw — InterAgents.ai', 'OpenClaw Quote — InterAgents.ai' ) ); ?>',
 		product: 'OpenClaw'
 	}
