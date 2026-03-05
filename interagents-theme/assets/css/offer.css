@@ -125,6 +125,26 @@
   margin-top: 4px;
 }
 
+/* Card as link (front page) */
+.offer-product-card--link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.offer-product-arrow {
+  display: block;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-accent-2);
+  transition: transform var(--dur-1) var(--ease-out);
+}
+
+.offer-product-card--link:hover .offer-product-arrow {
+  transform: translateX(4px);
+}
+
 /* Configurator Panel */
 .offer-configurator {
   border-radius: var(--radius-lg);

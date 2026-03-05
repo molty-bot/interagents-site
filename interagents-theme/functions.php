@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '2.0.0' );
+define( 'INTERAGENTS_VERSION', '2.1.0' );
 
 /**
  * Language detection: cookie > Accept-Language header
@@ -121,7 +121,7 @@ function interagents_scripts() {
 		true
 	);
 
-	// Offer Builder (front page and offer template)
+	// Offer CSS (front page cards + offer page configurator)
 	if ( is_front_page() || is_page_template( 'page-offer.php' ) ) {
 		wp_enqueue_style(
 			'interagents-offer',
@@ -129,6 +129,10 @@ function interagents_scripts() {
 			array( 'interagents-main' ),
 			INTERAGENTS_VERSION
 		);
+	}
+
+	// Offer JS (only on offer page — front page just has card links)
+	if ( is_page_template( 'page-offer.php' ) ) {
 		wp_enqueue_script(
 			'interagents-offer',
 			get_template_directory_uri() . '/assets/js/offer.js',

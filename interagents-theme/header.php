@@ -37,7 +37,7 @@
 				<li><a href="<?php echo esc_url( home_url( '/#uslugi' ) ); ?>"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/#jak-dzialamy' ) ); ?>"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/#dlaczego-my' ) ); ?>"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/#offer' ) ); ?>"><?php echo esc_html( ia_t( 'Oferta', 'Offer' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/offer/' ) ); ?>"><?php echo esc_html( ia_t( 'Oferta', 'Offer' ) ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/#kontakt' ) ); ?>" class="btn btn--primary"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a></li>
 			</ul>
 		</nav>
