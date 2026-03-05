@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '1.7.0' );
+define( 'INTERAGENTS_VERSION', '1.7.1' );
 
 /**
  * Language detection: cookie > Accept-Language header

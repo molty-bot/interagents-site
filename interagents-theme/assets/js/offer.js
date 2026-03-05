@@ -326,17 +326,38 @@
     });
   }
 
+  // Modal open/close logic (self-contained for offer page)
+  function openContactModal() {
+    var modal = document.getElementById('contact-modal');
+    if (!modal) return;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeContactModal() {
+    var modal = document.getElementById('contact-modal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Wire up modal close buttons
+  var modalBackdrop = document.querySelector('#contact-modal .modal-backdrop');
+  var modalClose = document.querySelector('#contact-modal .modal-close');
+  if (modalBackdrop) modalBackdrop.addEventListener('click', closeContactModal);
+  if (modalClose) modalClose.addEventListener('click', closeContactModal);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeContactModal();
+  });
+
   // Event: Inquire (opens contact modal with pre-filled text)
   function handleInquire() {
     var text = getInquiryText();
 
-    // Try to open contact modal
-    var modal = document.getElementById('contact-modal');
-    var openBtn = document.getElementById('open-contact-form');
-
-    if (openBtn) {
-      openBtn.click(); // trigger existing modal open logic
-    }
+    // Open modal directly
+    openContactModal();
 
     // Try to fill WPForms message field after modal opens
     setTimeout(function () {

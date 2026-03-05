@@ -175,16 +175,16 @@ $pricing = array(
 				</div>
 			</div>
 
-			<!-- AI Credits (only visible when managed) -->
+			<!-- AI Tokens (only visible when managed) -->
 			<div class="offer-config-group" id="offer-api-group">
-				<label class="offer-config-label"><?php echo esc_html( ia_t( 'Kredyty AI', 'AI Credits' ) ); ?></label>
+				<label class="offer-config-label"><?php echo esc_html( ia_t( 'Tokeny AI', 'AI Tokens' ) ); ?></label>
 				<div class="offer-toggle-group" data-config="api">
 					<button class="offer-toggle" data-value="own" type="button">
-						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Mam własne konto AI', 'I have my own AI account' ) ); ?></span>
+						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Mam własny klucz API', 'I have my own API key' ) ); ?></span>
 						<span class="offer-toggle-price">-<?php echo number_format( $pricing['openclaw']['no_api_discount'], 0, '', $is_pl ? ' ' : ',' ); ?> <?php echo $currency; ?>/<?php echo esc_html( ia_t( 'mies.', 'mo' ) ); ?></span>
 					</button>
 					<button class="offer-toggle active" data-value="included" type="button">
-						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Wszystko w cenie', 'Everything included' ) ); ?></span>
+						<span class="offer-toggle-title"><?php echo esc_html( ia_t( '€200 tokenów Claude/OpenAI w cenie', '€200 Claude/OpenAI tokens included' ) ); ?></span>
 						<span class="offer-toggle-badge"><?php echo esc_html( ia_t( 'Najlepsza wartość', 'Best value' ) ); ?></span>
 					</button>
 				</div>
@@ -234,8 +234,8 @@ $pricing = array(
 							'Training session to get you started'
 						) ); ?></li>
 						<li id="offer-include-api" style="display:list-item"><?php echo esc_html( ia_t(
-							'€200 kredytów AI miesięcznie w cenie',
-							'€200 AI credits included monthly'
+							'€200 tokenów Claude/OpenAI miesięcznie w cenie',
+							'€200 Claude/OpenAI tokens included monthly'
 						) ); ?></li>
 						<li id="offer-include-managed" style="display:list-item"><?php echo esc_html( ia_t(
 							'Aktualizacje, monitoring, wsparcie',
@@ -374,8 +374,15 @@ $pricing = array(
 				<div class="offer-info-feature">
 					<strong>🚀 <?php echo esc_html( ia_t( 'Priorytetowe wdrożenie', 'Priority deployment' ) ); ?></strong>
 					<p><?php echo esc_html( ia_t(
-						'Unified ecosystem. Dedykowane wsparcie. Jedna faktura.',
+						'Jeden zintegrowany ekosystem. Dedykowane wsparcie. Jedna faktura.',
 						'Unified ecosystem. Dedicated support. One invoice.'
+					) ); ?></p>
+				</div>
+				<div class="offer-info-feature">
+					<strong>💰 <?php echo esc_html( ia_t( 'Oszczędność na wdrożeniu', 'Save on setup' ) ); ?></strong>
+					<p><?php echo esc_html( ia_t(
+						'Instalacja OpenClaw gratis w pakiecie. Płacisz tylko za wdrożenie InterCore.',
+						'OpenClaw installation free in the bundle. You only pay for InterCore setup.'
 					) ); ?></p>
 				</div>
 			</div>
@@ -427,8 +434,8 @@ window.offerConfig = {
 		hostingMac: '<?php echo esc_js( ia_t( 'Twój Mac', 'Your Mac' ) ); ?>',
 		hostingVps: '<?php echo esc_js( ia_t( 'Twój VPS', 'Your VPS' ) ); ?>',
 		hostingMini: '<?php echo esc_js( ia_t( 'Nasz Mac Mini', 'Our Mac Mini' ) ); ?>',
-		apiOwn: '<?php echo esc_js( ia_t( 'Mam własne konto AI', 'I have my own AI account' ) ); ?>',
-		apiIncluded: '<?php echo esc_js( ia_t( 'Wszystko w cenie', 'Everything included' ) ); ?>',
+		apiOwn: '<?php echo esc_js( ia_t( 'Mam własny klucz API', 'I have my own API key' ) ); ?>',
+		apiIncluded: '<?php echo esc_js( ia_t( '€200 tokenów Claude/OpenAI w cenie', '€200 Claude/OpenAI tokens included' ) ); ?>',
 		emailSubject: '<?php echo esc_js( ia_t( 'Wycena OpenClaw — InterAgents.ai', 'OpenClaw Quote — InterAgents.ai' ) ); ?>',
 		product: 'OpenClaw'
 	}
