@@ -5,8 +5,8 @@
 
 /* Section */
 .section--offer {
-  padding-top: calc(var(--header-h) + 60px);
-  min-height: 100vh;
+  padding-top: clamp(60px, 8vw, 100px);
+  padding-bottom: 40px;
 }
 
 /* Product Cards Grid */
@@ -346,6 +346,7 @@
 .offer-action-btn {
   font-size: 15px !important;
   padding: 14px 24px !important;
+  cursor: pointer !important;
 }
 
 /* Info Cards (InterCore / Complete) */

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '1.7.1' );
+define( 'INTERAGENTS_VERSION', '2.0.0' );
 
 /**
  * Language detection: cookie > Accept-Language header
@@ -121,8 +121,8 @@ function interagents_scripts() {
 		true
 	);
 
-	// Offer Builder (only on pages using the offer template)
-	if ( is_page_template( 'page-offer.php' ) ) {
+	// Offer Builder (front page and offer template)
+	if ( is_front_page() || is_page_template( 'page-offer.php' ) ) {
 		wp_enqueue_style(
 			'interagents-offer',
 			get_template_directory_uri() . '/assets/css/offer.css',

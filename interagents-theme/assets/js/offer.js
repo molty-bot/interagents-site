@@ -382,8 +382,10 @@
 
   // Init: read URL state and render
   readUrlState();
-  if (state.product) {
-    updateToggles();
-    showPanel();
+  // Default to OpenClaw if no product specified (avoids empty space)
+  if (!state.product) {
+    state.product = 'openclaw';
   }
+  updateToggles();
+  showPanel();
 })();

@@ -34,11 +34,11 @@
 				<span class="nav-toggle__icon" aria-hidden="true"></span>
 			</button>
 			<ul id="primary-menu" class="menu">
-				<li><a href="#uslugi"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a></li>
-				<li><a href="#jak-dzialamy"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
-				<li><a href="#dlaczego-my"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/offer/' ) ); ?>"><?php echo esc_html( ia_t( 'Oferta', 'Offer' ) ); ?></a></li>
-				<li><a href="#kontakt" class="btn btn--primary"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#uslugi' ) ); ?>"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#jak-dzialamy' ) ); ?>"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#dlaczego-my' ) ); ?>"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#offer' ) ); ?>"><?php echo esc_html( ia_t( 'Oferta', 'Offer' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/#kontakt' ) ); ?>" class="btn btn--primary"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a></li>
 			</ul>
 		</nav>
 	</div>

@@ -10,11 +10,34 @@
 
   function t(pl, en) { return LANG === 'pl' ? pl : en; }
 
-  // -- Scroll to top on page load (prevent browser restoring scroll position) --
+  // -- Scroll handling on page load --
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
+  // Scroll to hash target if present, otherwise scroll to top
+  if (window.location.hash) {
+    var target = document.querySelector(window.location.hash);
+    if (target) {
+      setTimeout(function () {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  } else {
+    window.scrollTo(0, 0);
+  }
+
+  // Smooth scroll for same-page anchor links
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (link && link.getAttribute('href').length > 1) {
+      var target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', link.getAttribute('href'));
+      }
+    }
+  });
 
   // -- Language toggle --
   var langBtn = document.getElementById('lang-toggle');
