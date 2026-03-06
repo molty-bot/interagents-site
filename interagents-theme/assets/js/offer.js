@@ -255,15 +255,8 @@
       showPanel();
       writeUrlState();
 
-      // Smooth scroll to panel
-      var target = state.product === 'openclaw' ? configurator
-        : state.product === 'intercore' ? intercoreInfo
-        : completeInfo;
-      if (target) {
-        setTimeout(function () {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-      }
+      // Smooth scroll to panel (slight delay for DOM update on mobile)
+      setTimeout(scrollToActivePanel, 100);
     });
 
     card.addEventListener('keydown', function (e) {
@@ -383,12 +376,29 @@
   var cmpInquireBtn = document.getElementById('complete-inquire');
   if (cmpInquireBtn) cmpInquireBtn.addEventListener('click', handleInquire);
 
+  // Scroll to the active panel (configurator or info card)
+  function scrollToActivePanel() {
+    var target = state.product === 'openclaw' ? configurator
+      : state.product === 'intercore' ? intercoreInfo
+      : state.product === 'complete' ? completeInfo
+      : null;
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   // Init: read URL state and render
   readUrlState();
+  var hadProductInUrl = !!state.product;
   // Default to OpenClaw if no product specified (avoids empty space)
   if (!state.product) {
     state.product = 'openclaw';
   }
   updateToggles();
   showPanel();
+
+  // If product was set via URL (coming from main page card click), scroll to panel on mobile
+  if (hadProductInUrl) {
+    setTimeout(scrollToActivePanel, 300);
+  }
 })();
