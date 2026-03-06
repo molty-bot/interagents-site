@@ -21,6 +21,7 @@ $pricing = array(
 		'managed_mac'     => $is_pl ? 2500 : round( 2500 / $rate / 10 ) * 10,
 		'managed_vps'     => $is_pl ? 3000 : round( 3000 / $rate / 10 ) * 10,
 		'managed_mini'    => $is_pl ? 3500 : round( 3500 / $rate / 10 ) * 10,
+		'self_mini'       => $is_pl ? 500 : round( 500 / $rate / 10 ) * 10,
 		'no_api_discount' => $is_pl ? 500 : round( 500 / $rate / 10 ) * 10,
 	),
 	'intercore' => array(
@@ -157,7 +158,6 @@ $pricing = array(
 				<div class="offer-toggle-group" data-config="managed">
 					<button class="offer-toggle" data-value="self" type="button">
 						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Sam/a się zajmuję', 'I\'ll handle it myself' ) ); ?></span>
-						<span class="offer-toggle-price"><?php echo esc_html( ia_t( '0 PLN/mies.', '0 EUR/mo' ) ); ?></span>
 					</button>
 					<button class="offer-toggle active" data-value="managed" type="button">
 						<span class="offer-toggle-title"><?php echo esc_html( ia_t( 'Zajmijcie się wszystkim', 'Take care of everything' ) ); ?></span>

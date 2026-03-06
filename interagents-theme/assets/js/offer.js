@@ -93,6 +93,9 @@
       if (state.api === 'own') {
         monthly -= pricing.openclaw.no_api_discount;
       }
+    } else if (state.hosting === 'mini') {
+      // Self-managed on Our Mac Mini still has a monthly rental fee
+      monthly = pricing.openclaw.self_mini || 0;
     }
 
     return { setup: setup, monthly: monthly };
