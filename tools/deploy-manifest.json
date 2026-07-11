@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "theme": {
+    "slug": "interagents-theme",
+    "root": "interagents-theme",
+    "files": [
+      "assets/css/main.css",
+      "assets/css/offer.css",
+      "assets/js/main.js",
+      "assets/js/offer.js",
+      "footer.php",
+      "front-page.php",
+      "functions.php",
+      "header.php",
+      "page-offer.php",
+      "page-privacy-policy.php",
+      "style.css"
+    ]
+  }
+}

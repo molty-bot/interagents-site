@@ -38,18 +38,18 @@ $pricing = array(
 <!-- Offer Builder -->
 <section class="section section--offer" id="offer">
 	<div class="container">
-		<h2 class="section-title reveal"><?php echo esc_html( ia_t(
-			'Zbuduj swój zespół AI',
-			'Build your AI team'
-		) ); ?></h2>
+		<h1 class="section-title reveal"><?php echo esc_html( ia_t(
+			'Wybierz, co naprawdę trzeba naprawić.',
+			'Choose what actually needs fixing.'
+		) ); ?></h1>
 		<p class="section-subtitle reveal" style="--delay: 60ms"><?php echo esc_html( ia_t(
-			'Wybierz. Skonfiguruj. Wdrażaj.',
-			'Choose. Configure. Deploy.'
+			'Dedykowany pracownik AI. Środowisko pracy dla ludzi i AI. Albo oba — jeśli uzasadnia to biznes.',
+			'A custom AI worker. A workspace for humans and AI. Or both—when the business case earns it.'
 		) ); ?></p>
 
 		<!-- Product Selector -->
 		<div class="offer-products" id="offer-products">
-			<!-- OpenClaw -->
+			<!-- Interagents, powered by OpenClaw -->
 			<div class="offer-product-card" data-product="openclaw" tabindex="0" role="button" aria-pressed="false">
 				<div class="offer-product-icon">
 					<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,14 +60,14 @@ $pricing = array(
 						<line x1="23" y1="19" x2="28" y2="25" stroke="currentColor" stroke-width="2"/>
 					</svg>
 				</div>
-				<h3>OpenClaw</h3>
+				<h3>Interagents</h3>
 				<p class="offer-product-label"><?php echo esc_html( ia_t(
-					'Twój osobisty zespół AI',
-					'Your personal AI team'
+					'Dedykowani pracownicy AI · powered by OpenClaw',
+					'Custom AI workers · powered by OpenClaw'
 				) ); ?></p>
 				<p class="offer-product-desc"><?php echo esc_html( ia_t(
-					'Wielu agentów AI na Twoim sprzęcie lub naszym. Aplikacja InterAgents na iOS i Androida.',
-					'Multiple AI agents on your hardware or ours. InterAgents app on iOS and Android.'
+					'Agenci szyci pod konkretne zadania. Zlecasz pracę i kontrolujesz wyniki z komputera lub telefonu.',
+					'Agents tailored to specific jobs. Assign work and review results from desktop or mobile.'
 				) ); ?></p>
 				<div class="offer-product-from">
 					<?php echo esc_html( ia_t( 'od', 'from' ) ); ?>
@@ -85,14 +85,14 @@ $pricing = array(
 						<path d="M24 27H16C13.8 27 12 25.2 12 23V18" stroke="currentColor" stroke-width="2"/>
 					</svg>
 				</div>
-				<h3>InterCore</h3>
+				<h3>Intercore</h3>
 				<p class="offer-product-label"><?php echo esc_html( ia_t(
-					'Platforma AI dla Twojej firmy',
-					'AI platform for your business'
+					'Środowisko pracy dla ludzi i AI',
+					'A workspace for humans and AI'
 				) ); ?></p>
 				<p class="offer-product-desc"><?php echo esc_html( ia_t(
-					'Przyjeżdżamy, analizujemy Twoje procesy i budujemy zautomatyzowany system AI. Hosting, backupy, aktualizacje w cenie.',
-					'We come to you, analyze your processes, and build an automated AI system. Hosting, backups, updates included.'
+					'Łączymy ludzi, agentów, dane, narzędzia i akceptacje w system zaprojektowany pod sposób działania firmy.',
+					'We connect people, agents, data, tools and approvals in a system designed around how your company operates.'
 				) ); ?></p>
 				<div class="offer-product-from">
 					<?php echo esc_html( ia_t( 'od', 'from' ) ); ?>
@@ -109,14 +109,14 @@ $pricing = array(
 						<path d="M20 6V20M20 20L34 14M20 20L6 14" stroke="currentColor" stroke-width="2" opacity="0.5"/>
 					</svg>
 				</div>
-				<h3><?php echo esc_html( ia_t( 'Pełna Moc', 'Complete' ) ); ?></h3>
+				<h3><?php echo esc_html( ia_t( 'Pełny system', 'Complete system' ) ); ?></h3>
 				<p class="offer-product-label"><?php echo esc_html( ia_t(
-					'InterCore + OpenClaw w pakiecie',
-					'InterCore + OpenClaw bundle'
+					'Interagents + Intercore',
+					'Interagents + Intercore'
 				) ); ?></p>
 				<p class="offer-product-desc"><?php echo esc_html( ia_t(
-					'Platforma AI + osobisty zespół agentów. Wdrożenie OpenClaw gratis. Wszystko w jednej fakturze.',
-					'AI platform + personal agent team. OpenClaw setup free. Everything on one invoice.'
+					'Pracownicy AI i środowisko, w którym współpracują z zespołem. Jeden projekt, jasna odpowiedzialność.',
+					'AI workers plus the workplace where they collaborate with your team. One project, clear ownership.'
 				) ); ?></p>
 				<div class="offer-product-from">
 					<?php echo esc_html( ia_t( 'od', 'from' ) ); ?>
@@ -126,11 +126,11 @@ $pricing = array(
 			</div>
 		</div>
 
-		<!-- OpenClaw Configurator -->
+		<!-- Interagents Configurator -->
 		<div class="offer-configurator" id="offer-configurator" style="display:none" aria-hidden="true">
 			<h2 class="offer-config-title"><?php echo esc_html( ia_t(
-				'Skonfiguruj OpenClaw',
-				'Configure OpenClaw'
+				'Skonfiguruj Interagents (OpenClaw)',
+				'Configure Interagents (OpenClaw)'
 			) ); ?></h2>
 
 			<!-- Hosting -->
@@ -256,15 +256,15 @@ $pricing = array(
 			</div>
 		</div>
 
-		<!-- InterCore Info Card -->
+		<!-- Intercore Info Card -->
 		<div class="offer-info-card" id="offer-intercore-info" style="display:none" aria-hidden="true">
 			<h2><?php echo esc_html( ia_t(
-				'InterCore — Platforma AI dla Twojej firmy',
-				'InterCore — AI Platform for Your Business'
+				'Intercore — środowisko pracy dla ludzi i AI',
+				'Intercore — a workspace for humans and AI'
 			) ); ?></h2>
 			<p class="offer-info-lead"><?php echo esc_html( ia_t(
-				'Nie wdrażamy „narzędzia". Przebudowujemy sposób, w jaki Twoja firma myśli, decyduje i działa.',
-				'We don\'t deploy a "tool." We rewire how your company thinks, decides, and executes.'
+				'Nie dokładamy kolejnego narzędzia. Porządkujemy sposób, w jaki ludzie, agenci, dane i decyzje przechodzą przez firmę.',
+				'We do not add another tool. We redesign how people, agents, data and decisions move through the business.'
 			) ); ?></p>
 
 			<div class="offer-info-features">
@@ -278,8 +278,8 @@ $pricing = array(
 				<div class="offer-info-feature">
 					<strong>⚡ <?php echo esc_html( ia_t( 'Automatyzacja procesów', 'Automated workflows' ) ); ?></strong>
 					<p><?php echo esc_html( ia_t(
-						'Koniec z ręcznym przekazywaniem zadań. Procesy działają same, od A do Z.',
-						'No more manual handoffs. Processes run themselves, end to end.'
+						'Mniej ręcznego przekazywania zadań. Automatyzacja działa w granicach jasno określonej odpowiedzialności.',
+						'Fewer manual handoffs. Automation operates within clearly defined ownership and control points.'
 					) ); ?></p>
 				</div>
 				<div class="offer-info-feature">
@@ -334,27 +334,27 @@ $pricing = array(
 			</div>
 		</div>
 
-		<!-- Pełna Moc / Complete Info Card -->
+		<!-- Complete system info card -->
 		<div class="offer-info-card" id="offer-complete-info" style="display:none" aria-hidden="true">
 			<h2><?php echo esc_html( ia_t(
-				'Pełna Moc — Wszystko w jednym',
-				'Complete — Everything in one package'
+				'Pełny system — Interagents + Intercore',
+				'Complete system — Interagents + Intercore'
 			) ); ?></h2>
 			<p class="offer-info-lead"><?php echo esc_html( ia_t(
-				'InterCore + OpenClaw w cenie wdrożenia InterCore. Instalacja OpenClaw gratis.',
-				'InterCore + OpenClaw at the price of InterCore setup. OpenClaw installation free.'
+				'Pracownicy AI zbudowani na OpenClaw i środowisko Intercore w jednym wdrożeniu.',
+				'AI workers powered by OpenClaw and the Intercore workspace in one deployment.'
 			) ); ?></p>
 
 			<div class="offer-info-features">
 				<div class="offer-info-feature">
-					<strong>🏢 <?php echo esc_html( ia_t( 'Platforma InterCore', 'InterCore Platform' ) ); ?></strong>
+					<strong>🏢 <?php echo esc_html( ia_t( 'Środowisko Intercore', 'Intercore workspace' ) ); ?></strong>
 					<p><?php echo esc_html( ia_t(
 						'Pełna platforma AI z agentami systemowymi, automatyzacją procesów i integracją danych.',
 						'Full AI platform with system agents, workflows, data integration.'
 					) ); ?></p>
 				</div>
 				<div class="offer-info-feature">
-					<strong>🤖 <?php echo esc_html( ia_t( 'Zespół OpenClaw', 'OpenClaw Team' ) ); ?></strong>
+					<strong>🤖 <?php echo esc_html( ia_t( 'Pracownicy Interagents', 'Interagents workers' ) ); ?></strong>
 					<p><?php echo esc_html( ia_t(
 						'Osobisty zespół agentów AI + aplikacja InterAgents na iOS i Androida.',
 						'Personal AI agent team + InterAgents app on iOS and Android.'
@@ -424,19 +424,19 @@ window.offerConfig = {
 		hostingMini: '<?php echo esc_js( ia_t( 'Nasz Mac Mini', 'Our Mac Mini' ) ); ?>',
 		apiOwn: '<?php echo esc_js( ia_t( 'Mam własny klucz API', 'I have my own API key' ) ); ?>',
 		apiIncluded: '<?php echo esc_js( ia_t( '€200 tokenów Claude/OpenAI w cenie', '€200 Claude/OpenAI tokens included' ) ); ?>',
-		emailSubject: '<?php echo esc_js( ia_t( 'Wycena OpenClaw — InterAgents.ai', 'OpenClaw Quote — InterAgents.ai' ) ); ?>',
-		product: 'OpenClaw'
+		emailSubject: '<?php echo esc_js( ia_t( 'Wycena Interagents (OpenClaw) — InterAgents.ai', 'Interagents (OpenClaw) Quote — InterAgents.ai' ) ); ?>',
+		product: 'Interagents (OpenClaw)'
 	}
 };
 </script>
 
 <!-- Contact Form Modal -->
-<div class="modal-overlay" id="contact-modal" aria-hidden="true" role="dialog" aria-label="<?php echo esc_attr( ia_t( 'Formularz kontaktowy', 'Contact form' ) ); ?>">
-	<div class="modal-backdrop"></div>
-	<div class="modal-content">
-		<button type="button" class="modal-close" aria-label="<?php echo esc_attr( ia_t( 'Zamknij', 'Close' ) ); ?>">&times;</button>
-		<h3 class="modal-title"><?php echo esc_html( ia_t( 'Napisz do nas', 'Get in touch' ) ); ?></h3>
-		<p class="modal-subtitle"><?php echo esc_html( ia_t(
+<div class="modal-overlay" id="contact-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" aria-describedby="contact-modal-description">
+	<div class="modal-backdrop" aria-hidden="true"></div>
+	<div class="modal-content" tabindex="-1">
+		<button type="button" class="modal-close" aria-label="<?php echo esc_attr( ia_t( 'Zamknij formularz', 'Close contact form' ) ); ?>">&times;</button>
+		<h2 class="modal-title" id="contact-modal-title"><?php echo esc_html( ia_t( 'Napisz do nas', 'Get in touch' ) ); ?></h2>
+		<p class="modal-subtitle" id="contact-modal-description"><?php echo esc_html( ia_t(
 			'Wypełnij formularz, a odezwiemy się najszybciej jak to możliwe.',
 			'Fill out the form and we\'ll get back to you as soon as possible.'
 		) ); ?></p>

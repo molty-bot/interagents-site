@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '2.1.2' );
+define( 'INTERAGENTS_VERSION', '2.2.0' );
 
 /**
  * Language detection: cookie > Accept-Language header
@@ -18,16 +18,24 @@ define( 'INTERAGENTS_VERSION', '2.1.2' );
 function ia_get_lang() {
 	static $lang = null;
 	if ( $lang !== null ) return $lang;
+	$url_lang    = '';
+	$cookie_lang = '';
 
 	// URL param override (cache-busting)
-	if ( ! empty( $_GET['lang'] ) && in_array( $_GET['lang'], array( 'pl', 'en' ), true ) ) {
-		$lang = $_GET['lang'];
+	if ( ! empty( $_GET['lang'] ) ) {
+		$url_lang = sanitize_key( wp_unslash( $_GET['lang'] ) );
+	}
+	if ( ! empty( $url_lang ) && in_array( $url_lang, array( 'pl', 'en' ), true ) ) {
+		$lang = $url_lang;
 		return $lang;
 	}
 
 	// Cookie override
-	if ( ! empty( $_COOKIE['ia_lang'] ) && in_array( $_COOKIE['ia_lang'], array( 'pl', 'en' ), true ) ) {
-		$lang = $_COOKIE['ia_lang'];
+	if ( ! empty( $_COOKIE['ia_lang'] ) ) {
+		$cookie_lang = sanitize_key( wp_unslash( $_COOKIE['ia_lang'] ) );
+	}
+	if ( ! empty( $cookie_lang ) && in_array( $cookie_lang, array( 'pl', 'en' ), true ) ) {
+		$lang = $cookie_lang;
 		return $lang;
 	}
 
@@ -43,6 +51,88 @@ function ia_get_lang() {
 function ia_t( $pl, $en ) {
 	return ia_get_lang() === 'pl' ? $pl : $en;
 }
+
+/**
+ * Build an internal URL that keeps the selected language across page loads.
+ *
+ * @param string      $path     Site-relative path.
+ * @param string      $fragment Optional hash without the leading #.
+ * @param array       $args     Additional query arguments.
+ * @param string|null $lang     Explicit language for shareable/SEO URLs. Navigation stays clean when omitted.
+ * @return string
+ */
+function ia_localized_url( $path = '/', $fragment = '', $args = array(), $lang = null ) {
+	if ( in_array( $lang, array( 'pl', 'en' ), true ) ) {
+		$args['lang'] = $lang;
+	}
+	$url = empty( $args ) ? home_url( $path ) : add_query_arg( $args, home_url( $path ) );
+
+	if ( $fragment ) {
+		$url .= '#' . rawurlencode( ltrim( $fragment, '#' ) );
+	}
+
+	return $url;
+}
+
+/**
+ * Persist an explicit shared-language URL, so later clean internal links keep
+ * the visitor's choice without turning every navigation into a query URL.
+ */
+function ia_persist_url_language() {
+	if ( is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || wp_doing_ajax() ) {
+		return;
+	}
+	if ( empty( $_GET['lang'] ) ) {
+		return;
+	}
+	$lang = sanitize_key( wp_unslash( $_GET['lang'] ) );
+	if ( ! in_array( $lang, array( 'pl', 'en' ), true ) ) {
+		return;
+	}
+
+	setcookie(
+		'ia_lang',
+		$lang,
+		array(
+			'expires'  => time() + YEAR_IN_SECONDS,
+			'path'     => COOKIEPATH ? COOKIEPATH : '/',
+			'domain'   => COOKIE_DOMAIN ? COOKIE_DOMAIN : '',
+			'secure'   => is_ssl(),
+			'httponly' => false,
+			'samesite' => 'Lax',
+		)
+	);
+	$_COOKIE['ia_lang'] = $lang;
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+}
+add_action( 'init', 'ia_persist_url_language', 1 );
+
+/**
+ * Use a useful bilingual browser title without manually printing a second tag.
+ */
+function ia_front_page_document_title( $title ) {
+	if ( ! is_front_page() ) {
+		return $title;
+	}
+
+	return ia_t(
+		'Interagents i Intercore | Agenci AI oraz systemy dla ludzi i AI',
+		'Interagents & Intercore | AI workers and human + AI systems'
+	);
+}
+add_filter( 'pre_get_document_title', 'ia_front_page_document_title', 20 );
+
+/**
+ * The front page prints a language-aware canonical below.
+ */
+function ia_front_page_canonical_setup() {
+	if ( is_front_page() ) {
+		remove_action( 'wp_head', 'rel_canonical' );
+	}
+}
+add_action( 'wp', 'ia_front_page_canonical_setup' );
 
 /**
  * Bypass page cache when user has explicitly chosen a language.
@@ -88,6 +178,8 @@ add_action( 'after_setup_theme', 'interagents_setup' );
  * Enqueue styles and scripts
  */
 function interagents_scripts() {
+	$is_offer_page = is_page_template( 'page-offer.php' ) || is_page( 'offer' );
+
 	// Google Fonts - Inter
 	wp_enqueue_style(
 		'interagents-google-fonts',
@@ -122,7 +214,7 @@ function interagents_scripts() {
 	);
 
 	// Offer CSS (front page cards + offer page configurator)
-	if ( is_front_page() || is_page_template( 'page-offer.php' ) ) {
+	if ( is_front_page() || $is_offer_page ) {
 		wp_enqueue_style(
 			'interagents-offer',
 			get_template_directory_uri() . '/assets/css/offer.css',
@@ -132,7 +224,7 @@ function interagents_scripts() {
 	}
 
 	// Offer JS (only on offer page — front page just has card links)
-	if ( is_page_template( 'page-offer.php' ) ) {
+	if ( $is_offer_page ) {
 		wp_enqueue_script(
 			'interagents-offer',
 			get_template_directory_uri() . '/assets/js/offer.js',
@@ -178,16 +270,17 @@ add_filter( 'wp_resource_hints', 'interagents_preconnect', 10, 2 );
 function ia_schema_jsonld() {
 	if ( ! is_front_page() ) return;
 	$lang = ia_get_lang();
-	$desc_pl = 'Agenci AI i aplikacje, które automatyzują, łączą i ulepszają dane Twojej firmy. Integracja systemów, automatyzacja procesów, niestandardowe rozwiązania AI.';
-	$desc_en = 'AI agents and apps that automate, connect, and enhance your business data. System integration, process automation, custom AI solutions.';
+	$desc_pl = 'Interagents tworzy agentów AI do konkretnych zadań. Intercore łączy ludzi, agentów, dane i procesy w środowisko pracy szyte na miarę.';
+	$desc_en = 'Interagents creates custom AI workers for real business tasks. Intercore connects people, agents, data and processes in a tailor-made workspace.';
 	$desc = $lang === 'pl' ? $desc_pl : $desc_en;
+	$url  = ia_localized_url( '/', '', array(), $lang );
 	?>
 	<script type="application/ld+json">
 	{
 		"@context": "https://schema.org",
 		"@type": "Organization",
 		"name": "InterAgents.ai",
-		"url": "https://interagents.ai",
+		"url": "<?php echo esc_url( $url ); ?>",
 		"logo": "https://interagents.ai/wp-content/themes/interagents-theme/assets/img/interagents-logo-transparent.png",
 		"description": "<?php echo esc_js( $desc ); ?>",
 		"email": "hello@interagents.ai",
@@ -231,7 +324,7 @@ function ia_schema_jsonld() {
 		"@context": "https://schema.org",
 		"@type": "WebSite",
 		"name": "InterAgents.ai",
-		"url": "https://interagents.ai",
+		"url": "<?php echo esc_url( $url ); ?>",
 		"potentialAction": {
 			"@type": "SearchAction",
 			"target": "https://interagents.ai/?s={search_term_string}",
@@ -244,7 +337,7 @@ function ia_schema_jsonld() {
 		"@context": "https://schema.org",
 		"@type": "ProfessionalService",
 		"name": "InterAgents.ai",
-		"url": "https://interagents.ai",
+		"url": "<?php echo esc_url( $url ); ?>",
 		"description": "<?php echo esc_js( $desc ); ?>",
 		"priceRange": "$$",
 		"areaServed": ["PL", "NO", "EU"],
@@ -267,13 +360,13 @@ add_action( 'wp_head', 'ia_schema_jsonld', 5 );
 function ia_og_meta() {
 	if ( ! is_front_page() ) return;
 	$lang = ia_get_lang();
-	$title = 'InterAgents.ai — ' . ( $lang === 'pl'
-		? 'Agenci AI • Integracja systemów • Automatyzacja'
-		: 'AI Agents • System Integration • Automation' );
+	$title = $lang === 'pl'
+		? 'Interagents i Intercore | Agenci AI oraz systemy dla ludzi i AI'
+		: 'Interagents & Intercore | AI workers and human + AI systems';
 	$desc = $lang === 'pl'
-		? 'Tworzymy agentów AI i aplikacje, które automatyzują, łączą i ulepszają dane Twojej firmy. Szybciej, taniej, bez ludzkich błędów.'
-		: 'We build AI agents and apps that automate, connect, and enhance your business data. Faster, cheaper, without human errors.';
-	$url = 'https://interagents.ai/';
+		? 'Interagents tworzy agentów AI do konkretnych zadań. Intercore buduje środowiska pracy, w których ludzie i AI działają jako jeden system.'
+		: 'Interagents creates custom AI workers for real business tasks. Intercore builds tailor-made workspaces where people and AI operate as one system.';
+	$url = ia_localized_url( '/', '', array(), $lang );
 	$img = 'https://interagents.ai/wp-content/themes/interagents-theme/assets/img/interagents-og.png';
 	?>
 	<meta property="og:type" content="website" />
@@ -282,6 +375,7 @@ function ia_og_meta() {
 	<meta property="og:description" content="<?php echo esc_attr( $desc ); ?>" />
 	<meta property="og:image" content="<?php echo esc_url( $img ); ?>" />
 	<meta property="og:locale" content="<?php echo $lang === 'pl' ? 'pl_PL' : 'en_US'; ?>" />
+	<meta property="og:locale:alternate" content="<?php echo $lang === 'pl' ? 'en_US' : 'pl_PL'; ?>" />
 	<meta property="og:site_name" content="InterAgents.ai" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>" />
@@ -289,6 +383,9 @@ function ia_og_meta() {
 	<meta name="twitter:image" content="<?php echo esc_url( $img ); ?>" />
 	<meta name="description" content="<?php echo esc_attr( $desc ); ?>" />
 	<link rel="canonical" href="<?php echo esc_url( $url ); ?>" />
+	<link rel="alternate" hreflang="pl" href="<?php echo esc_url( ia_localized_url( '/', '', array(), 'pl' ) ); ?>" />
+	<link rel="alternate" hreflang="en" href="<?php echo esc_url( ia_localized_url( '/', '', array(), 'en' ) ); ?>" />
+	<link rel="alternate" hreflang="x-default" href="<?php echo esc_url( home_url( '/' ) ); ?>" />
 	<?php
 }
 add_action( 'wp_head', 'ia_og_meta', 4 );
@@ -406,6 +503,75 @@ function ia_ga4_config() {
 	<?php
 }
 add_action( 'wp_head', 'ia_ga4_config', 99 );
+
+/**
+ * Keep the existing Ksymena B2B lead notification integration outside the
+ * public source code's secrets. Production reads the token from a protected
+ * WordPress option, or an environment-specific constant when one is defined.
+ */
+function ia_ksymena_lead_webhook_token() {
+	$token = defined( 'IA_KSYMENA_LEAD_WEBHOOK_TOKEN' )
+		? constant( 'IA_KSYMENA_LEAD_WEBHOOK_TOKEN' )
+		: get_option( 'ia_ksymena_lead_webhook_token', '' );
+	return is_string( $token ) ? $token : '';
+}
+
+/** @return void */
+function ia_register_ksymena_lead_route() {
+	register_rest_route(
+		'ia/v1',
+		'/lead-notify',
+		array(
+			'methods'             => WP_REST_Server::CREATABLE,
+			'callback'            => 'ia_handle_lead_notification',
+			'permission_callback' => static function ( $request ) {
+				$expected = ia_ksymena_lead_webhook_token();
+				$provided = (string) $request->get_header( 'X-Webhook-Token' );
+				return '' !== $expected && '' !== $provided && hash_equals( $expected, $provided );
+			},
+		)
+	);
+}
+add_action( 'rest_api_init', 'ia_register_ksymena_lead_route' );
+
+/** @param WP_REST_Request $request @return array<string,mixed>|WP_Error */
+function ia_handle_lead_notification( $request ) {
+	$data    = $request->get_json_params();
+	$data    = is_array( $data ) ? $data : array();
+	$name    = sanitize_text_field( isset( $data['name'] ) ? $data['name'] : '' );
+	$email   = sanitize_email( isset( $data['email'] ) ? $data['email'] : '' );
+	$salon   = sanitize_text_field( isset( $data['salonName'] ) ? $data['salonName'] : '' );
+	$country = sanitize_text_field( isset( $data['country'] ) ? $data['country'] : '' );
+	$message = sanitize_textarea_field( isset( $data['message'] ) ? $data['message'] : '' );
+	$source  = sanitize_text_field( isset( $data['source'] ) ? $data['source'] : 'partner page' );
+
+	if ( '' === $name || ! is_email( $email ) || '' === $salon ) {
+		return new WP_Error( 'missing_fields', 'Name, a valid email, and salon are required.', array( 'status' => 422 ) );
+	}
+
+	$subject = sprintf( 'New Ksymena lead: %s (%s)', $salon, $country );
+	$body    = sprintf(
+		"New lead from the Ksymena B2B landing page.\n\nName: %s\nEmail: %s\nSalon: %s\nCountry: %s\nSource: %s\n\nMessage:\n%s\n\n---\nReply to: %s\nTime: %s",
+		$name,
+		$email,
+		$salon,
+		$country,
+		$source,
+		$message ? $message : '(none)',
+		$email,
+		current_time( 'c' )
+	);
+	$headers = array(
+		'Reply-To: ' . $name . ' <' . $email . '>',
+		'From: InterAgents.ai <wordpress@interagents.ai>',
+	);
+	$sent    = (bool) wp_mail( 'adam@interagents.ai', $subject, $body, $headers );
+
+	return array(
+		'ok'      => $sent,
+		'message' => $sent ? 'Notification sent' : 'Failed to send',
+	);
+}
 
 /**
  * Load customizer

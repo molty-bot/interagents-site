@@ -3,12 +3,12 @@
 <footer class="site-footer" role="contentinfo">
 	<div class="container footer-inner">
 		<div class="footer-brand">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-title" rel="home">
+			<a href="<?php echo esc_url( ia_localized_url( '/' ) ); ?>" class="site-title" rel="home">
 				inter<span class="brand-accent">agents</span>.ai
 			</a>
 			<p class="footer-tagline"><?php echo esc_html( ia_t(
-				'Inteligentne rozwiązania AI dla Twojego biznesu',
-				'Intelligent AI solutions for your business'
+				'Agenci AI do pracy. Systemy dla ludzi i AI.',
+				'AI workers for the job. Systems for humans and AI.'
 			) ); ?></p>
 		</div>
 

@@ -26,16 +26,25 @@
     window.scrollTo(0, 0);
   }
 
-  // Smooth scroll for same-page anchor links
+  // Smooth scroll for hash links, including localized absolute homepage URLs.
   document.addEventListener('click', function (e) {
-    var link = e.target.closest('a[href^="#"]');
-    if (link && link.getAttribute('href').length > 1) {
-      var target = document.querySelector(link.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        history.pushState(null, '', link.getAttribute('href'));
-      }
+    var link = e.target.closest('a[href]');
+    if (!link) return;
+
+    var url;
+    try {
+      url = new URL(link.href, window.location.href);
+    } catch (err) {
+      return;
+    }
+
+    if (!url.hash || url.hash.length < 2 || url.origin !== window.location.origin || url.pathname !== window.location.pathname) return;
+
+    var target = document.getElementById(decodeURIComponent(url.hash.substring(1)));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.pushState(null, '', url.pathname + url.search + url.hash);
     }
   });
 
@@ -95,15 +104,28 @@
     });
   }
 
-  // -- Contact form modal --
+  // -- Accessible contact form modal --
   var modal = document.getElementById('contact-modal');
-  var openBtn = document.getElementById('open-contact-form');
-  var heroCTA = document.querySelector('a.btn--primary[href="#kontakt"]');
+  var mobileBookingBar = document.querySelector('.mobile-booking-bar');
+  var lastModalTrigger = null;
+  var modalPageRegions = document.querySelectorAll('.site-header, main > section, .site-footer, .mobile-booking-bar');
+  var focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-  function openModal() {
+  function setPageInert(isInert) {
+    modalPageRegions.forEach(function (region) {
+      if (isInert) {
+        region.setAttribute('inert', '');
+      } else {
+        region.removeAttribute('inert');
+      }
+    });
+  }
+
+  function openModal(trigger) {
     ga4('cta_click', { event_category: 'Engagement', event_label: 'Contact Modal Open', language: LANG });
     ga4('form_step', { form_step: 'modal_open', language: LANG });
     if (!modal) return;
+    lastModalTrigger = trigger || document.activeElement;
     // Reset form state if previously submitted
     var formWrap = modal.querySelector('.contact-form-wrap');
     var titleEl = modal.querySelector('.modal-title');
@@ -118,23 +140,40 @@
     if (form) form.reset();
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
+    if (mobileBookingBar) mobileBookingBar.classList.remove('is-visible');
+    setPageInert(true);
     document.body.style.overflow = 'hidden';
+
+    window.requestAnimationFrame(function () {
+      var firstField = modal.querySelector('input:not([disabled]), textarea:not([disabled]), select:not([disabled])');
+      var closeButton = modal.querySelector('.modal-close');
+      (closeButton || firstField || modal.querySelector('.modal-content')).focus();
+    });
   }
 
   function closeModal() {
     if (!modal) return;
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
+    setPageInert(false);
     document.body.style.overflow = '';
+    updateMobileBookingBar();
+
+    if (lastModalTrigger && typeof lastModalTrigger.focus === 'function') {
+      lastModalTrigger.focus();
+    }
+    lastModalTrigger = null;
   }
 
-  if (openBtn) openBtn.addEventListener('click', openModal);
-  if (heroCTA) {
-    heroCTA.addEventListener('click', function (e) {
-      e.preventDefault();
-      openModal();
+  document.querySelectorAll('[data-open-contact-form]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      openModal(button);
     });
-  }
+  });
+
+  // Offer-page code can use the same focus-managed dialog behavior.
+  window.iaOpenContactModal = openModal;
+  window.iaCloseContactModal = closeModal;
 
   if (modal) {
     var closeBtn = modal.querySelector('.modal-close');
@@ -143,19 +182,59 @@
     var backdrop = modal.querySelector('.modal-backdrop');
     if (backdrop) backdrop.addEventListener('click', closeModal);
 
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    modal.addEventListener('keydown', function (e) {
+      if (!modal.classList.contains('is-open')) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+
+      if (e.key !== 'Tab') return;
+      var focusable = Array.prototype.slice.call(modal.querySelectorAll(focusableSelector)).filter(function (element) {
+        return element.offsetParent !== null;
+      });
+      if (!focusable.length) {
+        e.preventDefault();
+        modal.querySelector('.modal-content').focus();
+        return;
+      }
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
   }
 
-  // -- Fix WPForms layout: pair fields side by side --
-  function pairFieldEls(f1, f2) {
-    if (!f1 || !f2) return;
-    var wrapper = document.createElement('div');
-    wrapper.className = 'form-row-pair';
-    f1.parentElement.insertBefore(wrapper, f1);
-    wrapper.appendChild(f1);
-    wrapper.appendChild(f2);
+  // Show the mobile CTA after the hero, then get it out of the way while
+  // the visitor is using the booking section.
+  var bookingSectionVisible = false;
+  function updateMobileBookingBar() {
+    if (!mobileBookingBar) return;
+    var modalOpen = modal && modal.classList.contains('is-open');
+    mobileBookingBar.classList.toggle('is-visible', window.scrollY > 160 && !bookingSectionVisible && !modalOpen);
+  }
+
+  if (mobileBookingBar) {
+    window.addEventListener('scroll', updateMobileBookingBar, { passive: true });
+    var bookingSection = document.getElementById('book');
+    if (bookingSection && 'IntersectionObserver' in window) {
+      var bookingSectionObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          bookingSectionVisible = entry.isIntersecting;
+          updateMobileBookingBar();
+        });
+      }, { threshold: 0.05 });
+      bookingSectionObserver.observe(bookingSection);
+    }
+    updateMobileBookingBar();
   }
 
   function findFieldByLabel(text) {
@@ -247,8 +326,17 @@
     }
   }
 
-  // Telefon + E-mail side by side
-  pairFieldEls(findFieldByLabel(t('Telefon', 'Phone')), findFieldByLabel('E-mail'));
+  // Keep the email alternative deliberately short. Only hide optional fields;
+  // required WPForms fields remain visible so server-side validation still works.
+  [t('Nazwa firmy', 'Company name'), t('Telefon', 'Phone')].forEach(function (label) {
+    var field = findFieldByLabel(label);
+    if (!field || field.querySelector('[required], [aria-required="true"], .wpforms-required-label')) return;
+
+    field.classList.add('ia-field-hidden');
+    field.querySelectorAll('input, select, textarea').forEach(function (control) {
+      control.disabled = true;
+    });
+  });
 
   // -- Character counter on message textarea --
   var MAX_CHARS = 1000;
@@ -313,13 +401,61 @@
     if (typeof gtag === 'function') gtag('event', event, params || {});
   }
 
+  // Booking funnel events deliberately contain no names, email addresses,
+  // selected dates, free-text answers, or other user-provided values.
+  document.addEventListener('click', function (e) {
+    var bookingCta = e.target.closest('[data-booking-cta]');
+    if (!bookingCta) return;
+
+    ga4('booking_cta_click', {
+      placement: bookingCta.getAttribute('data-booking-cta') || 'unknown',
+      language: LANG
+    });
+  });
+
+  var calendar = document.querySelector('[data-booking-calendar]');
+  if (calendar && 'IntersectionObserver' in window) {
+    var calendarViewed = false;
+    var calendarObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !calendarViewed) {
+          calendarViewed = true;
+          ga4('calendar_view', { language: LANG, source: 'homepage' });
+          calendarObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+    calendarObserver.observe(calendar);
+  }
+
+  var bookingCompleteTracked = false;
+  function trackBookingComplete() {
+    if (bookingCompleteTracked) return;
+    bookingCompleteTracked = true;
+    ga4('booking_complete', { language: LANG, source: 'calendar' });
+  }
+
+  ['interagents:booking-complete', 'interagents_booking_complete', 'booking:complete'].forEach(function (eventName) {
+    document.addEventListener(eventName, trackBookingComplete);
+    window.addEventListener(eventName, trackBookingComplete);
+  });
+
+  window.addEventListener('message', function (event) {
+    if (event.origin !== window.location.origin || !event.data || typeof event.data !== 'object') return;
+    if (event.data.type === 'interagents:booking-complete' || event.data.type === 'booking_complete') {
+      trackBookingComplete();
+    }
+  });
+
   // Track which sections users actually see
   var sectionNames = {
     'hero': 'Hero',
-    'services': 'Uslugi',
-    'process': 'Jak Dzialamy',
-    'why-us': 'Dlaczego My',
-    'cta': 'CTA',
+    'offer': 'Solutions',
+    'book': 'Booking',
+    'uslugi': 'Services',
+    'jak-dzialamy': 'How We Work',
+    'dlaczego-my': 'Why Us',
+    'kontakt': 'Final CTA',
     'footer': 'Footer'
   };
 

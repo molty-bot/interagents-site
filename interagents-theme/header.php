@@ -1,5 +1,9 @@
+<?php
+$ia_home_url    = ia_localized_url( '/' );
+$ia_booking_url = ia_localized_url( '/', 'book' );
+?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html lang="<?php echo esc_attr( ia_get_lang() ); ?>" dir="ltr">
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -18,27 +22,31 @@
 <header class="site-header" role="banner">
 	<div class="container header-inner">
 		<?php if ( has_custom_logo() ) : ?>
-			<div class="site-logo"><?php the_custom_logo(); ?></div>
+			<div class="site-logo">
+				<a href="<?php echo esc_url( $ia_home_url ); ?>" class="custom-logo-link" rel="home">
+					<?php echo wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full', false, array( 'class' => 'custom-logo', 'alt' => get_bloginfo( 'name' ) ) ); ?>
+				</a>
+			</div>
 		<?php else : ?>
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-title" rel="home">
+			<a href="<?php echo esc_url( $ia_home_url ); ?>" class="site-title" rel="home">
 				inter<span class="brand-accent">agents</span>.ai
 			</a>
 		<?php endif; ?>
 
 		<nav class="site-nav" role="navigation" aria-label="<?php echo esc_attr( ia_t( 'Menu główne', 'Main menu' ) ); ?>">
-			<button class="lang-toggle" id="lang-toggle" aria-label="<?php echo esc_attr( ia_t( 'Switch to English', 'Przełącz na polski' ) ); ?>" title="<?php echo esc_attr( ia_t( 'English', 'Polski' ) ); ?>">
+			<button type="button" class="lang-toggle" id="lang-toggle" aria-label="<?php echo esc_attr( ia_t( 'Przełącz na angielski', 'Switch to Polish' ) ); ?>" title="<?php echo esc_attr( ia_t( 'English', 'Polski' ) ); ?>">
 				<?php echo ia_get_lang() === 'pl' ? '🇬🇧' : '🇵🇱'; ?>
 			</button>
-			<button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
-				<span class="nav-toggle__label"><?php esc_html_e( 'Menu', 'interagents' ); ?></span>
+			<button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="<?php echo esc_attr( ia_t( 'Menu', 'Menu' ) ); ?>">
+				<span class="nav-toggle__label"><?php echo esc_html( ia_t( 'Menu', 'Menu' ) ); ?></span>
 				<span class="nav-toggle__icon" aria-hidden="true"></span>
 			</button>
 			<ul id="primary-menu" class="menu">
-				<li><a href="<?php echo esc_url( home_url( '/#uslugi' ) ); ?>"><?php echo esc_html( ia_t( 'Usługi', 'Services' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/#jak-dzialamy' ) ); ?>"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/#dlaczego-my' ) ); ?>"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/offer/' ) ); ?>"><?php echo esc_html( ia_t( 'Oferta', 'Offer' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/#kontakt' ) ); ?>" class="btn btn--primary"><?php echo esc_html( ia_t( 'Kontakt', 'Contact' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'offer' ) ); ?>"><?php echo esc_html( ia_t( 'Rozwiązania', 'Solutions' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'jak-dzialamy' ) ); ?>"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'dlaczego-my' ) ); ?>"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( ia_localized_url( '/offer/' ) ); ?>"><?php echo esc_html( ia_t( 'Pełna oferta', 'Full offer' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( $ia_booking_url ); ?>" class="btn btn--primary" data-booking-cta="header"><?php echo esc_html( ia_t( 'Umów rozmowę', 'Book a meeting' ) ); ?></a></li>
 			</ul>
 		</nav>
 	</div>

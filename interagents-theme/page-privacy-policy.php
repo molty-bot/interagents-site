@@ -12,11 +12,11 @@ $lang  = ia_get_lang();
 $is_pl = $lang === 'pl';
 ?>
 
-<main class="privacy-policy-page">
+<section class="privacy-policy-page" aria-labelledby="privacy-title">
   <div class="privacy-container">
 
-    <h1><?php echo $is_pl ? 'Polityka Prywatności' : 'Privacy Policy'; ?></h1>
-    <p class="privacy-updated"><?php echo $is_pl ? 'Ostatnia aktualizacja: 7 marca 2026' : 'Last updated: March 7, 2026'; ?></p>
+    <h1 id="privacy-title"><?php echo $is_pl ? 'Polityka Prywatności' : 'Privacy Policy'; ?></h1>
+    <p class="privacy-updated"><?php echo $is_pl ? 'Ostatnia aktualizacja: 11 lipca 2026' : 'Last updated: July 11, 2026'; ?></p>
 
     <?php if ( $is_pl ) : ?>
 
@@ -34,6 +34,7 @@ $is_pl = $lang === 'pl';
         <li><strong>Dane techniczne:</strong> adres IP, typ urządzenia, wersja systemu operacyjnego, logi serwera</li>
         <li><strong>Dane analityczne:</strong> anonimowe statystyki użytkowania (Google Analytics 4)</li>
         <li><strong>Dane głosowe:</strong> nagrania głosowe (wyłącznie gdy użytkownik aktywuje funkcję mowy) — przetwarzane w celu transkrypcji i natychmiast usuwane</li>
+        <li><strong>Dane rezerwacji spotkania:</strong> wybrany termin, imię i nazwisko, służbowy adres e-mail oraz — opcjonalnie — firma, telefon i opis procesu. Rejestrujemy także moment potwierdzenia zapoznania się z tą polityką. W celu ograniczania nadużyć używamy pseudonimowego identyfikatora utworzonego z adresu IP, przechowywanego przez 15 minut.</li>
       </ul>
     </section>
 
@@ -45,7 +46,9 @@ $is_pl = $lang === 'pl';
         <li>Zarządzania kontem użytkownika</li>
         <li>Ulepszania jakości usług i rozwiązywania problemów technicznych</li>
         <li>Bezpieczeństwa — wykrywanie nadużyć i ochrona przed nieautoryzowanym dostępem</li>
+        <li>Umawiania, obsługi i potwierdzania bezpłatnych spotkań oraz dalszego kontaktu w sprawie wskazanego procesu biznesowego</li>
       </ul>
+      <p>W przypadku rezerwacji spotkania podstawą przetwarzania danych wymaganych do umówienia rozmowy są działania podejmowane na żądanie osoby przed ewentualnym zawarciem umowy (art. 6 ust. 1 lit. b RODO). Ochrona formularza przed nadużyciami i prowadzenie niezbędnej dokumentacji zgłoszeń opierają się na naszym prawnie uzasadnionym interesie (art. 6 ust. 1 lit. f RODO). Pola oznaczone jako opcjonalne nie są wymagane. Bez imienia, adresu e-mail, terminu i potwierdzenia zapoznania się z polityką nie można dokonać rezerwacji online; nadal można skontaktować się z nami e-mailem.</p>
     </section>
 
     <section>
@@ -67,13 +70,14 @@ $is_pl = $lang === 'pl';
         <li><strong>Hosting:</strong> Fly.io — serwery aplikacji</li>
         <li><strong>Analityka:</strong> Google Analytics 4 — anonimowe statystyki</li>
         <li><strong>TTS/STT:</strong> ElevenLabs, OpenAI Whisper — przetwarzanie mowy (opcjonalne)</li>
+        <li><strong>Obsługa strony i poczty:</strong> dostawcy hostingu WordPress, infrastruktury technicznej i dostarczania wiadomości e-mail — wyłącznie w zakresie koniecznym do obsługi rezerwacji i komunikacji</li>
       </ul>
-      <p>Nie sprzedajemy danych osobowych stronom trzecim.</p>
+      <p>Nie sprzedajemy danych osobowych stronom trzecim. Jeżeli dostawca przetwarza dane poza Europejskim Obszarem Gospodarczym, stosujemy mechanizmy transferu i zabezpieczenia wymagane przez obowiązujące prawo.</p>
     </section>
 
     <section>
       <h2>6. Przechowywanie danych</h2>
-      <p>Dane przechowujemy tak długo, jak jest to niezbędne do świadczenia usług. Historie rozmów są przechowywane na koncie użytkownika do momentu ich usunięcia. Użytkownik może usunąć swoje konto i wszystkie powiązane dane kontaktując się z nami.</p>
+      <p>Dane przechowujemy tak długo, jak jest to niezbędne do świadczenia usług. Historie rozmów są przechowywane na koncie użytkownika do momentu ich usunięcia. Dane rezerwacji spotkań są planowane do automatycznego usunięcia po upływie 12 miesięcy od utworzenia rezerwacji, a pseudonimowe dane używane wyłącznie do ograniczania liczby prób wygasają po 15 minutach. Dane mogą być przechowywane dłużej wyłącznie wtedy, gdy wymaga tego prawo albo jest to konieczne do ustalenia, dochodzenia lub obrony roszczeń. Użytkownik może wystąpić o wcześniejsze usunięcie konta, danych rezerwacji i innych powiązanych danych, kontaktując się z nami.</p>
     </section>
 
     <section>
@@ -86,8 +90,10 @@ $is_pl = $lang === 'pl';
         <li>Ograniczenia przetwarzania</li>
         <li>Przenoszenia danych</li>
         <li>Sprzeciwu wobec przetwarzania</li>
+        <li>Wycofania zgody w dowolnym momencie, jeżeli dane są przetwarzane na podstawie zgody</li>
+        <li>Wniesienia skargi do właściwego organu nadzorczego, w tym Datatilsynet w Norwegii lub Prezesa Urzędu Ochrony Danych Osobowych w Polsce</li>
       </ul>
-      <p>Aby skorzystać z tych praw, skontaktuj się: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a></p>
+      <p>Prawa te dotyczą także danych zapisanych przy rezerwacji spotkania. Aby z nich skorzystać, skontaktuj się: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a>. Rezerwacje nie są wykorzystywane do podejmowania decyzji wyłącznie w sposób zautomatyzowany.</p>
     </section>
 
     <section>
@@ -126,6 +132,7 @@ $is_pl = $lang === 'pl';
         <li><strong>Technical data:</strong> IP address, device type, operating system version, server logs</li>
         <li><strong>Analytics data:</strong> anonymous usage statistics (Google Analytics 4)</li>
         <li><strong>Voice data:</strong> voice recordings (only when the user activates the speech feature) — processed for transcription and immediately deleted</li>
+        <li><strong>Meeting booking data:</strong> selected time, full name, business email and—optionally—company, phone number and workflow description. We also record when you acknowledged this policy. To limit abuse, we use a pseudonymous identifier derived from the IP address and retain it for 15 minutes.</li>
       </ul>
     </section>
 
@@ -137,7 +144,9 @@ $is_pl = $lang === 'pl';
         <li>User account management</li>
         <li>Improving service quality and resolving technical issues</li>
         <li>Security — detecting abuse and protecting against unauthorized access</li>
+        <li>Scheduling, administering and confirming free meetings and following up about the business workflow you identify</li>
       </ul>
+      <p>For meeting bookings, the legal basis for processing the data required to arrange the call is taking steps at your request before a possible contract (Article 6(1)(b) GDPR). Protecting the form against abuse and keeping necessary request records rely on our legitimate interests (Article 6(1)(f) GDPR). Fields marked optional are not required. Without a name, email address, selected time and acknowledgement of this policy, an online booking cannot be completed; you may still contact us by email.</p>
     </section>
 
     <section>
@@ -159,13 +168,14 @@ $is_pl = $lang === 'pl';
         <li><strong>Hosting:</strong> Fly.io — application servers</li>
         <li><strong>Analytics:</strong> Google Analytics 4 — anonymous statistics</li>
         <li><strong>TTS/STT:</strong> ElevenLabs, OpenAI Whisper — speech processing (optional)</li>
+        <li><strong>Website and email operations:</strong> WordPress hosting, technical infrastructure and email-delivery providers—only as needed to administer bookings and communications</li>
       </ul>
-      <p>We do not sell personal data to third parties.</p>
+      <p>We do not sell personal data to third parties. Where a provider processes data outside the European Economic Area, we use the transfer mechanisms and safeguards required by applicable law.</p>
     </section>
 
     <section>
       <h2>6. Data Retention</h2>
-      <p>We retain data for as long as necessary to provide our services. Conversation history is stored in the user's account until deleted. Users can delete their account and all associated data by contacting us.</p>
+      <p>We retain data for as long as necessary to provide our services. Conversation history is stored in the user's account until deleted. Meeting booking data is scheduled for automatic deletion once it is more than 12 months old, while pseudonymous data used only for attempt limiting expires after 15 minutes. Data may be kept longer only where required by law or necessary to establish, exercise or defend legal claims. Users may request earlier deletion of their account, booking data and other associated data by contacting us.</p>
     </section>
 
     <section>
@@ -178,8 +188,10 @@ $is_pl = $lang === 'pl';
         <li>Restriction of processing</li>
         <li>Data portability</li>
         <li>Object to processing</li>
+        <li>Withdraw consent at any time where processing relies on consent</li>
+        <li>Lodge a complaint with the competent supervisory authority, including Datatilsynet in Norway or the President of the Personal Data Protection Office (UODO) in Poland</li>
       </ul>
-      <p>To exercise these rights, contact: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a></p>
+      <p>These rights also apply to data stored with a meeting booking. To exercise them, contact: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a>. Booking data is not used for solely automated decision-making.</p>
     </section>
 
     <section>
@@ -205,7 +217,7 @@ $is_pl = $lang === 'pl';
     <?php endif; ?>
 
   </div>
-</main>
+</section>
 
 <style>
 .privacy-policy-page {

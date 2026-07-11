@@ -1,7 +1,7 @@
 /**
  * InterAgents.ai — Offer Builder
- * Pure client-side configurator for OpenClaw pricing.
- * InterCore/Complete show "from" pricing with contact CTA.
+ * Pure client-side configurator for Interagents (powered by OpenClaw) pricing.
+ * Intercore/Complete show "from" pricing with contact CTA.
  */
 (function () {
   'use strict';
@@ -68,6 +68,7 @@
   function writeUrlState() {
     if (!state.product) return;
     var params = new URLSearchParams();
+    params.set('lang', cfg.lang);
     params.set('product', state.product);
     if (state.product === 'openclaw') {
       params.set('hosting', state.hosting);
@@ -180,6 +181,7 @@
   // Generate shareable URL
   function getShareUrl() {
     var params = new URLSearchParams();
+    params.set('lang', cfg.lang);
     params.set('product', state.product);
     if (state.product === 'openclaw') {
       params.set('hosting', state.hosting);
@@ -212,6 +214,8 @@
 
     if (state.managed === 'managed') {
       lines.push('API: ' + apiLabel);
+    }
+    if (calc.monthly > 0) {
       lines.push('');
       lines.push(labels.monthly + ': ' + fmt(calc.monthly) + ' ' + currency + labels.perMonth);
     }
@@ -225,7 +229,7 @@
   // Generate inquiry text for contact form
   function getInquiryText() {
     if (state.product === 'intercore') {
-      return 'InterCore Platform — ' + (cfg.lang === 'pl' ? 'Zapytanie o wycenę' : 'Quote request');
+      return 'Intercore — ' + (cfg.lang === 'pl' ? 'Zapytanie o wycenę' : 'Quote request');
     }
     if (state.product === 'complete') {
       return 'Complete Package — ' + (cfg.lang === 'pl' ? 'Zapytanie o wycenę' : 'Quote request');
@@ -236,13 +240,13 @@
       : state.hosting === 'vps' ? labels.hostingVps
       : labels.hostingMini;
 
-    var parts = ['OpenClaw', hostingLabel];
+    var parts = ['Interagents (OpenClaw)', hostingLabel];
     if (state.managed === 'managed') {
       parts.push(state.api === 'included' ? 'API included' : 'Own API');
-      parts.push(fmt(calc.monthly) + ' ' + currency + labels.perMonth);
     } else {
       parts.push('Self-managed');
     }
+    if (calc.monthly > 0) parts.push(fmt(calc.monthly) + ' ' + currency + labels.perMonth);
     parts.push(labels.setup + ': ' + fmt(calc.setup) + ' ' + currency);
 
     return parts.join(' | ');
@@ -322,8 +326,12 @@
     });
   }
 
-  // Modal open/close logic (self-contained for offer page)
-  function openContactModal() {
+  // Reuse the shared focus-managed modal controller from main.js.
+  function openContactModal(trigger) {
+    if (typeof window.iaOpenContactModal === 'function') {
+      window.iaOpenContactModal(trigger);
+      return;
+    }
     var modal = document.getElementById('contact-modal');
     if (!modal) return;
     modal.classList.add('is-open');
@@ -332,6 +340,10 @@
   }
 
   function closeContactModal() {
+    if (typeof window.iaCloseContactModal === 'function') {
+      window.iaCloseContactModal();
+      return;
+    }
     var modal = document.getElementById('contact-modal');
     if (!modal) return;
     modal.classList.remove('is-open');
@@ -339,21 +351,12 @@
     document.body.style.overflow = '';
   }
 
-  // Wire up modal close buttons
-  var modalBackdrop = document.querySelector('#contact-modal .modal-backdrop');
-  var modalClose = document.querySelector('#contact-modal .modal-close');
-  if (modalBackdrop) modalBackdrop.addEventListener('click', closeContactModal);
-  if (modalClose) modalClose.addEventListener('click', closeContactModal);
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeContactModal();
-  });
-
   // Event: Inquire (opens contact modal with pre-filled text)
-  function handleInquire() {
+  function handleInquire(event) {
     var text = getInquiryText();
 
     // Open modal directly
-    openContactModal();
+    openContactModal(event.currentTarget);
 
     // Try to fill WPForms message field after modal opens
     setTimeout(function () {
