@@ -49,6 +49,7 @@ final class IABC_Public {
 			'bookUrl'       => rest_url( IABC_REST::NAMESPACE . '/book' ),
 			'nonce'         => wp_create_nonce( 'iabc_public_booking' ),
 			'lang'          => $lang,
+			'weekdays'      => array_values( array_map( 'absint', (array) $settings['weekdays'] ) ),
 			'minDate'       => $today->format( 'Y-m-d' ),
 			'maxDate'       => $today->modify( '+' . (int) $settings['horizon_days'] . ' days' )->format( 'Y-m-d' ),
 			'suggestedDate' => $suggested,
@@ -69,18 +70,21 @@ final class IABC_Public {
 
 			<div class="iabc-booking__grid">
 				<div class="iabc-booking__schedule">
-					<div class="iabc-booking__step-heading"><span aria-hidden="true">1</span><h3><?php echo esc_html( 'pl' === $lang ? 'Wybierz dzień' : 'Choose a day' ); ?></h3></div>
-					<label class="iabc-booking__label" for="<?php echo esc_attr( $widget_id ); ?>-date"><?php echo esc_html( 'pl' === $lang ? 'Data spotkania' : 'Meeting date' ); ?></label>
-					<input class="iabc-booking__date" id="<?php echo esc_attr( $widget_id ); ?>-date" type="date" min="<?php echo esc_attr( $config['minDate'] ); ?>" max="<?php echo esc_attr( $config['maxDate'] ); ?>" value="<?php echo esc_attr( $suggested ); ?>">
+					<div class="iabc-booking__step-heading"><span aria-hidden="true">01</span><h3><?php echo esc_html( 'pl' === $lang ? 'Wybierz dzień' : 'Choose a day' ); ?></h3></div>
+					<div class="iabc-booking__calendar" data-iabc-calendar hidden></div>
+					<div class="iabc-booking__date-fallback" data-iabc-date-fallback>
+						<label class="iabc-booking__label" for="<?php echo esc_attr( $widget_id ); ?>-date"><?php echo esc_html( 'pl' === $lang ? 'Data spotkania' : 'Meeting date' ); ?></label>
+						<input class="iabc-booking__date" id="<?php echo esc_attr( $widget_id ); ?>-date" type="date" min="<?php echo esc_attr( $config['minDate'] ); ?>" max="<?php echo esc_attr( $config['maxDate'] ); ?>" value="<?php echo esc_attr( $suggested ); ?>">
+					</div>
 					<p class="iabc-booking__hint"><?php echo esc_html( 'pl' === $lang ? sprintf( 'Dostępne dni robocze, %s–%s · strefa Europe/Warsaw · minimum %d h wcześniej', $settings['work_start'], $settings['work_end'], (int) $settings['notice_hours'] ) : sprintf( 'Available working days, %s–%s · Europe/Warsaw · at least %d hours ahead', $settings['work_start'], $settings['work_end'], (int) $settings['notice_hours'] ) ); ?></p>
 
-					<div class="iabc-booking__step-heading iabc-booking__step-heading--slots"><span aria-hidden="true">2</span><h3><?php echo esc_html( 'pl' === $lang ? 'Wybierz godzinę' : 'Choose a time' ); ?></h3></div>
+					<div class="iabc-booking__step-heading iabc-booking__step-heading--slots"><span aria-hidden="true">02</span><h3><?php echo esc_html( 'pl' === $lang ? 'Wybierz godzinę' : 'Choose a time' ); ?></h3></div>
 					<div class="iabc-booking__slots" role="group" aria-label="<?php echo esc_attr( 'pl' === $lang ? 'Dostępne godziny' : 'Available times' ); ?>"></div>
 					<div class="iabc-booking__status iabc-booking__status--slots" role="status" aria-live="polite" tabindex="-1"></div>
 				</div>
 
 				<form class="iabc-booking__form" novalidate>
-					<div class="iabc-booking__step-heading"><span aria-hidden="true">3</span><h3><?php echo esc_html( 'pl' === $lang ? 'Powiedz nam, z kim rozmawiamy' : 'Tell us who we’re meeting' ); ?></h3></div>
+					<div class="iabc-booking__step-heading"><span aria-hidden="true">03</span><h3><?php echo esc_html( 'pl' === $lang ? 'Powiedz nam, z kim rozmawiamy' : 'Tell us who we’re meeting' ); ?></h3></div>
 					<input type="hidden" name="start" value="">
 					<input type="hidden" name="lang" value="<?php echo esc_attr( $lang ); ?>">
 
@@ -104,7 +108,7 @@ final class IABC_Public {
 					</div>
 					<div class="iabc-booking__field">
 						<label for="<?php echo esc_attr( $widget_id ); ?>-bottleneck"><?php echo esc_html( 'pl' === $lang ? 'Co dziś blokuje ten proces?' : 'What blocks this workflow today?' ); ?> <small><?php echo esc_html( 'pl' === $lang ? '(opcjonalnie)' : '(optional)' ); ?></small></label>
-						<textarea id="<?php echo esc_attr( $widget_id ); ?>-bottleneck" name="bottleneck" maxlength="3000" rows="3" placeholder="<?php echo esc_attr( 'pl' === $lang ? 'Jedno zdanie wystarczy.' : 'One sentence is enough.' ); ?>"></textarea>
+						<textarea id="<?php echo esc_attr( $widget_id ); ?>-bottleneck" name="bottleneck" maxlength="3000" rows="3"></textarea>
 					</div>
 
 					<div class="iabc-booking__honeypot" aria-hidden="true">
@@ -183,6 +187,11 @@ final class IABC_Public {
 	private static function strings( $lang ) {
 		if ( 'pl' === $lang ) {
 			return array(
+				'calendarLabel' => 'Wybierz datę spotkania',
+				'previousMonth' => 'Poprzedni miesiąc',
+				'nextMonth'     => 'Następny miesiąc',
+				'previousShort' => 'Wstecz',
+				'nextShort'     => 'Dalej',
 				'loading'       => 'Sprawdzamy dostępne godziny…',
 				'noSlots'       => 'Tego dnia nie ma wolnych terminów. Wybierz inny dzień roboczy.',
 				'chooseSlot'    => 'Najpierw wybierz godzinę spotkania.',
@@ -194,6 +203,11 @@ final class IABC_Public {
 			);
 		}
 		return array(
+			'calendarLabel' => 'Choose a meeting date',
+			'previousMonth' => 'Previous month',
+			'nextMonth'     => 'Next month',
+			'previousShort' => 'Previous',
+			'nextShort'     => 'Next',
 			'loading'       => 'Checking available times…',
 			'noSlots'       => 'No times are available that day. Choose another working day.',
 			'chooseSlot'    => 'Choose a meeting time first.',

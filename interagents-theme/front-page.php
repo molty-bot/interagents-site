@@ -64,70 +64,59 @@ $offer_url            = ia_localized_url( '/offer/' );
 	<div class="container">
 		<header class="editorial-heading reveal">
 			<p class="section-kicker"><?php echo esc_html( ia_t( 'Dwa poziomy wdrożenia', 'Two deployment levels' ) ); ?></p>
-			<h2 class="section-title" id="architecture-title"><?php echo esc_html( ia_t(
-				'interagents wykonuje pracę. intercore organizuje cały system.',
-				'interagents does the work. intercore organizes the whole system.'
-			) ); ?></h2>
+			<h2 class="section-title architecture-title" id="architecture-title">
+				<span class="architecture-title__line">
+					<span class="brand-word brand-word--inline"><span>inter</span><span class="brand-word__accent">agents</span></span>
+					<?php echo esc_html( ia_t( 'przejmuje zadania.', 'takes on the work.' ) ); ?>
+				</span>
+				<span class="architecture-title__line">
+					<span class="brand-word brand-word--inline"><span>inter</span><span class="brand-word__accent">core</span></span>
+					<?php echo esc_html( ia_t( 'łączy ludzi, AI i procesy.', 'connects people, AI and processes.' ) ); ?>
+				</span>
+			</h2>
 		</header>
 
 		<div class="architecture-grid">
 			<article class="architecture-level architecture-level--worker reveal">
-				<p class="architecture-index"><?php echo esc_html( ia_t( '01 · samodzielne wdrożenie', '01 · standalone deployment' ) ); ?></p>
-				<h3 class="brand-word" aria-label="interagents"><span aria-hidden="true">inter</span><span class="brand-word__accent" aria-hidden="true">agents</span></h3>
-				<p class="architecture-role"><?php echo esc_html( ia_t( 'Pracownicy AI do konkretnych zadań.', 'AI workers for specific jobs.' ) ); ?></p>
+				<p class="architecture-index"><?php echo esc_html( ia_t( '01 · pracownik AI do konkretnego procesu', '01 · an AI worker for a specific workflow' ) ); ?></p>
+				<h3 class="brand-word"><span>inter</span><span class="brand-word__accent">agents</span></h3>
+				<p class="architecture-role"><?php echo esc_html( ia_t( 'Oddaje gotową pracę, nie kolejne narzędzie do obsługi.', 'It delivers completed work, not another tool to operate.' ) ); ?></p>
 				<p><?php echo esc_html( ia_t(
-					'Projektujemy role, dostęp do danych i zasady działania. Ty zlecasz pracę oraz sprawdzasz wynik z komputera lub telefonu.',
-					'We design the roles, data access and operating rules. You assign the work and review the result from desktop or mobile.'
+					'Może przygotowywać oferty, porządkować dokumenty, analizować dane, obsługiwać zapytania klientów lub pilnować realizacji zadań. Zlecasz pracę i odbierasz wynik z komputera albo telefonu.',
+					'It can prepare proposals, organize documents, analyze data, handle customer enquiries or track task delivery. You assign the work and review the result from desktop or mobile.'
 				) ); ?></p>
 				<ul class="architecture-meta" aria-label="<?php echo esc_attr( ia_t( 'Zakres interagents', 'interagents scope' ) ); ?>">
-					<li><?php echo esc_html( ia_t( 'Role szyte na miarę', 'Tailor-made roles' ) ); ?></li>
-					<li><?php echo esc_html( ia_t( 'Oparte na OpenClaw', 'Powered by OpenClaw' ) ); ?></li>
+					<li><?php echo esc_html( ia_t( 'Rola dopasowana do konkretnego procesu', 'A role designed for a specific workflow' ) ); ?></li>
+					<li><?php echo esc_html( ia_t( 'Dostęp tylko do potrzebnych danych', 'Access only to the data it needs' ) ); ?></li>
+					<li><?php echo esc_html( ia_t( 'Decyzje i wyjątki trafiają do człowieka', 'Decisions and exceptions go to a person' ) ); ?></li>
 				</ul>
-				<a class="editorial-link" href="<?php echo esc_url( add_query_arg( 'product', 'openclaw', $offer_url ) ); ?>"><?php echo esc_html( ia_t( 'Zakres i cena interagents', 'interagents scope and price' ) ); ?></a>
+				<a class="btn architecture-cta" href="<?php echo esc_url( add_query_arg( 'product', 'openclaw', $offer_url ) ); ?>"><?php echo esc_html( ia_t( 'Zobacz zakres i cenę interagents', 'See interagents scope and pricing' ) ); ?></a>
 			</article>
 
 			<article class="architecture-level architecture-level--ecosystem reveal" style="--delay: 100ms">
-				<div class="architecture-level__header">
-					<div>
-						<p class="architecture-index"><?php echo esc_html( ia_t( '02 · pełne środowisko', '02 · complete workspace' ) ); ?></p>
-						<h3 class="brand-word" aria-label="intercore"><span aria-hidden="true">inter</span><span class="brand-word__accent" aria-hidden="true">core</span></h3>
-					</div>
-					<p class="architecture-includes"><?php echo esc_html( ia_t( 'zawsze zawiera interagents', 'always includes interagents' ) ); ?></p>
-				</div>
-				<p class="architecture-role"><?php echo esc_html( ia_t( 'Środowisko pracy dla ludzi i AI.', 'A workspace for humans and AI.' ) ); ?></p>
+				<p class="architecture-index"><?php echo esc_html( ia_t( '02 · system pracy dla ludzi i AI', '02 · a work system for people and AI' ) ); ?></p>
+				<h3 class="brand-word"><span>inter</span><span class="brand-word__accent">core</span></h3>
+				<p class="architecture-role"><?php echo esc_html( ia_t( 'Porządkuje cały proces, gdy jeden agent to za mało.', 'It coordinates the whole workflow when one agent is not enough.' ) ); ?></p>
 				<p><?php echo esc_html( ia_t(
-					'Łączy ludzi, pracowników AI, narzędzia, dane i akceptacje w jeden system zaprojektowany wokół sposobu działania firmy.',
-					'It connects people, AI workers, tools, data and approvals in one system designed around how the business operates.'
+					'intercore zawsze zawiera interagents. Łączy pracowników AI, zespół, narzędzia i dane w jeden przepływ: rozdziela zadania, przekazuje kontekst, zbiera wyniki i kieruje decyzje do właściwych osób.',
+					'intercore always includes interagents. It connects AI workers, your team, tools and data in one workflow: assigning tasks, passing context, collecting results and routing decisions to the right people.'
 				) ); ?></p>
 
 				<div class="included-layer">
-					<span class="included-layer__label"><?php echo esc_html( ia_t( 'warstwa wykonawcza w środku', 'the execution layer inside' ) ); ?></span>
-					<strong class="brand-word brand-word--small" aria-label="interagents"><span aria-hidden="true">inter</span><span class="brand-word__accent" aria-hidden="true">agents</span></strong>
-					<span><?php echo esc_html( ia_t( 'wykonuje, raportuje i przekazuje decyzje ludziom', 'executes, reports and hands decisions to people' ) ); ?></span>
+					<span class="included-layer__label"><?php echo esc_html( ia_t( 'W intercore pracują', 'Working inside intercore' ) ); ?></span>
+					<strong class="brand-word brand-word--small"><span>inter</span><span class="brand-word__accent">agents</span></strong>
+					<span><?php echo esc_html( ia_t( 'Wykonują zadania, a intercore przekazuje pracę, kontekst i decyzje między nimi a zespołem.', 'They execute tasks while intercore moves work, context and decisions between them and the team.' ) ); ?></span>
 				</div>
 
-				<ul class="ecosystem-parts" aria-label="<?php echo esc_attr( ia_t( 'Elementy intercore', 'intercore elements' ) ); ?>">
-					<li><?php echo esc_html( ia_t( 'Ludzie', 'People' ) ); ?></li>
-					<li><?php echo esc_html( ia_t( 'Narzędzia', 'Tools' ) ); ?></li>
-					<li><?php echo esc_html( ia_t( 'Dane', 'Data' ) ); ?></li>
-					<li><?php echo esc_html( ia_t( 'Zasady i decyzje', 'Rules and decisions' ) ); ?></li>
+				<ul class="ecosystem-parts" aria-label="<?php echo esc_attr( ia_t( 'Przepływ pracy intercore', 'intercore workflow' ) ); ?>">
+					<li><?php echo esc_html( ia_t( 'Zlecenie i kontekst', 'Brief and context' ) ); ?></li>
+					<li><?php echo esc_html( ia_t( 'Praca agenta', 'Agent execution' ) ); ?></li>
+					<li><?php echo esc_html( ia_t( 'Akceptacja człowieka', 'Human approval' ) ); ?></li>
+					<li><?php echo esc_html( ia_t( 'Wynik i raport', 'Result and report' ) ); ?></li>
 				</ul>
-				<a class="editorial-link" href="<?php echo esc_url( add_query_arg( 'product', 'intercore', $offer_url ) ); ?>"><?php echo esc_html( ia_t( 'Zakres i cena intercore', 'intercore scope and price' ) ); ?></a>
+				<a class="btn architecture-cta" href="<?php echo esc_url( add_query_arg( 'product', 'intercore', $offer_url ) ); ?>"><?php echo esc_html( ia_t( 'Zobacz zakres i cenę intercore', 'See intercore scope and pricing' ) ); ?></a>
 			</article>
 		</div>
-	</div>
-</section>
-
-<section class="section section--manifesto" aria-labelledby="manifesto-title">
-	<div class="container manifesto-grid reveal">
-		<h2 id="manifesto-title"><?php echo esc_html( ia_t(
-			'AI bez odpowiedzialności to tylko droższy chaos.',
-			'AI without accountability is just more expensive chaos.'
-		) ); ?></h2>
-		<p><?php echo esc_html( ia_t(
-			'Dlatego każde zadanie, dostęp i decyzja mają właściciela. AI wykonuje pracę. Ludzie zachowują kontrolę.',
-			'That is why every task, permission and decision has an owner. AI does the work. People keep control.'
-		) ); ?></p>
 	</div>
 </section>
 
@@ -167,27 +156,30 @@ $offer_url            = ia_localized_url( '/offer/' );
 <section class="section section--outcomes" id="dlaczego-my" aria-labelledby="outcomes-title">
 	<div class="container outcomes-grid">
 		<header class="outcomes-intro reveal">
-			<p class="section-kicker"><?php echo esc_html( ia_t( 'Co zostaje w firmie', 'What stays in the business' ) ); ?></p>
-			<h2 class="section-title" id="outcomes-title"><?php echo esc_html( ia_t( 'System, nie pokaz.', 'A system, not a demo.' ) ); ?></h2>
-			<p><?php echo esc_html( ia_t( 'Budujemy operacyjny sposób pracy, który Twój zespół może kontrolować i rozwijać.', 'We build an operating way of working your team can control and develop.' ) ); ?></p>
+			<p class="section-kicker"><?php echo esc_html( ia_t( 'Efekt w codziennej pracy', 'What changes day to day' ) ); ?></p>
+			<h2 class="section-title outcomes-title" id="outcomes-title">
+				<span><?php echo esc_html( ia_t( 'Mniej ręcznej pracy.', 'Less manual work.' ) ); ?></span>
+				<span><?php echo esc_html( ia_t( 'Więcej kontroli.', 'More control.' ) ); ?></span>
+			</h2>
+			<p><?php echo esc_html( ia_t( 'Nie zostawiamy firmy z prezentacją. Uruchamiamy proces na realnych danych, mierzymy wynik i przekazujemy zespołowi jasne zasady obsługi.', 'We do not leave you with a presentation. We launch the workflow on real data, measure the result and give the team clear operating rules.' ) ); ?></p>
 		</header>
 
 		<ol class="outcome-list">
 			<li class="reveal">
 				<span aria-hidden="true">01</span>
-				<div><strong><?php echo esc_html( ia_t( 'Działający proces', 'A working workflow' ) ); ?></strong><p><?php echo esc_html( ia_t( 'Nie demo ani prezentacja.', 'Not a demo or presentation.' ) ); ?></p></div>
+				<div><strong><?php echo esc_html( ia_t( 'Czas wraca do zespołu', 'Time returns to the team' ) ); ?></strong><p><?php echo esc_html( ia_t( 'AI przejmuje powtarzalne kroki i przygotowuje rezultat gotowy do użycia.', 'AI handles repeatable steps and prepares a usable result.' ) ); ?></p></div>
 			</li>
 			<li class="reveal" style="--delay: 60ms">
 				<span aria-hidden="true">02</span>
-				<div><strong><?php echo esc_html( ia_t( 'Kontrola', 'Control' ) ); ?></strong><p><?php echo esc_html( ia_t( 'Dane, dostępy i decyzje pozostają po Twojej stronie.', 'Data, access and decisions remain on your side.' ) ); ?></p></div>
+				<div><strong><?php echo esc_html( ia_t( 'Decyzje nie giną', 'Decisions do not get lost' ) ); ?></strong><p><?php echo esc_html( ia_t( 'Właściwa osoba dostaje kontekst, rekomendację i wyraźny punkt akceptacji.', 'The right person receives the context, recommendation and a clear approval point.' ) ); ?></p></div>
 			</li>
 			<li class="reveal" style="--delay: 120ms">
 				<span aria-hidden="true">03</span>
-				<div><strong><?php echo esc_html( ia_t( 'Jeden kontekst', 'One shared context' ) ); ?></strong><p><?php echo esc_html( ia_t( 'Ludzie i AI pracują na wspólnych zasadach.', 'People and AI work under the same rules.' ) ); ?></p></div>
+				<div><strong><?php echo esc_html( ia_t( 'Wiadomo, co się dzieje', 'You can see what is happening' ) ); ?></strong><p><?php echo esc_html( ia_t( 'Każde zadanie ma status, historię i odpowiedzialnego człowieka.', 'Every task has a status, history and accountable owner.' ) ); ?></p></div>
 			</li>
 			<li class="reveal" style="--delay: 180ms">
 				<span aria-hidden="true">04</span>
-				<div><strong><?php echo esc_html( ia_t( 'Możliwość zmiany', 'Room to change' ) ); ?></strong><p><?php echo esc_html( ia_t( 'System rośnie razem z firmą bez utraty odpowiedzialności.', 'The system grows with the business without losing accountability.' ) ); ?></p></div>
+				<div><strong><?php echo esc_html( ia_t( 'System można rozwijać', 'The system can grow' ) ); ?></strong><p><?php echo esc_html( ia_t( 'Dodajesz kolejne procesy i agentów bez budowania chaosu od nowa.', 'Add more workflows and agents without rebuilding the chaos.' ) ); ?></p></div>
 			</li>
 		</ol>
 	</div>

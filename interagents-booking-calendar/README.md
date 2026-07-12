@@ -12,7 +12,7 @@ When a page already supplies the booking headline and introduction, use `[intera
 
 Safe activation defaults are Europe/Warsaw, Monday–Friday 10:00–16:00, 20-minute meetings starting every 30 minutes, 24-hour notice, 60-day horizon, and notifications to `hello@interagents.ai`. The final default start is 15:30, so every meeting ends before 16:00.
 
-The widget follows the site language (`ia_get_lang()` when available), then its `lang` attribute, URL/cookie/WordPress locale fallback. It sends localized EN/PL customer and admin emails. Confirmation says that the meeting link and joining details will follow by email and provides a token-protected `.ics` download.
+The widget follows the site language (`ia_get_lang()` when available), then its `lang` attribute, URL/cookie/WordPress locale fallback. Its progressive interface adds a localized, keyboard-accessible month grid with bounded navigation while preserving the native date field as a fallback. It sends localized EN/PL customer and admin emails. Confirmation says that the meeting link and joining details will follow by email and provides a token-protected `.ics` download.
 
 ## Security and data
 

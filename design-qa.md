@@ -91,13 +91,14 @@ The hero comparison in `/tmp/interagents-design-qa-focused-hero.png` verifies he
 
 ## Production verification
 
-- Deployed release: theme `2.3.3` and booking calendar `1.1.2` at `https://interagents.ai`.
-- Polish production homepage at 390px: document and body scroll widths equal the 390px viewport, the embedded booking widget appears once without a duplicate header, and booking slots form three equal columns.
-- Polish production homepage at 320px: document and body scroll widths equal the 320px viewport, booking slots switch to two columns, and the closed navigation has both `inert` and `aria-hidden`.
-- English production homepage at 390px: copy, metadata, language switcher, booking heading, and three-column slot grid render correctly with no horizontal overflow.
+- Deployed release: theme `2.4.1` and booking calendar `1.2.1` at `https://interagents.ai`.
+- Polish production homepage at 390px: document and body scroll widths equal the viewport; hero sentence spacing measures 6px; product accents use logo gold; both offer buttons are 54.8px high; the month calendar enhances successfully; and booking slots form three equal columns.
+- Polish production homepage at 320px: document and body scroll widths equal the viewport; the booking frame uses 304px safely; selectable day cells measure approximately 37.4 × 38px; and booking slots switch to two columns.
+- English production homepage at 390px: product, outcomes, month navigation, step headings, metadata, and language controls render in English with no horizontal overflow.
 - Production contact modal: English first-name and last-name labels render correctly; focus moves to Close, Escape closes the modal, and focus returns to the trigger.
 - Production offer at 768px: the heading begins 47px below the fixed header, legacy `product=complete` normalizes to `product=intercore`, invalid options normalize to `mac`, `managed`, and `included`, and only those controls expose `aria-pressed="true"`.
-- Production desktop at 1440px: the hero retains the intended two-line headline, the booking grid and form have equal client/scroll widths, and the document has no horizontal overflow.
+- Production desktop at 1440px: the product cards are equal at 548 × 738.2px; the booking widget has equal 778px client/scroll width with 334.6px and 443.5px panes; and the document has no horizontal overflow.
+- Production calendar interaction: July → August → July navigation passed; selecting 14 July loaded 12 available slots; Arrow Right moved the single roving tab stop to 15 July. No production booking was submitted.
 - Production browser diagnostics contain no errors or warnings; only the standard WordPress jQuery Migrate informational log appears.
 
 ## Findings
@@ -106,7 +107,7 @@ No actionable P0, P1, or P2 findings remain.
 
 ## Follow-up polish
 
-- P3: the selected concept uses a month-grid calendar while the production booking plugin uses a date field plus time slots. The production interaction is more compact on mobile and was retained intentionally.
+- The earlier P3 month-grid difference is resolved in booking calendar `1.2.1`; no follow-up polish remains from this iteration.
 
 ## Desktop feedback iteration — theme 2.3.3
 
@@ -136,5 +137,88 @@ No actionable P0, P1, or P2 findings remain.
 - Fonts/typography, color tokens, logo/image quality, and copy remain unchanged; only the requested spacing and desktop card surface were adjusted.
 - Live production evidence: `/tmp/interagents-live-2.3.3-hero.png` and `/tmp/interagents-live-2.3.3-cards.png`.
 - Production serves `style.css` and `main.css` with cache version `2.3.3`; the live 1300px metrics match local measurements, the live 390px mobile rules remain unchanged, and production console diagnostics contain no errors or warnings.
+
+## Product clarity and booking iteration — theme 2.4.1 / calendar 1.2.1
+
+### Source visual truth
+
+- User product-section screenshot: `/var/folders/84/q7j29sc55ml3rx1jgs5yshlr0000gn/T/codex-clipboard-80720565-4cff-4ada-af8f-d3a6d4a15cba.png`.
+- User manifesto screenshot: `/var/folders/84/q7j29sc55ml3rx1jgs5yshlr0000gn/T/codex-clipboard-9c4da70b-6268-4cf0-a308-5cb120e2927c.png`.
+- Approved editorial/booking direction: `/Users/molty/.codex/generated_images/019f52d8-d6ff-72e2-88fe-94c306b22c34/exec-8c59c939-b0bb-4ab2-8aa9-95053b895b22.png`.
+- Earlier mobile implementation evidence: `/tmp/interagents-mobile-hero.png` and `/tmp/interagents-mobile-booking.png`.
+
+### Browser-rendered implementation evidence
+
+- Desktop product section, 1440 × 900: `/tmp/interagents-2.4-desktop-architecture.png`.
+- Complete desktop product cards, 1440 × 900: `/tmp/interagents-2.4-desktop-product-cards.png`.
+- Desktop booking section, 1440 × 900: `/tmp/interagents-2.4-desktop-booking.png`.
+- Mobile hero, products, intercore, outcomes, and booking at 390 × 844:
+  - `/tmp/interagents-2.4-mobile-hero.png`.
+  - `/tmp/interagents-2.4-mobile-architecture.png`.
+  - `/tmp/interagents-2.4-mobile-products.png`.
+  - `/tmp/interagents-2.4-mobile-intercore.png`.
+  - `/tmp/interagents-2.4-mobile-outcomes.png`.
+  - `/tmp/interagents-2.4-mobile-booking.png`.
+- English mobile booking, 390 × 844: `/tmp/interagents-2.4-mobile-booking-en.png`.
+- Smallest-width booking, 320 × 568: `/tmp/interagents-2.4-booking-320.png`.
+
+### Combined comparison evidence
+
+- Product before/after: `/tmp/interagents-2.4-product-comparison.png`.
+- Approved booking direction vs implementation: `/tmp/interagents-2.4-calendar-comparison.png`.
+- Mobile hero and booking before/after: `/tmp/interagents-2.4-mobile-comparison.png`.
+- Removed manifesto vs operational outcomes: `/tmp/interagents-2.4-outcomes-comparison.png`; these frames intentionally use different crops because the requested result is removal rather than fidelity to the old section.
+
+### Comparison history
+
+1. Earlier finding — P1 content: the product cards described abstract architecture and generic components, leaving a new business owner unable to tell what work either product performs.
+   - Fix: rewrote both languages around completed work, concrete example jobs, supervision, data scope, routing, approvals, and when to choose intercore. Replaced the tiny inclusion pill with a full-size execution-layer explanation.
+   - Post-fix evidence: `/tmp/interagents-2.4-product-comparison.png` and the mobile product frames show concrete copy and the interagents-within-intercore relationship.
+
+2. Earlier finding — P2 color/affordance: the architecture headline did not apply the agreed white `inter` plus gold `agents`/`core` treatment, and pricing links looked like tertiary text links.
+   - Fix: built semantic inline brand words in the heading and converted both offer links into 48px+ gold-outline buttons that become full width on mobile.
+   - Post-fix evidence: desktop and mobile architecture screenshots show the correct color system and button affordance.
+
+3. Earlier finding — P2 typography: mobile hero wraps and the former outcomes heading used cramped display line spacing.
+   - Fix: mobile hero line height is 1.02 with a 0.14em sentence gap; mobile section titles use 1.06 line height and the new two-line outcomes heading has an explicit 0.14em gap.
+   - Post-fix evidence: `/tmp/interagents-2.4-mobile-comparison.png` and `/tmp/interagents-2.4-mobile-outcomes.png`.
+
+4. Earlier finding — P1 layout/content: the manifesto occupied a full high-contrast section without adding product or conversion clarity.
+   - Fix: removed its markup and CSS completely. Product architecture now flows directly into the three-step delivery section, followed by operational outcomes.
+   - Post-fix evidence: the manifesto phrases and selectors are absent from source and rendered DOM; `/tmp/interagents-2.4-outcomes-comparison.png` records the replacement direction.
+
+5. Earlier finding — P1 booking: the booking experience looked like a nested plugin with a native date input, multiple card frames, excessive padding, and weak continuity with the approved direction.
+   - Fix: built a real localized six-week month grid with bounded text navigation, disabled workdays, selected/today states, roving keyboard focus, and unchanged REST slot/submission behavior. Flattened the visual treatment into one frame and one responsive divider.
+   - Post-fix evidence: `/tmp/interagents-2.4-calendar-comparison.png`; complete local booking reached the success state and exposed the ICS link.
+
+6. First post-build finding — P2 responsiveness: at 320px the initial month-grid cells measured roughly 33 × 34px.
+   - Fix: let the calendar frame recover 24px of mobile width, reduced internal padding at 320px, and raised the day-cell height to 38px.
+   - Post-fix evidence: the document remains exactly 320px wide, the widget is 302px wide without overflow, and selectable day cells measure approximately 37.4 × 38px.
+
+### Required fidelity and regression checks
+
+- Fonts/typography: existing Inter stack and weights retained; only requested headline rhythm changed. No clipping or broken Polish/English wrapping at 320, 360, 390, 760, 1120, or 1440px.
+- Spacing/layout: equal product cards begin at 960px; below that they stack with the same surface treatment. Calendar switches by container width, not viewport width. No document, widget, grid, schedule, or form overflow was measured.
+- Colors/tokens: `inter` remains warm white and `agents`/`core` use logo gold across headline, product names, and included execution layer. Booking uses the same navy, warm white, muted text, and gold selection/CTA tokens.
+- Image quality/assets: the production logo remains the only image asset needed; no placeholder imagery, custom SVG, emoji, or CSS-drawn icon substitutes were introduced. Month navigation uses explicit localized text controls.
+- Copy/content: filler manifesto and generic outcome language are removed. Both languages explain concrete work and preserve the rule that intercore includes interagents.
+- Accessibility/behavior: month navigation is bounded and labeled, dates expose full localized labels plus selected/current/disabled states, keyboard arrows/Home/End/Page Up/Page Down move roving focus, slots expose full interval labels, native date fallback remains, and the complete local booking journey passed.
+- Browser console errors/warnings: none.
+- Measured desktop state at 1440px: both product cards are 548px wide and 738px high; the booking widget/grid client and scroll widths are both 778px with 334.6px and 443.5px panes.
+- Measured mobile state: hero line height is 1.02 with a 6px sentence gap at 390px; outcomes line height is 1.06 with a 4.75px sentence gap; slots use three columns at 360px and two at 320px.
+- Calendar semantics: one roving date tab stop, localized group/month/date labels, selected and current-date state, disabled weekends, and disabled previous navigation at the minimum month.
+
+### Live production evidence
+
+- Polish mobile hero at 390 × 844: `/tmp/interagents-live-2.4-mobile-hero-pl.png`.
+- Polish mobile product section at 390 × 844: `/tmp/interagents-live-2.4-mobile-products-pl.png`.
+- Polish mobile booking calendar at 390 × 844: `/tmp/interagents-live-2.4-mobile-booking-pl.png`.
+- Smallest-width live calendar at 320 × 800: `/tmp/interagents-live-2.4-calendar-320.png`.
+- English mobile booking calendar at 390 × 844: `/tmp/interagents-live-2.4-mobile-booking-en.png`.
+- Desktop product and booking sections at 1440 × 1000:
+  - `/tmp/interagents-live-2.4-desktop-products.png`.
+  - `/tmp/interagents-live-2.4-desktop-booking.png`.
+- Production serves theme assets with cache version `2.4.1` and booking assets with cache version `1.2.1`. Polish and English, 320px, 390px, and 1440px checks passed with no horizontal overflow or browser errors/warnings. The final accessibility patch also preserves focus after date selection and leaves complete split-color product names in the heading accessibility tree.
+- Sanitized production deployment and rollback evidence: `/Users/molty/.openclaw/workspace-inter/backups/interagents-site-wp-deploy/20260712T115236Z-8d54662f`.
 
 final result: passed
