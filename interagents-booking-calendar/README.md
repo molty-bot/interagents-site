@@ -1,12 +1,14 @@
-# Interagents Booking Calendar
+# interagents booking calendar
 
-Standalone WordPress plugin for free 20-minute Interagents workflow-call bookings. It is a clean Interagents implementation inspired by the Ksymena calendar flow; it does not modify or depend on Ksymena, WooCommerce, a payment provider, user accounts, or an external calendar.
+Standalone WordPress plugin for free 20-minute interagents workflow-call bookings. It is a clean interagents implementation inspired by the Ksymena calendar flow; it does not modify or depend on Ksymena, WooCommerce, a payment provider, user accounts, or an external calendar.
 
 ## Install and use
 
-1. Copy `interagents-booking-calendar` to `wp-content/plugins/` and activate **Interagents Booking Calendar**.
+1. Copy `interagents-booking-calendar` to `wp-content/plugins/` and activate **interagents booking calendar**.
 2. Add `[interagents_booking_calendar]` to the booking section or page.
-3. Open **Interagents Bookings** in WordPress admin to review bookings or change notification email, days, hours, duration, start interval, notice, and horizon.
+3. Open **interagents bookings** in WordPress admin to review bookings or change notification email, days, hours, duration, start interval, notice, and horizon.
+
+When a page already supplies the booking headline and introduction, use `[interagents_booking_calendar embedded="1"]`. Embedded mode omits the duplicate plugin header and gives the calendar region its own accessible label.
 
 Safe activation defaults are Europe/Warsaw, Monday–Friday 10:00–16:00, 20-minute meetings starting every 30 minutes, 24-hour notice, 60-day horizon, and notifications to `hello@interagents.ai`. The final default start is 15:30, so every meeting ends before 16:00.
 

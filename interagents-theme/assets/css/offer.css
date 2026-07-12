@@ -1,12 +1,22 @@
 /* ==========================================================================
-   InterAgents.ai — Offer Builder
+   interagents.ai — Offer Builder
    Matches dark/gold theme from main.css
    ========================================================================== */
 
 /* Section */
 .section--offer {
-  padding-top: clamp(60px, 8vw, 100px);
+  padding-top: calc(var(--header-h) + clamp(40px, 6vw, 80px));
   padding-bottom: 40px;
+}
+
+.admin-bar .section--offer {
+  padding-top: calc(var(--header-h) + 46px + clamp(40px, 6vw, 80px));
+}
+
+@media (min-width: 783px) {
+  .admin-bar .section--offer {
+    padding-top: calc(var(--header-h) + 32px + clamp(40px, 6vw, 80px));
+  }
 }
 
 /* Product Cards Grid */
@@ -19,8 +29,14 @@
 
 @media (min-width: 768px) {
   .offer-products {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.offer-products:not(.offer-products--homepage) {
+  max-width: 960px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 /* Product Card */
@@ -94,6 +110,18 @@
   font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.02em;
+}
+
+.offer-product-level {
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .offer-product-label {
@@ -346,12 +374,6 @@
   box-shadow: 0 0 0 1px rgba(200, 150, 62, 0.15);
 }
 
-.offer-toggle-icon {
-  display: block;
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-
 .offer-toggle-title {
   display: block;
   font-weight: 700;
@@ -461,19 +483,15 @@
 }
 
 .offer-includes li {
-  position: relative;
-  padding: 6px 0 6px 24px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   font-size: 14px;
   color: var(--color-text);
   line-height: 1.5;
 }
 
-.offer-includes li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--color-accent-2);
-  font-weight: 700;
+.offer-includes li:last-child {
+  border-bottom: 0;
 }
 
 /* Actions */
@@ -489,7 +507,7 @@
   cursor: pointer !important;
 }
 
-/* Info Cards (InterCore / Complete) */
+/* intercore info card */
 .offer-info-card {
   border-radius: var(--radius-lg);
   background: rgba(22, 22, 42, 0.65);
@@ -663,12 +681,18 @@
 
 /* Mobile responsive */
 @media (max-width: 767px) {
-  .page-template-page-offer .section--offer {
+  .section--offer {
     padding-top: calc(var(--header-h) + 32px);
   }
 
+  .offer-products {
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .offer-product-card,
   .offer-products--homepage .offer-product-card {
-    padding: 26px 20px;
+    padding: 24px 18px;
   }
 
   .offer-product-topline {
@@ -707,5 +731,68 @@
 
   .offer-info-price-block {
     min-width: 100%;
+  }
+
+  .offer-toast {
+    width: calc(100% - 32px);
+    padding: 13px 16px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 390px) {
+  .section--offer {
+    padding-top: calc(var(--header-h) + 22px);
+  }
+
+  .offer-product-card,
+  .offer-products--homepage .offer-product-card {
+    padding: 22px 16px;
+  }
+
+  .offer-product-label {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .offer-configurator,
+  .offer-info-card {
+    padding: 24px 16px;
+  }
+
+  .offer-config-title,
+  .offer-info-lead {
+    margin-bottom: 24px;
+  }
+
+  .offer-toggle {
+    padding: 14px;
+  }
+
+  .offer-quote {
+    padding: 20px 16px;
+  }
+
+  .offer-quote-line {
+    align-items: flex-start;
+    gap: 4px 12px;
+    flex-wrap: wrap;
+  }
+
+  .offer-info-feature,
+  .offer-info-price-block {
+    min-width: 0;
+    padding: 18px 16px;
+  }
+
+  .offer-info-step {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .offer-info-step span {
+    width: 32px;
+    height: 32px;
   }
 }

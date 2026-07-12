@@ -31,6 +31,10 @@
   box-sizing: border-box;
 }
 
+.iabc-booking--embedded {
+  container-type: inline-size;
+}
+
 .iabc-booking__config,
 .iabc-booking__honeypot {
   position: absolute !important;
@@ -194,6 +198,10 @@
   transition: border-color 150ms ease, background 150ms ease, color 150ms ease, transform 150ms ease;
 }
 
+.iabc-booking__slot-start {
+  display: none;
+}
+
 .iabc-booking__slot:hover,
 .iabc-booking__slot.is-selected {
   border-color: var(--iabc-gold);
@@ -292,6 +300,14 @@
   color: var(--iabc-danger);
 }
 
+.iabc-booking__status--slots {
+  margin-top: 12px;
+}
+
+.iabc-booking__status--form {
+  margin-top: -4px;
+}
+
 .iabc-booking__success {
   max-width: 680px;
   margin: 0 auto;
@@ -305,19 +321,6 @@
 .iabc-booking__success[hidden],
 .iabc-booking__grid[hidden] {
   display: none;
-}
-
-.iabc-booking__success-mark {
-  display: grid;
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 16px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--iabc-gold);
-  color: #17120a;
-  font-size: 1.55rem;
-  font-weight: 900;
 }
 
 .iabc-booking__success h3 {
@@ -354,17 +357,95 @@
     grid-template-columns: minmax(300px, 0.85fr) minmax(380px, 1.15fr);
     align-items: start;
   }
+
+  /* Embedded widgets often live in a narrower page column than the viewport. */
+  .iabc-booking--embedded .iabc-booking__grid {
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+  }
 }
 
-@media (max-width: 420px) {
+@container (max-width: 599px) {
+  .iabc-booking--embedded .iabc-booking__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container (min-width: 600px) {
+  .iabc-booking--embedded .iabc-booking__grid {
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+}
+
+@media (max-width: 559px) {
   .iabc-booking {
+    padding: clamp(12px, 4vw, 18px);
     margin-inline: 0;
     border-radius: 16px;
   }
 
+  .iabc-booking__grid {
+    gap: 16px;
+  }
+
   .iabc-booking__schedule,
   .iabc-booking__form {
-    padding: 16px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .iabc-booking__date,
+  .iabc-booking__field input,
+  .iabc-booking__field textarea {
+    min-width: 0;
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .iabc-booking__slots {
+    gap: 8px;
+  }
+
+  .iabc-booking__slot {
+    min-width: 0;
+    padding-inline: 6px;
+    white-space: nowrap;
+  }
+
+  .iabc-booking__slot-interval {
+    display: none;
+  }
+
+  .iabc-booking__slot-start {
+    display: inline;
+  }
+
+  .iabc-booking__consent > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .iabc-booking__submit {
+    width: 100%;
+    padding-inline: 12px;
+    line-height: 1.25;
+  }
+}
+
+@media (min-width: 360px) and (max-width: 559px) {
+  .iabc-booking__slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 359px) {
+  .iabc-booking__slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .iabc-booking__slot {
+    padding-inline: 4px;
+    font-size: 0.84rem;
   }
 }
 

@@ -1,7 +1,7 @@
 /**
- * InterAgents.ai — Offer Builder
- * Pure client-side configurator for Interagents (powered by OpenClaw) pricing.
- * Intercore/Complete show "from" pricing with contact CTA.
+ * interagents.ai — Offer Builder
+ * Pure client-side configurator for interagents (powered by OpenClaw) pricing.
+ * intercore includes interagents and shows starting pricing with a contact CTA.
  */
 (function () {
   'use strict';
@@ -16,7 +16,7 @@
 
   // State
   var state = {
-    product: null,        // 'openclaw' | 'intercore' | 'complete'
+    product: null,        // 'openclaw' | 'intercore'
     hosting: 'mac',       // 'mac' | 'vps' | 'mini'
     managed: 'managed',   // 'self' | 'managed'
     api: 'included'       // 'own' | 'included'
@@ -26,7 +26,6 @@
   var productCards = document.querySelectorAll('.offer-product-card');
   var configurator = document.getElementById('offer-configurator');
   var intercoreInfo = document.getElementById('offer-intercore-info');
-  var completeInfo = document.getElementById('offer-complete-info');
   var apiGroup = document.getElementById('offer-api-group');
   var quoteSetup = document.getElementById('quote-setup');
   var quoteMonthly = document.getElementById('quote-monthly');
@@ -58,10 +57,59 @@
   // Read URL params into state
   function readUrlState() {
     var params = new URLSearchParams(window.location.search);
-    if (params.has('product')) state.product = params.get('product');
-    if (params.has('hosting')) state.hosting = params.get('hosting');
-    if (params.has('managed')) state.managed = params.get('managed');
-    if (params.has('api')) state.api = params.get('api');
+    var normalized = false;
+
+    if (params.has('product')) {
+      state.product = params.get('product');
+
+      // Preserve legacy shared links while keeping a two-product architecture.
+      if (state.product === 'complete') {
+        state.product = 'intercore';
+        params.set('product', 'intercore');
+        normalized = true;
+      }
+
+      if (state.product !== 'openclaw' && state.product !== 'intercore') {
+        state.product = null;
+        params.delete('product');
+        normalized = true;
+      }
+    }
+
+    if (params.has('hosting')) {
+      var hosting = params.get('hosting');
+      if (['mac', 'vps', 'mini'].indexOf(hosting) !== -1) {
+        state.hosting = hosting;
+      } else {
+        params.set('hosting', state.hosting);
+        normalized = true;
+      }
+    }
+
+    if (params.has('managed')) {
+      var managed = params.get('managed');
+      if (['self', 'managed'].indexOf(managed) !== -1) {
+        state.managed = managed;
+      } else {
+        params.set('managed', state.managed);
+        normalized = true;
+      }
+    }
+
+    if (params.has('api')) {
+      var api = params.get('api');
+      if (['own', 'included'].indexOf(api) !== -1) {
+        state.api = api;
+      } else {
+        params.set('api', state.api);
+        normalized = true;
+      }
+    }
+
+    if (normalized) {
+      var query = params.toString();
+      window.history.replaceState(null, '', window.location.pathname + (query ? '?' + query : '') + window.location.hash);
+    }
   }
 
   // Write state to URL (replace, no reload)
@@ -139,8 +187,6 @@
     configurator.setAttribute('aria-hidden', 'true');
     intercoreInfo.style.display = 'none';
     intercoreInfo.setAttribute('aria-hidden', 'true');
-    completeInfo.style.display = 'none';
-    completeInfo.setAttribute('aria-hidden', 'true');
 
     // Update product cards
     productCards.forEach(function (card) {
@@ -156,9 +202,6 @@
     } else if (state.product === 'intercore') {
       intercoreInfo.style.display = '';
       intercoreInfo.removeAttribute('aria-hidden');
-    } else if (state.product === 'complete') {
-      completeInfo.style.display = '';
-      completeInfo.removeAttribute('aria-hidden');
     }
   }
 
@@ -168,7 +211,9 @@
       var configKey = group.dataset.config;
       var current = state[configKey];
       group.querySelectorAll('.offer-toggle').forEach(function (btn) {
-        btn.classList.toggle('active', btn.dataset.value === current);
+        var isActive = btn.dataset.value === current;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
     });
 
@@ -229,10 +274,7 @@
   // Generate inquiry text for contact form
   function getInquiryText() {
     if (state.product === 'intercore') {
-      return 'Intercore — ' + (cfg.lang === 'pl' ? 'Zapytanie o wycenę' : 'Quote request');
-    }
-    if (state.product === 'complete') {
-      return 'Complete Package — ' + (cfg.lang === 'pl' ? 'Zapytanie o wycenę' : 'Quote request');
+      return 'intercore — ' + (cfg.lang === 'pl' ? 'Zapytanie o wycenę' : 'Quote request');
     }
 
     var calc = calcOpenClaw();
@@ -240,7 +282,7 @@
       : state.hosting === 'vps' ? labels.hostingVps
       : labels.hostingMini;
 
-    var parts = ['Interagents (OpenClaw)', hostingLabel];
+    var parts = ['interagents (OpenClaw)', hostingLabel];
     if (state.managed === 'managed') {
       parts.push(state.api === 'included' ? 'API included' : 'Own API');
     } else {
@@ -376,14 +418,10 @@
   var icInquireBtn = document.getElementById('intercore-inquire');
   if (icInquireBtn) icInquireBtn.addEventListener('click', handleInquire);
 
-  var cmpInquireBtn = document.getElementById('complete-inquire');
-  if (cmpInquireBtn) cmpInquireBtn.addEventListener('click', handleInquire);
-
   // Scroll to the active panel (configurator or info card)
   function scrollToActivePanel() {
     var target = state.product === 'openclaw' ? configurator
       : state.product === 'intercore' ? intercoreInfo
-      : state.product === 'complete' ? completeInfo
       : null;
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });

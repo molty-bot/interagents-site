@@ -19,14 +19,14 @@ final class IABC_Mailer {
 		$admin_headers[]  = 'Reply-To: ' . sanitize_text_field( $booking['customer_name'] ) . ' <' . sanitize_email( $booking['customer_email'] ) . '>';
 
 		if ( 'pl' === $lang ) {
-			$customer_subject = 'Twoje spotkanie z Interagents zostało zarezerwowane';
-			$customer_body    = "Cześć {$booking['customer_name']},\n\nTwoja bezpłatna, {$duration}-minutowa rozmowa została zarezerwowana.\nTermin: {$when}\n\nLink do spotkania i szczegóły dołączenia wyślemy osobno e-mailem. Nie musisz zakładać konta ani dokonywać płatności.\n\nDodaj termin do kalendarza (plik .ics):\n{$ics_url}\n\nDo zobaczenia,\nInteragents.ai";
-			$admin_subject    = 'Nowa rezerwacja Interagents: ' . $booking['customer_name'] . ' — ' . $start->format( 'Y-m-d H:i' );
+			$customer_subject = 'Twoje spotkanie z interagents zostało zarezerwowane';
+			$customer_body    = "Cześć {$booking['customer_name']},\n\nTwoja bezpłatna, {$duration}-minutowa rozmowa została zarezerwowana.\nTermin: {$when}\n\nLink do spotkania i szczegóły dołączenia wyślemy osobno e-mailem. Nie musisz zakładać konta ani dokonywać płatności.\n\nDodaj termin do kalendarza (plik .ics):\n{$ics_url}\n\nDo zobaczenia,\ninteragents.ai";
+			$admin_subject    = 'Nowa rezerwacja interagents: ' . $booking['customer_name'] . ' — ' . $start->format( 'Y-m-d H:i' );
 			$admin_body       = self::admin_body( $booking, $when, 'pl' );
 		} else {
-			$customer_subject = 'Your Interagents meeting is booked';
-			$customer_body    = "Hi {$booking['customer_name']},\n\nYour free {$duration}-minute workflow call is booked.\nTime: {$when}\n\nWe’ll email the meeting link and joining details separately. No account or payment is required.\n\nAdd it to your calendar (.ics file):\n{$ics_url}\n\nSee you soon,\nInteragents.ai";
-			$admin_subject    = 'New Interagents booking: ' . $booking['customer_name'] . ' — ' . $start->format( 'Y-m-d H:i' );
+			$customer_subject = 'Your interagents meeting is booked';
+			$customer_body    = "Hi {$booking['customer_name']},\n\nYour free {$duration}-minute workflow call is booked.\nTime: {$when}\n\nWe’ll email the meeting link and joining details separately. No account or payment is required.\n\nAdd it to your calendar (.ics file):\n{$ics_url}\n\nSee you soon,\ninteragents.ai";
+			$admin_subject    = 'New interagents booking: ' . $booking['customer_name'] . ' — ' . $start->format( 'Y-m-d H:i' );
 			$admin_body       = self::admin_body( $booking, $when, 'en' );
 		}
 
@@ -43,9 +43,9 @@ final class IABC_Mailer {
 	/** @param array<string,mixed> $booking @param string $when @param string $lang @return string */
 	private static function admin_body( array $booking, $when, $lang ) {
 		if ( 'pl' === $lang ) {
-			return "Nowa rezerwacja spotkania Interagents.\n\nTermin: {$when}\nImię i nazwisko: {$booking['customer_name']}\nE-mail służbowy: {$booking['customer_email']}\nFirma: {$booking['company']}\nTelefon: {$booking['phone']}\nWąskie gardło procesu: {$booking['workflow_bottleneck']}\n\nLink do spotkania i szczegóły należy wysłać klientowi osobno.";
+			return "Nowa rezerwacja spotkania interagents.\n\nTermin: {$when}\nImię i nazwisko: {$booking['customer_name']}\nE-mail służbowy: {$booking['customer_email']}\nFirma: {$booking['company']}\nTelefon: {$booking['phone']}\nWąskie gardło procesu: {$booking['workflow_bottleneck']}\n\nLink do spotkania i szczegóły należy wysłać klientowi osobno.";
 		}
 
-		return "New Interagents workflow-call booking.\n\nTime: {$when}\nName: {$booking['customer_name']}\nBusiness email: {$booking['customer_email']}\nCompany: {$booking['company']}\nPhone: {$booking['phone']}\nWorkflow bottleneck: {$booking['workflow_bottleneck']}\n\nSend the meeting link and joining details to the customer separately.";
+		return "New interagents workflow-call booking.\n\nTime: {$when}\nName: {$booking['customer_name']}\nBusiness email: {$booking['customer_email']}\nCompany: {$booking['company']}\nPhone: {$booking['phone']}\nWorkflow bottleneck: {$booking['workflow_bottleneck']}\n\nSend the meeting link and joining details to the customer separately.";
 	}
 }

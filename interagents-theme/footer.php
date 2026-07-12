@@ -3,8 +3,8 @@
 <footer class="site-footer" role="contentinfo">
 	<div class="container footer-inner">
 		<div class="footer-brand">
-			<a href="<?php echo esc_url( ia_localized_url( '/' ) ); ?>" class="site-title" rel="home">
-				inter<span class="brand-accent">agents</span>.ai
+			<a href="<?php echo esc_url( ia_localized_url( '/' ) ); ?>" class="brand-logo-link" rel="home">
+				<img class="brand-logo" src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/interagents-logo-transparent.png' ); ?>" width="1991" height="349" alt="interagents.ai">
 			</a>
 			<p class="footer-tagline"><?php echo esc_html( ia_t(
 				'Agenci AI do pracy. Systemy dla ludzi i AI.',
@@ -30,7 +30,7 @@
 		</div>
 
 		<div class="footer-bottom">
-			<p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> InterAgents.ai. <?php echo esc_html( ia_t(
+			<p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> interagents.ai. <?php echo esc_html( ia_t(
 				'Wszelkie prawa zastrzeżone.',
 				'All rights reserved.'
 			) ); ?></p>

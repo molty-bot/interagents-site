@@ -8,12 +8,33 @@ final class IABC_Public {
 	/** @return void */
 	public function init() {
 		add_shortcode( 'interagents_booking_calendar', array( $this, 'shortcode' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+	}
+
+	/**
+	 * Load assets before wp_head so hard-coded template shortcodes are styled
+	 * reliably. The files are small and the script exits immediately when no
+	 * booking widget is present.
+	 *
+	 * @return void
+	 */
+	public function enqueue_assets() {
+		wp_enqueue_style( 'iabc-booking', IABC_PLUGIN_URL . 'assets/css/interagents-booking-calendar.css', array(), IABC_VERSION );
+		wp_enqueue_script( 'iabc-booking', IABC_PLUGIN_URL . 'assets/js/interagents-booking-calendar.js', array(), IABC_VERSION, true );
 	}
 
 	/** @param array<string,mixed> $attributes @return string */
 	public function shortcode( $attributes = array() ) {
-		$attributes = shortcode_atts( array( 'lang' => '' ), $attributes, 'interagents_booking_calendar' );
+		$attributes = shortcode_atts(
+			array(
+				'lang'     => '',
+				'embedded' => '0',
+			),
+			$attributes,
+			'interagents_booking_calendar'
+		);
 		$lang       = self::detect_language( $attributes['lang'] );
+		$embedded   = in_array( strtolower( trim( (string) $attributes['embedded'] ) ), array( '1', 'true', 'yes', 'on' ), true );
 		$settings   = IABC_Plugin::settings();
 		$duration   = (int) $settings['duration_min'];
 		$timezone   = new DateTimeZone( 'Europe/Warsaw' );
@@ -22,9 +43,6 @@ final class IABC_Public {
 		$privacy    = get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/privacy-policy/' );
 		$privacy    = add_query_arg( 'lang', $lang, $privacy );
 		$widget_id  = wp_unique_id( 'iabc-booking-' );
-
-		wp_enqueue_style( 'iabc-booking', IABC_PLUGIN_URL . 'assets/css/interagents-booking-calendar.css', array(), IABC_VERSION );
-		wp_enqueue_script( 'iabc-booking', IABC_PLUGIN_URL . 'assets/js/interagents-booking-calendar.js', array(), IABC_VERSION, true );
 
 		$config = array(
 			'slotsUrl'      => rest_url( IABC_REST::NAMESPACE . '/slots' ),
@@ -39,13 +57,15 @@ final class IABC_Public {
 
 		ob_start();
 		?>
-		<section class="iabc-booking" id="<?php echo esc_attr( $widget_id ); ?>" data-iabc-booking aria-labelledby="<?php echo esc_attr( $widget_id ); ?>-title">
+		<section class="iabc-booking<?php echo $embedded ? ' iabc-booking--embedded' : ''; ?>" id="<?php echo esc_attr( $widget_id ); ?>" data-iabc-booking <?php if ( $embedded ) : ?>aria-label="<?php echo esc_attr( 'pl' === $lang ? 'Kalendarz spotkań interagents' : 'interagents meeting calendar' ); ?>"<?php else : ?>aria-labelledby="<?php echo esc_attr( $widget_id ); ?>-title"<?php endif; ?>>
 			<script type="application/json" class="iabc-booking__config"><?php echo wp_json_encode( $config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
-			<div class="iabc-booking__header">
-				<p class="iabc-booking__eyebrow"><?php echo esc_html( 'pl' === $lang ? sprintf( 'BEZPŁATNA ROZMOWA · %d MINUT', $duration ) : sprintf( 'FREE WORKFLOW CALL · %d MINUTES', $duration ) ); ?></p>
-				<h2 id="<?php echo esc_attr( $widget_id ); ?>-title"><?php echo esc_html( 'pl' === $lang ? 'Przynieś jeden proces, który co tydzień zabiera Ci czas.' : 'Bring us one workflow that wastes your week.' ); ?></h2>
-				<p><?php echo esc_html( 'pl' === $lang ? sprintf( 'W %d minut powiemy wprost, czy potrzebujesz Interagents, Intercore — czy żadnego z nich.', $duration ) : sprintf( 'In %d minutes, we’ll tell you whether you need Interagents, Intercore—or neither.', $duration ) ); ?></p>
-			</div>
+			<?php if ( ! $embedded ) : ?>
+				<div class="iabc-booking__header">
+					<p class="iabc-booking__eyebrow"><?php echo esc_html( 'pl' === $lang ? sprintf( 'BEZPŁATNA ROZMOWA · %d MINUT', $duration ) : sprintf( 'FREE WORKFLOW CALL · %d MINUTES', $duration ) ); ?></p>
+					<h2 id="<?php echo esc_attr( $widget_id ); ?>-title"><?php echo esc_html( 'pl' === $lang ? 'Przynieś jeden proces, który co tydzień zabiera Ci czas.' : 'Bring us one workflow that wastes your week.' ); ?></h2>
+					<p><?php echo esc_html( 'pl' === $lang ? sprintf( 'W %d minut powiemy, czy wystarczy interagents, proces potrzebuje intercore, czy AI nie jest odpowiedzią.', $duration ) : sprintf( 'In %d minutes, we’ll tell you whether interagents is enough, the workflow needs intercore, or AI is not the answer.', $duration ) ); ?></p>
+				</div>
+			<?php endif; ?>
 
 			<div class="iabc-booking__grid">
 				<div class="iabc-booking__schedule">
@@ -56,6 +76,7 @@ final class IABC_Public {
 
 					<div class="iabc-booking__step-heading iabc-booking__step-heading--slots"><span aria-hidden="true">2</span><h3><?php echo esc_html( 'pl' === $lang ? 'Wybierz godzinę' : 'Choose a time' ); ?></h3></div>
 					<div class="iabc-booking__slots" role="group" aria-label="<?php echo esc_attr( 'pl' === $lang ? 'Dostępne godziny' : 'Available times' ); ?>"></div>
+					<div class="iabc-booking__status iabc-booking__status--slots" role="status" aria-live="polite" tabindex="-1"></div>
 				</div>
 
 				<form class="iabc-booking__form" novalidate>
@@ -97,13 +118,12 @@ final class IABC_Public {
 					</label>
 
 					<button class="iabc-booking__submit" type="submit"><?php echo esc_html( 'pl' === $lang ? 'Zarezerwuj bezpłatną rozmowę' : 'Book the free workflow call' ); ?></button>
+					<div class="iabc-booking__status iabc-booking__status--form" role="status" aria-live="polite" tabindex="-1"></div>
 					<p class="iabc-booking__fineprint"><?php echo esc_html( 'pl' === $lang ? 'Bez konta. Bez płatności. Szczegóły spotkania otrzymasz e-mailem.' : 'No account. No payment. Meeting details arrive by email.' ); ?></p>
 				</form>
 			</div>
 
-			<div class="iabc-booking__status" role="status" aria-live="polite" tabindex="-1"></div>
 			<div class="iabc-booking__success" hidden tabindex="-1">
-				<p class="iabc-booking__success-mark" aria-hidden="true">✓</p>
 				<h3><?php echo esc_html( 'pl' === $lang ? 'Termin zarezerwowany.' : 'You’re booked.' ); ?></h3>
 				<p class="iabc-booking__success-when"></p>
 				<p><?php echo esc_html( 'pl' === $lang ? 'Termin jest zarezerwowany. Potwierdzenie, link do spotkania i szczegóły dołączenia wyślemy osobno e-mailem.' : 'Your time is reserved. We’ll email the confirmation, meeting link and joining details separately.' ); ?></p>

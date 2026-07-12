@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'INTERAGENTS_VERSION', '2.2.0' );
+define( 'INTERAGENTS_VERSION', '2.3.2' );
 
 /**
  * Language detection: cookie > Accept-Language header
@@ -118,8 +118,8 @@ function ia_front_page_document_title( $title ) {
 	}
 
 	return ia_t(
-		'Interagents i Intercore | Agenci AI oraz systemy dla ludzi i AI',
-		'Interagents & Intercore | AI workers and human + AI systems'
+		'interagents i intercore | Agenci AI oraz systemy dla ludzi i AI',
+		'interagents & intercore | AI workers and human + AI systems'
 	);
 }
 add_filter( 'pre_get_document_title', 'ia_front_page_document_title', 20 );
@@ -270,8 +270,8 @@ add_filter( 'wp_resource_hints', 'interagents_preconnect', 10, 2 );
 function ia_schema_jsonld() {
 	if ( ! is_front_page() ) return;
 	$lang = ia_get_lang();
-	$desc_pl = 'Interagents tworzy agentów AI do konkretnych zadań. Intercore łączy ludzi, agentów, dane i procesy w środowisko pracy szyte na miarę.';
-	$desc_en = 'Interagents creates custom AI workers for real business tasks. Intercore connects people, agents, data and processes in a tailor-made workspace.';
+	$desc_pl = 'interagents tworzy agentów AI do konkretnych zadań. intercore zawsze zawiera interagents i łączy ludzi, dane oraz procesy w środowisku pracy szytym na miarę.';
+	$desc_en = 'interagents creates custom AI workers for real business tasks. intercore always includes interagents and connects people, data and processes in a tailor-made workspace.';
 	$desc = $lang === 'pl' ? $desc_pl : $desc_en;
 	$url  = ia_localized_url( '/', '', array(), $lang );
 	?>
@@ -279,7 +279,7 @@ function ia_schema_jsonld() {
 	{
 		"@context": "https://schema.org",
 		"@type": "Organization",
-		"name": "InterAgents.ai",
+		"name": "interagents.ai",
 		"url": "<?php echo esc_url( $url ); ?>",
 		"logo": "https://interagents.ai/wp-content/themes/interagents-theme/assets/img/interagents-logo-transparent.png",
 		"description": "<?php echo esc_js( $desc ); ?>",
@@ -323,7 +323,7 @@ function ia_schema_jsonld() {
 	{
 		"@context": "https://schema.org",
 		"@type": "WebSite",
-		"name": "InterAgents.ai",
+		"name": "interagents.ai",
 		"url": "<?php echo esc_url( $url ); ?>",
 		"potentialAction": {
 			"@type": "SearchAction",
@@ -336,7 +336,7 @@ function ia_schema_jsonld() {
 	{
 		"@context": "https://schema.org",
 		"@type": "ProfessionalService",
-		"name": "InterAgents.ai",
+		"name": "interagents.ai",
 		"url": "<?php echo esc_url( $url ); ?>",
 		"description": "<?php echo esc_js( $desc ); ?>",
 		"priceRange": "$$",
@@ -361,11 +361,11 @@ function ia_og_meta() {
 	if ( ! is_front_page() ) return;
 	$lang = ia_get_lang();
 	$title = $lang === 'pl'
-		? 'Interagents i Intercore | Agenci AI oraz systemy dla ludzi i AI'
-		: 'Interagents & Intercore | AI workers and human + AI systems';
+		? 'interagents i intercore | Agenci AI oraz systemy dla ludzi i AI'
+		: 'interagents & intercore | AI workers and human + AI systems';
 	$desc = $lang === 'pl'
-		? 'Interagents tworzy agentów AI do konkretnych zadań. Intercore buduje środowiska pracy, w których ludzie i AI działają jako jeden system.'
-		: 'Interagents creates custom AI workers for real business tasks. Intercore builds tailor-made workspaces where people and AI operate as one system.';
+		? 'interagents tworzy agentów AI do konkretnych zadań. intercore zawsze zawiera interagents i łączy ludzi, dane oraz procesy w środowisku pracy szytym na miarę.'
+		: 'interagents creates custom AI workers for real business tasks. intercore always includes interagents and connects people, data and processes in a tailor-made workspace.';
 	$url = ia_localized_url( '/', '', array(), $lang );
 	$img = 'https://interagents.ai/wp-content/themes/interagents-theme/assets/img/interagents-og.png';
 	?>
@@ -376,7 +376,7 @@ function ia_og_meta() {
 	<meta property="og:image" content="<?php echo esc_url( $img ); ?>" />
 	<meta property="og:locale" content="<?php echo $lang === 'pl' ? 'pl_PL' : 'en_US'; ?>" />
 	<meta property="og:locale:alternate" content="<?php echo $lang === 'pl' ? 'en_US' : 'pl_PL'; ?>" />
-	<meta property="og:site_name" content="InterAgents.ai" />
+	<meta property="og:site_name" content="interagents.ai" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>" />
 	<meta name="twitter:description" content="<?php echo esc_attr( $desc ); ?>" />
@@ -563,7 +563,7 @@ function ia_handle_lead_notification( $request ) {
 	);
 	$headers = array(
 		'Reply-To: ' . $name . ' <' . $email . '>',
-		'From: InterAgents.ai <wordpress@interagents.ai>',
+		'From: interagents.ai <wordpress@interagents.ai>',
 	);
 	$sent    = (bool) wp_mail( 'adam@interagents.ai', $subject, $body, $headers );
 
@@ -572,8 +572,3 @@ function ia_handle_lead_notification( $request ) {
 		'message' => $sent ? 'Notification sent' : 'Failed to send',
 	);
 }
-
-/**
- * Load customizer
- */
-require_once get_template_directory() . '/inc/customizer.php';

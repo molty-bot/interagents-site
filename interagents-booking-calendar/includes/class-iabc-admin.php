@@ -15,8 +15,8 @@ final class IABC_Admin {
 	/** @return void */
 	public function menu() {
 		add_menu_page(
-			__( 'Interagents Bookings', 'interagents-booking-calendar' ),
-			__( 'Interagents Bookings', 'interagents-booking-calendar' ),
+			__( 'interagents bookings', 'interagents-booking-calendar' ),
+			__( 'interagents bookings', 'interagents-booking-calendar' ),
 			'manage_options',
 			'interagents-bookings',
 			array( $this, 'page' ),
@@ -60,7 +60,7 @@ final class IABC_Admin {
 		);
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Interagents Bookings', 'interagents-booking-calendar' ); ?></h1>
+			<h1><?php esc_html_e( 'interagents bookings', 'interagents-booking-calendar' ); ?></h1>
 			<?php settings_errors(); ?>
 			<?php if ( isset( $_GET['iabc_cancelled'] ) ) : ?>
 				<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'Booking cancelled and the time is available again. The customer was not emailed; notify them manually.', 'interagents-booking-calendar' ); ?></p></div>

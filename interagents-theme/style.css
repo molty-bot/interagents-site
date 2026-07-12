@@ -1,10 +1,10 @@
 /*
-Theme Name: InterAgents.ai
+Theme Name: interagents.ai
 Theme URI: https://interagents.ai/
-Author: InterAgents.ai
+Author: interagents.ai
 Author URI: https://interagents.ai/
-Description: Nowoczesny, ciemny motyw WordPress dla InterAgents.ai (agenci AI i integracje systemów).
-Version: 2.2.0
+Description: Nowoczesny, ciemny motyw WordPress dla interagents.ai (agenci AI i integracje systemów).
+Version: 2.3.2
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -193,6 +193,18 @@ a:hover {
   max-height: 44px;
 }
 
+.brand-logo-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+
+.brand-logo {
+  display: block;
+  width: 138px;
+  height: auto;
+}
+
 .site-title .brand-accent {
   background: linear-gradient(180deg, var(--color-accent-2), var(--color-accent));
   -webkit-background-clip: text;
@@ -232,44 +244,6 @@ a:hover {
 .nav-toggle__label {
   font-weight: 600;
   font-size: 14px;
-}
-
-.nav-toggle__icon {
-  position: relative;
-  width: 18px;
-  height: 12px;
-  display: inline-block;
-}
-
-.nav-toggle__icon::before,
-.nav-toggle__icon::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(232, 184, 94, 0.9), rgba(200, 150, 62, 0.9));
-  border-radius: 999px;
-  transition: transform var(--dur-2) var(--ease-spring), top var(--dur-2) var(--ease-spring),
-    opacity var(--dur-2) var(--ease-spring);
-}
-
-.nav-toggle__icon::before {
-  top: 2px;
-}
-
-.nav-toggle__icon::after {
-  top: 8px;
-}
-
-.site-nav.is-open .nav-toggle__icon::before {
-  top: 5px;
-  transform: rotate(45deg);
-}
-
-.site-nav.is-open .nav-toggle__icon::after {
-  top: 5px;
-  transform: rotate(-45deg);
 }
 
 .site-nav ul {
@@ -537,12 +511,12 @@ a:hover {
 
 @media (max-width: 519px) {
   .nav-toggle {
-    width: 44px;
-    padding: 0;
+    width: auto;
+    padding: 0 13px;
   }
 
   .nav-toggle__label {
-    display: none;
+    display: block;
   }
 
   .hero-actions {

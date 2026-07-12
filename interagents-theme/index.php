@@ -10,8 +10,8 @@ get_header();
 
 <section class="hero" id="hero">
 	<div class="container hero-inner">
-		<h1 class="reveal"><?php esc_html_e( 'InterAgents.ai', 'interagents' ); ?></h1>
-		<p class="reveal"><?php esc_html_e( 'Inteligentne rozwiązania AI dla Twojego biznesu.', 'interagents' ); ?></p>
+		<h1 class="reveal">interagents.ai</h1>
+		<p class="reveal"><?php echo esc_html( ia_t( 'Inteligentne rozwiązania AI dla Twojego biznesu.', 'Intelligent AI solutions for your business.' ) ); ?></p>
 	</div>
 </section>
 

@@ -37,7 +37,7 @@ final class IABC_ICS {
 		$lines = array(
 			'BEGIN:VCALENDAR',
 			'VERSION:2.0',
-			'PRODID:-//Interagents.ai//Booking Calendar//EN',
+			'PRODID:-//interagents.ai//Booking Calendar//EN',
 			'CALSCALE:GREGORIAN',
 			'METHOD:PUBLISH',
 			'BEGIN:VEVENT',
@@ -45,7 +45,7 @@ final class IABC_ICS {
 			'DTSTAMP:' . gmdate( 'Ymd\\THis\\Z' ),
 			'DTSTART:' . gmdate( 'Ymd\\THis\\Z', $start ),
 			'DTEND:' . gmdate( 'Ymd\\THis\\Z', $end ),
-			'SUMMARY:' . self::escape( 'Interagents workflow call' ),
+			'SUMMARY:' . self::escape( 'interagents workflow call' ),
 			'DESCRIPTION:' . self::escape( 'The meeting link and joining details will be sent separately by email.' ),
 			'LOCATION:' . self::escape( 'Details will follow by email' ),
 			'STATUS:CONFIRMED',

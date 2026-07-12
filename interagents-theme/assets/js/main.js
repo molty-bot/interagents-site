@@ -1,5 +1,5 @@
 /**
- * InterAgents.ai — Main JS
+ * interagents.ai — Main JS
  * Navigation toggle, sticky header, scroll reveal, language toggle
  */
 
@@ -84,24 +84,54 @@
   var menu = document.querySelector('.site-nav .menu');
 
   if (toggle && nav) {
+    var toggleLabel = toggle.querySelector('.nav-toggle__label');
+    var desktopNavQuery = window.matchMedia('(min-width: 960px)');
+
+    function setMobileNav(open) {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      if (toggleLabel) toggleLabel.textContent = open ? t('Zamknij', 'Close') : t('Menu', 'Menu');
+
+      if (menu) {
+        if (desktopNavQuery.matches || open) {
+          menu.removeAttribute('inert');
+          menu.removeAttribute('aria-hidden');
+        } else {
+          menu.setAttribute('inert', '');
+          menu.setAttribute('aria-hidden', 'true');
+        }
+      }
+    }
+
     toggle.addEventListener('click', function () {
-      var isOpen = nav.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
+      setMobileNav(!nav.classList.contains('is-open'));
     });
 
-    menu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
+    if (menu) {
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          setMobileNav(false);
+        });
       });
-    });
+    }
 
     document.addEventListener('click', function (e) {
       if (!nav.contains(e.target)) {
-        nav.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
+        setMobileNav(false);
       }
     });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        setMobileNav(false);
+        toggle.focus();
+      }
+    });
+
+    if (typeof desktopNavQuery.addEventListener === 'function') {
+      desktopNavQuery.addEventListener('change', function () { setMobileNav(false); });
+    }
+    setMobileNav(false);
   }
 
   // -- Accessible contact form modal --
@@ -294,6 +324,8 @@
   if (LANG === 'en') {
     var labelMap = {
       'Imię i nazwisko': 'Full name',
+      'Imię': 'First name',
+      'Nazwisko': 'Last name',
       'Nazwa firmy': 'Company name',
       'Telefon': 'Phone',
       'E-mail': 'E-mail',
@@ -309,7 +341,7 @@
 
     // Translate placeholders
     var placeholderMap = {
-      'Wpisz swoją wiadomość...': 'Type your message...'
+      'Wpisz swoją wiadomość...': 'Which workflow do you want to improve?'
     };
     document.querySelectorAll('.wpforms-form input, .wpforms-form textarea').forEach(function (el) {
       if (el.placeholder && placeholderMap[el.placeholder]) {
@@ -375,11 +407,10 @@
       success = document.createElement('div');
       success.className = 'modal-success';
       success.innerHTML =
-        '<div class="success-icon">✓</div>' +
-        '<h4>' + t('Dziękujemy za wiadomość!', 'Thank you for reaching out!') + '</h4>' +
+        '<h4>' + t('Mamy Twój opis.', 'We have your workflow.') + '</h4>' +
         '<p>' + t(
-          'Otrzymaliśmy Twoją wiadomość i odezwiemy się najszybciej jak to możliwe.',
-          'We\'ve received your message and will get back to you shortly.'
+          'Wrócimy z konkretnym następnym krokiem.',
+          'We\'ll reply with a concrete next step.'
         ) + '</p>';
       modal.querySelector('.modal-content').appendChild(success);
     }
@@ -450,12 +481,10 @@
   // Track which sections users actually see
   var sectionNames = {
     'hero': 'Hero',
-    'offer': 'Solutions',
+    'offer': 'Architecture',
     'book': 'Booking',
-    'uslugi': 'Services',
     'jak-dzialamy': 'How We Work',
-    'dlaczego-my': 'Why Us',
-    'kontakt': 'Final CTA',
+    'dlaczego-my': 'Outcomes',
     'footer': 'Footer'
   };
 

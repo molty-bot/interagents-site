@@ -22,7 +22,7 @@ $is_pl = $lang === 'pl';
 
     <section>
       <h2>1. Administrator danych</h2>
-      <p>Administratorem danych osobowych jest InterAgents.ai, Adam Borkowski, z siedzibą w Norwegii. Kontakt: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a></p>
+      <p>Administratorem danych osobowych jest interagents.ai, Adam Borkowski, z siedzibą w Norwegii. Kontakt: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a></p>
     </section>
 
     <section>
@@ -120,7 +120,7 @@ $is_pl = $lang === 'pl';
 
     <section>
       <h2>1. Data Controller</h2>
-      <p>The data controller is InterAgents.ai, Adam Borkowski, based in Norway. Contact: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a></p>
+      <p>The data controller is interagents.ai, Adam Borkowski, based in Norway. Contact: <a href="mailto:kontakt@interagents.ai">kontakt@interagents.ai</a></p>
     </section>
 
     <section>

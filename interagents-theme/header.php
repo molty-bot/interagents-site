@@ -21,30 +21,21 @@ $ia_booking_url = ia_localized_url( '/', 'book' );
 
 <header class="site-header" role="banner">
 	<div class="container header-inner">
-		<?php if ( has_custom_logo() ) : ?>
-			<div class="site-logo">
-				<a href="<?php echo esc_url( $ia_home_url ); ?>" class="custom-logo-link" rel="home">
-					<?php echo wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full', false, array( 'class' => 'custom-logo', 'alt' => get_bloginfo( 'name' ) ) ); ?>
-				</a>
-			</div>
-		<?php else : ?>
-			<a href="<?php echo esc_url( $ia_home_url ); ?>" class="site-title" rel="home">
-				inter<span class="brand-accent">agents</span>.ai
-			</a>
-		<?php endif; ?>
+		<a href="<?php echo esc_url( $ia_home_url ); ?>" class="brand-logo-link" rel="home">
+			<img class="brand-logo" src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/interagents-logo-transparent.png' ); ?>" width="1991" height="349" alt="interagents.ai">
+		</a>
 
 		<nav class="site-nav" role="navigation" aria-label="<?php echo esc_attr( ia_t( 'Menu główne', 'Main menu' ) ); ?>">
 			<button type="button" class="lang-toggle" id="lang-toggle" aria-label="<?php echo esc_attr( ia_t( 'Przełącz na angielski', 'Switch to Polish' ) ); ?>" title="<?php echo esc_attr( ia_t( 'English', 'Polski' ) ); ?>">
-				<?php echo ia_get_lang() === 'pl' ? '🇬🇧' : '🇵🇱'; ?>
+				<?php echo esc_html( ia_get_lang() === 'pl' ? 'EN' : 'PL' ); ?>
 			</button>
 			<button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="<?php echo esc_attr( ia_t( 'Menu', 'Menu' ) ); ?>">
 				<span class="nav-toggle__label"><?php echo esc_html( ia_t( 'Menu', 'Menu' ) ); ?></span>
-				<span class="nav-toggle__icon" aria-hidden="true"></span>
 			</button>
 			<ul id="primary-menu" class="menu">
 				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'offer' ) ); ?>"><?php echo esc_html( ia_t( 'Rozwiązania', 'Solutions' ) ); ?></a></li>
 				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'jak-dzialamy' ) ); ?>"><?php echo esc_html( ia_t( 'Jak działamy', 'How we work' ) ); ?></a></li>
-				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'dlaczego-my' ) ); ?>"><?php echo esc_html( ia_t( 'Dlaczego my', 'Why us' ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( ia_localized_url( '/', 'dlaczego-my' ) ); ?>"><?php echo esc_html( ia_t( 'Efekty', 'Outcomes' ) ); ?></a></li>
 				<li><a href="<?php echo esc_url( ia_localized_url( '/offer/' ) ); ?>"><?php echo esc_html( ia_t( 'Pełna oferta', 'Full offer' ) ); ?></a></li>
 				<li><a href="<?php echo esc_url( $ia_booking_url ); ?>" class="btn btn--primary" data-booking-cta="header"><?php echo esc_html( ia_t( 'Umów rozmowę', 'Book a meeting' ) ); ?></a></li>
 			</ul>

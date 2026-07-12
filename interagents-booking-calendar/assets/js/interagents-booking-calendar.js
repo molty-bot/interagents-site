@@ -11,12 +11,21 @@
     }
   }
 
-  function setStatus(widget, message, isError) {
-    var status = widget.querySelector('.iabc-booking__status');
+  function statusElement(widget, area) {
+    return widget.querySelector('.iabc-booking__status--' + area);
+  }
+
+  function setStatus(widget, area, message, isError) {
+    var status = statusElement(widget, area);
     if (!status) return;
     status.textContent = message || '';
     status.classList.toggle('is-error', Boolean(isError));
     status.classList.toggle('is-visible', Boolean(message));
+  }
+
+  function focusStatus(widget, area) {
+    var status = statusElement(widget, area);
+    if (status) status.focus();
   }
 
   function clearSlots(widget) {
@@ -37,7 +46,7 @@
 
     clearSlots(widget);
     slots.setAttribute('aria-busy', 'true');
-    setStatus(widget, config.strings.loading, false);
+    setStatus(widget, 'slots', config.strings.loading, false);
 
     try {
       var url = new URL(config.slotsUrl, window.location.href);
@@ -52,18 +61,30 @@
 
       var available = Array.isArray(data.slots) ? data.slots : [];
       if (!available.length) {
-        setStatus(widget, config.strings.noSlots, false);
+        setStatus(widget, 'slots', config.strings.noSlots, false);
         return;
       }
 
-      setStatus(widget, '', false);
+      setStatus(widget, 'slots', '', false);
       available.forEach(function (slot) {
         var button = document.createElement('button');
+        var fullLabel = String(slot.label || '');
+        var startLabel = fullLabel.split('–')[0] || fullLabel;
+        var interval = document.createElement('span');
+        var start = document.createElement('span');
         button.type = 'button';
         button.className = 'iabc-booking__slot';
-        button.textContent = String(slot.label || '');
         button.dataset.start = String(slot.start || '');
+        button.dataset.label = fullLabel;
         button.setAttribute('aria-pressed', 'false');
+        button.setAttribute('aria-label', fullLabel);
+        interval.className = 'iabc-booking__slot-interval';
+        interval.textContent = fullLabel;
+        start.className = 'iabc-booking__slot-start';
+        start.textContent = startLabel;
+        start.setAttribute('aria-hidden', 'true');
+        button.appendChild(interval);
+        button.appendChild(start);
         button.addEventListener('click', function () {
           slots.querySelectorAll('.iabc-booking__slot').forEach(function (candidate) {
             candidate.classList.remove('is-selected');
@@ -72,13 +93,14 @@
           button.classList.add('is-selected');
           button.setAttribute('aria-pressed', 'true');
           widget.querySelector('input[name="start"]').value = button.dataset.start;
-          setStatus(widget, config.strings.slotSelected + ': ' + button.textContent, false);
+          setStatus(widget, 'slots', config.strings.slotSelected + ': ' + button.dataset.label, false);
+          setStatus(widget, 'form', '', false);
         });
         slots.appendChild(button);
       });
     } catch (error) {
       if (widget._iabcSlotsRequestId !== requestId || date.value !== requestedDate) return;
-      setStatus(widget, error.message || config.strings.loadError, true);
+      setStatus(widget, 'slots', error.message || config.strings.loadError, true);
     } finally {
       if (widget._iabcSlotsRequestId === requestId) slots.removeAttribute('aria-busy');
     }
@@ -90,12 +112,13 @@
     var start = form.querySelector('input[name="start"]');
 
     if (!start || !start.value) {
-      setStatus(widget, config.strings.chooseSlot, true);
+      setStatus(widget, 'slots', config.strings.chooseSlot, true);
+      focusStatus(widget, 'slots');
       return;
     }
     if (!form.checkValidity()) {
       form.reportValidity();
-      setStatus(widget, config.strings.invalidFields, true);
+      setStatus(widget, 'form', config.strings.invalidFields, true);
       return;
     }
 
@@ -107,7 +130,7 @@
 
     submit.disabled = true;
     form.setAttribute('aria-busy', 'true');
-    setStatus(widget, config.strings.submitting, false);
+    setStatus(widget, 'form', config.strings.submitting, false);
 
     try {
       var response = await fetch(config.bookUrl, {
@@ -128,7 +151,8 @@
       var when = widget.querySelector('.iabc-booking__success-when');
       var ics = widget.querySelector('.iabc-booking__ics');
       if (grid) grid.hidden = true;
-      setStatus(widget, '', false);
+      setStatus(widget, 'slots', '', false);
+      setStatus(widget, 'form', '', false);
       if (when) when.textContent = data.when || '';
       if (ics) ics.href = data.ics_url || '#';
       if (success) {
@@ -140,10 +164,14 @@
     } catch (error) {
       var message = error.message || config.strings.genericError;
       submit.disabled = false;
-      if (error.status === 409) await loadSlots(widget, config);
-      setStatus(widget, message, true);
-      var status = widget.querySelector('.iabc-booking__status');
-      if (status) status.focus();
+      if (error.status === 409) {
+        await loadSlots(widget, config);
+        setStatus(widget, 'slots', message, true);
+        focusStatus(widget, 'slots');
+      } else {
+        setStatus(widget, 'form', message, true);
+        focusStatus(widget, 'form');
+      }
     } finally {
       form.removeAttribute('aria-busy');
     }
