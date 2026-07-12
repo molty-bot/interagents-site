@@ -91,7 +91,7 @@ The hero comparison in `/tmp/interagents-design-qa-focused-hero.png` verifies he
 
 ## Production verification
 
-- Deployed release: theme `2.3.2` and booking calendar `1.1.2` at `https://interagents.ai`.
+- Deployed release: theme `2.3.3` and booking calendar `1.1.2` at `https://interagents.ai`.
 - Polish production homepage at 390px: document and body scroll widths equal the 390px viewport, the embedded booking widget appears once without a duplicate header, and booking slots form three equal columns.
 - Polish production homepage at 320px: document and body scroll widths equal the 320px viewport, booking slots switch to two columns, and the closed navigation has both `inert` and `aria-hidden`.
 - English production homepage at 390px: copy, metadata, language switcher, booking heading, and three-column slot grid render correctly with no horizontal overflow.
@@ -107,5 +107,34 @@ No actionable P0, P1, or P2 findings remain.
 ## Follow-up polish
 
 - P3: the selected concept uses a month-grid calendar while the production booking plugin uses a date field plus time slots. The production interaction is more compact on mobile and was retained intentionally.
+
+## Desktop feedback iteration — theme 2.3.3
+
+- Source visual truth: `/var/folders/84/q7j29sc55ml3rx1jgs5yshlr0000gn/T/codex-clipboard-1aac45ed-a7b2-42a8-a719-09a76232a896.png`.
+- Browser-rendered implementation evidence:
+  - Hero: `/tmp/interagents-desktop-style-fix-hero.png`.
+  - Product cards: `/tmp/interagents-desktop-style-fix-cards.png`.
+  - Mobile regression: `/tmp/interagents-mobile-regression-2.3.3.png`.
+- Combined full-view and focused comparison: `/tmp/interagents-desktop-style-fix-comparison.png`.
+- Viewport/state: Polish homepage, desktop source at 1300 × 1122 and browser content viewport at 1300 × 1068; default hero state and architecture section scrolled into view after reveal animation completed.
+
+### Comparison history
+
+1. Earlier finding — P2: the white and gold hero headline lines touched visually because the two block spans had no separation and the heading used a `0.94` line height.
+   - Fix: added a desktop-only `0.14em` margin before the second headline line.
+   - Post-fix evidence: the measured inter-line gap is 10.08px at 1300px and 9.78px at the 760px desktop breakpoint; the focused hero frame in the combined comparison shows clear separation without changing the mobile headline.
+
+2. Earlier finding — P2: `interagents` used only horizontal divider lines while `intercore` used a padded, rounded dark card, so the two product levels did not share the same visual system.
+   - Fix: at desktop widths, `interagents` now receives the same 48px padding, 18px radius, dark surface, and full card geometry as `intercore`. Its neutral border remains intentionally quieter than the gold `intercore` border so the inclusion hierarchy is still visible.
+   - Post-fix evidence: at 1300px both cards measure 609.625px high with identical padding, radius, and background. The focused architecture frame in the combined comparison shows the corrected parity.
+
+### Regression checks
+
+- At 390px, the desktop-only rules do not apply: the hero gap remains unchanged, `interagents` retains the compact divider treatment, and document/body scroll widths equal the viewport.
+- At 760px and 1300px, document width equals viewport width and the corrected desktop styles apply without overflow.
+- No browser console errors or warnings were recorded.
+- Fonts/typography, color tokens, logo/image quality, and copy remain unchanged; only the requested spacing and desktop card surface were adjusted.
+- Live production evidence: `/tmp/interagents-live-2.3.3-hero.png` and `/tmp/interagents-live-2.3.3-cards.png`.
+- Production serves `style.css` and `main.css` with cache version `2.3.3`; the live 1300px metrics match local measurements, the live 390px mobile rules remain unchanged, and production console diagnostics contain no errors or warnings.
 
 final result: passed
