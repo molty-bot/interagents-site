@@ -49,6 +49,7 @@ final class IABC_REST {
 	public function slots( WP_REST_Request $request ) {
 		$lang  = self::language( $request->get_param( 'lang' ) );
 		$slots = IABC_Bookings::day_slots( (string) $request->get_param( 'date' ) );
+		$dates = IABC_Public::calendar_dates( IABC_Plugin::settings() );
 		if ( is_wp_error( $slots ) ) {
 			return self::error( 'invalid_date', $lang, 400 );
 		}
@@ -66,13 +67,16 @@ final class IABC_REST {
 
 		$response = new WP_REST_Response(
 			array(
-				'date'          => (string) $request->get_param( 'date' ),
-				'timezone'      => 'Europe/Warsaw',
-				'slots'         => $available,
+				'date'           => (string) $request->get_param( 'date' ),
+				'timezone'       => 'Europe/Warsaw',
+				'slots'          => $available,
+				'min_date'       => $dates['min_date'],
+				'max_date'       => $dates['max_date'],
+				'suggested_date' => $dates['suggested_date'],
 				// Refresh the public form token through this uncached endpoint. This
 				// avoids stale nonces from full-page caches and works for logged-in
 				// administrators whose REST request is intentionally anonymous.
-				'booking_nonce' => wp_create_nonce( 'iabc_public_booking' ),
+				'booking_nonce'  => wp_create_nonce( 'iabc_public_booking' ),
 			),
 			200
 		);
@@ -109,6 +113,10 @@ final class IABC_REST {
 		}
 		if ( ! $email || ! is_email( $email ) ) {
 			return self::error( 'email_invalid', $lang, 400 );
+		}
+		$phone_digits = preg_replace( '/\D+/', '', $phone );
+		if ( '' === $phone || ! is_string( $phone_digits ) || strlen( $phone_digits ) < 6 ) {
+			return self::error( 'phone_required', $lang, 400 );
 		}
 		if ( ! $acknowledged ) {
 			return self::error( 'consent_required', $lang, 400 );
@@ -163,8 +171,9 @@ final class IABC_REST {
 			'invalid_request'  => array( 'en' => 'We could not process this request.', 'pl' => 'Nie mogliśmy przetworzyć tego zgłoszenia.' ),
 			'name_required'    => array( 'en' => 'Enter your name.', 'pl' => 'Podaj imię i nazwisko.' ),
 			'email_invalid'    => array( 'en' => 'Enter a valid business email.', 'pl' => 'Podaj prawidłowy e-mail służbowy.' ),
+			'phone_required'   => array( 'en' => 'Enter a valid phone number.', 'pl' => 'Podaj prawidłowy numer telefonu.' ),
 			'consent_required' => array( 'en' => 'Privacy policy acknowledgement is required.', 'pl' => 'Potwierdzenie zapoznania się z polityką prywatności jest wymagane.' ),
-			'slot_taken'       => array( 'en' => 'That time was just booked. Choose another slot.', 'pl' => 'Ten termin został właśnie zajęty. Wybierz inny.' ),
+			'slot_taken'       => array( 'en' => 'That time was just booked.', 'pl' => 'Ten termin został właśnie zajęty.' ),
 			'busy'             => array( 'en' => 'Booking is temporarily busy. Please try again.', 'pl' => 'Rezerwacja jest chwilowo zajęta. Spróbuj ponownie.' ),
 			'booking_failed'   => array( 'en' => 'We could not save the booking. Please try again.', 'pl' => 'Nie udało się zapisać rezerwacji. Spróbuj ponownie.' ),
 		);

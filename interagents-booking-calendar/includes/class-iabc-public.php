@@ -37,9 +37,7 @@ final class IABC_Public {
 		$embedded   = in_array( strtolower( trim( (string) $attributes['embedded'] ) ), array( '1', 'true', 'yes', 'on' ), true );
 		$settings   = IABC_Plugin::settings();
 		$duration   = (int) $settings['duration_min'];
-		$timezone   = new DateTimeZone( 'Europe/Warsaw' );
-		$today      = new DateTimeImmutable( 'today', $timezone );
-		$suggested  = self::suggested_date( $today, $settings );
+		$dates      = self::calendar_dates( $settings );
 		$privacy    = get_privacy_policy_url() ? get_privacy_policy_url() : home_url( '/privacy-policy/' );
 		$privacy    = add_query_arg( 'lang', $lang, $privacy );
 		$widget_id  = wp_unique_id( 'iabc-booking-' );
@@ -50,9 +48,9 @@ final class IABC_Public {
 			'nonce'         => wp_create_nonce( 'iabc_public_booking' ),
 			'lang'          => $lang,
 			'weekdays'      => array_values( array_map( 'absint', (array) $settings['weekdays'] ) ),
-			'minDate'       => $today->format( 'Y-m-d' ),
-			'maxDate'       => $today->modify( '+' . (int) $settings['horizon_days'] . ' days' )->format( 'Y-m-d' ),
-			'suggestedDate' => $suggested,
+			'minDate'       => $dates['min_date'],
+			'maxDate'       => $dates['max_date'],
+			'suggestedDate' => $dates['suggested_date'],
 			'strings'       => self::strings( $lang ),
 		);
 
@@ -74,9 +72,9 @@ final class IABC_Public {
 					<div class="iabc-booking__calendar" data-iabc-calendar hidden></div>
 					<div class="iabc-booking__date-fallback" data-iabc-date-fallback>
 						<label class="iabc-booking__label" for="<?php echo esc_attr( $widget_id ); ?>-date"><?php echo esc_html( 'pl' === $lang ? 'Data spotkania' : 'Meeting date' ); ?></label>
-						<input class="iabc-booking__date" id="<?php echo esc_attr( $widget_id ); ?>-date" type="date" min="<?php echo esc_attr( $config['minDate'] ); ?>" max="<?php echo esc_attr( $config['maxDate'] ); ?>" value="<?php echo esc_attr( $suggested ); ?>">
+						<input class="iabc-booking__date" id="<?php echo esc_attr( $widget_id ); ?>-date" type="date" min="<?php echo esc_attr( $config['minDate'] ); ?>" max="<?php echo esc_attr( $config['maxDate'] ); ?>" value="<?php echo esc_attr( $dates['suggested_date'] ); ?>">
 					</div>
-					<p class="iabc-booking__hint"><?php echo esc_html( 'pl' === $lang ? sprintf( 'Dostępne dni robocze, %s–%s · strefa Europe/Warsaw · minimum %d h wcześniej', $settings['work_start'], $settings['work_end'], (int) $settings['notice_hours'] ) : sprintf( 'Available working days, %s–%s · Europe/Warsaw · at least %d hours ahead', $settings['work_start'], $settings['work_end'], (int) $settings['notice_hours'] ) ); ?></p>
+					<p class="iabc-booking__hint"><?php echo esc_html( self::availability_hint( $lang, $settings ) ); ?></p>
 
 					<div class="iabc-booking__step-heading iabc-booking__step-heading--slots"><span aria-hidden="true">02</span><h3><?php echo esc_html( 'pl' === $lang ? 'Wybierz godzinę' : 'Choose a time' ); ?></h3></div>
 					<div class="iabc-booking__slots" role="group" aria-label="<?php echo esc_attr( 'pl' === $lang ? 'Dostępne godziny' : 'Available times' ); ?>"></div>
@@ -102,12 +100,12 @@ final class IABC_Public {
 							<input id="<?php echo esc_attr( $widget_id ); ?>-company" name="company" type="text" maxlength="190" autocomplete="organization">
 						</div>
 						<div class="iabc-booking__field">
-							<label for="<?php echo esc_attr( $widget_id ); ?>-phone"><?php echo esc_html( 'pl' === $lang ? 'Telefon' : 'Phone' ); ?> <small><?php echo esc_html( 'pl' === $lang ? '(opcjonalnie)' : '(optional)' ); ?></small></label>
-							<input id="<?php echo esc_attr( $widget_id ); ?>-phone" name="phone" type="tel" maxlength="50" autocomplete="tel" inputmode="tel">
+							<label for="<?php echo esc_attr( $widget_id ); ?>-phone"><?php echo esc_html( 'pl' === $lang ? 'Telefon' : 'Phone' ); ?> <span aria-hidden="true">*</span></label>
+							<input id="<?php echo esc_attr( $widget_id ); ?>-phone" name="phone" type="tel" minlength="6" maxlength="50" autocomplete="tel" inputmode="tel" required>
 						</div>
 					</div>
 					<div class="iabc-booking__field">
-						<label for="<?php echo esc_attr( $widget_id ); ?>-bottleneck"><?php echo esc_html( 'pl' === $lang ? 'Co dziś blokuje ten proces?' : 'What blocks this workflow today?' ); ?> <small><?php echo esc_html( 'pl' === $lang ? '(opcjonalnie)' : '(optional)' ); ?></small></label>
+						<label for="<?php echo esc_attr( $widget_id ); ?>-bottleneck"><?php echo esc_html( 'pl' === $lang ? 'Wiadomość' : 'Message' ); ?> <small><?php echo esc_html( 'pl' === $lang ? '(opcjonalnie)' : '(optional)' ); ?></small></label>
 						<textarea id="<?php echo esc_attr( $widget_id ); ?>-bottleneck" name="bottleneck" maxlength="3000" rows="3"></textarea>
 					</div>
 
@@ -156,13 +154,28 @@ final class IABC_Public {
 		return 0 === strpos( strtolower( determine_locale() ), 'pl' ) ? 'pl' : 'en';
 	}
 
+	/** @param array<string,mixed> $settings @return array<string,string> */
+	public static function calendar_dates( array $settings ) {
+		$timezone    = new DateTimeZone( 'Europe/Warsaw' );
+		$today       = new DateTimeImmutable( 'today', $timezone );
+		$minimum_day = $today->modify( '+' . max( 0, (int) $settings['min_booking_days'] ) . ' days' );
+
+		return array(
+			'min_date'       => $minimum_day->format( 'Y-m-d' ),
+			'max_date'       => $today->modify( '+' . (int) $settings['horizon_days'] . ' days' )->format( 'Y-m-d' ),
+			'suggested_date' => self::suggested_date( $today, $settings ),
+		);
+	}
+
 	/** @param DateTimeImmutable $today @param array<string,mixed> $settings @return string */
 	private static function suggested_date( DateTimeImmutable $today, array $settings ) {
 		$now          = new DateTimeImmutable( 'now', new DateTimeZone( 'Europe/Warsaw' ) );
 		$horizon_days = (int) $settings['horizon_days'];
+		$minimum_days = max( 0, (int) $settings['min_booking_days'] );
+		$first_day    = $today->modify( '+' . $minimum_days . ' days' );
 		$range_end    = $today->modify( '+' . ( $horizon_days + 1 ) . ' days' );
-		$busy         = IABC_Bookings::overlaps_for_range( $today->getTimestamp(), $range_end->getTimestamp() );
-		for ( $offset = 0; $offset <= $horizon_days; $offset++ ) {
+		$busy         = IABC_Bookings::overlaps_for_range( $first_day->getTimestamp(), $range_end->getTimestamp() );
+		for ( $offset = $minimum_days; $offset <= $horizon_days; $offset++ ) {
 			$day   = $today->modify( '+' . $offset . ' days' );
 			$day_end = $day->modify( '+1 day' );
 			$day_busy = array_values(
@@ -180,42 +193,62 @@ final class IABC_Public {
 				}
 			}
 		}
-		return $today->format( 'Y-m-d' );
+		return $first_day->format( 'Y-m-d' );
+	}
+
+	/** @param string $lang @param array<string,mixed> $settings @return string */
+	private static function availability_hint( $lang, array $settings ) {
+		$minimum_days = max( 0, (int) $settings['min_booking_days'] );
+		if ( 'pl' === $lang ) {
+			$notice = 1 === $minimum_days
+				? 'najwcześniej od następnego dnia'
+				: sprintf( 'minimum %d dni kalendarzowych wcześniej', $minimum_days );
+			return sprintf( 'Dostępne dni robocze, %s–%s · strefa Europe/Warsaw · %s', $settings['work_start'], $settings['work_end'], $notice );
+		}
+
+		$notice = 1 === $minimum_days
+			? 'from the next calendar day'
+			: sprintf( 'at least %d calendar days ahead', $minimum_days );
+		return sprintf( 'Available working days, %s–%s · Europe/Warsaw · %s', $settings['work_start'], $settings['work_end'], $notice );
 	}
 
 	/** @param string $lang @return array<string,string> */
 	private static function strings( $lang ) {
 		if ( 'pl' === $lang ) {
 			return array(
-				'calendarLabel' => 'Wybierz datę spotkania',
-				'previousMonth' => 'Poprzedni miesiąc',
-				'nextMonth'     => 'Następny miesiąc',
-				'previousShort' => 'Wstecz',
-				'nextShort'     => 'Dalej',
-				'loading'       => 'Sprawdzamy dostępne godziny…',
-				'noSlots'       => 'Tego dnia nie ma wolnych terminów. Wybierz inny dzień roboczy.',
-				'chooseSlot'    => 'Najpierw wybierz godzinę spotkania.',
-				'loadError'     => 'Nie udało się pobrać terminów. Spróbuj ponownie.',
-				'submitting'    => 'Rezerwujemy termin…',
-				'genericError'  => 'Coś poszło nie tak. Spróbuj ponownie.',
-				'slotSelected'  => 'Wybrano godzinę',
-				'invalidFields' => 'Uzupełnij wymagane pola i potwierdź zapoznanie się z polityką prywatności.',
+				'calendarLabel'       => 'Wybierz datę spotkania',
+				'previousMonth'       => 'Poprzedni miesiąc',
+				'nextMonth'           => 'Następny miesiąc',
+				'previousShort'       => 'Wstecz',
+				'nextShort'           => 'Dalej',
+				'loading'             => 'Sprawdzamy dostępne godziny…',
+				'noSlots'             => 'Tego dnia nie ma wolnych terminów. Wybierz inny dzień roboczy.',
+				'chooseSlot'          => 'Najpierw wybierz godzinę spotkania.',
+				'loadError'           => 'Nie udało się pobrać terminów. Spróbuj ponownie.',
+				'submitting'          => 'Rezerwujemy termin…',
+				'genericError'        => 'Coś poszło nie tak. Spróbuj ponownie.',
+				'slotSelected'        => 'Wybrano godzinę',
+				'replacementSelected' => 'Wybraliśmy kolejny dostępny termin',
+				'invalidFields'       => 'Uzupełnij wymagane pola i potwierdź zapoznanie się z polityką prywatności.',
+				'invalidPhone'        => 'Podaj numer telefonu zawierający co najmniej 6 cyfr.',
 			);
 		}
 		return array(
-			'calendarLabel' => 'Choose a meeting date',
-			'previousMonth' => 'Previous month',
-			'nextMonth'     => 'Next month',
-			'previousShort' => 'Previous',
-			'nextShort'     => 'Next',
-			'loading'       => 'Checking available times…',
-			'noSlots'       => 'No times are available that day. Choose another working day.',
-			'chooseSlot'    => 'Choose a meeting time first.',
-			'loadError'     => 'Could not load available times. Please try again.',
-			'submitting'    => 'Booking your time…',
-			'genericError'  => 'Something went wrong. Please try again.',
-			'slotSelected'  => 'Selected time',
-			'invalidFields' => 'Complete the required fields and confirm that you have read the privacy policy.',
+			'calendarLabel'       => 'Choose a meeting date',
+			'previousMonth'       => 'Previous month',
+			'nextMonth'           => 'Next month',
+			'previousShort'       => 'Previous',
+			'nextShort'           => 'Next',
+			'loading'             => 'Checking available times…',
+			'noSlots'             => 'No times are available that day. Choose another working day.',
+			'chooseSlot'          => 'Choose a meeting time first.',
+			'loadError'           => 'Could not load available times. Please try again.',
+			'submitting'          => 'Booking your time…',
+			'genericError'        => 'Something went wrong. Please try again.',
+			'slotSelected'        => 'Selected time',
+			'replacementSelected' => 'We selected the next available time',
+			'invalidFields'       => 'Complete the required fields and confirm that you have read the privacy policy.',
+			'invalidPhone'        => 'Enter a phone number containing at least 6 digits.',
 		);
 	}
 }

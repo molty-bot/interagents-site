@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "theme": {
+    "slug": "interagents-theme",
+    "root": "interagents-theme",
+    "files": [
+      "front-page.php",
+      "functions.php",
+      "page-privacy-policy.php",
+      "style.css"
+    ]
+  }
+}

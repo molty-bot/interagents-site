@@ -25,10 +25,11 @@ final class IABC_Plugin {
 		return array(
 			'notification_email' => 'hello@interagents.ai',
 			'work_start'         => '10:00',
-			'work_end'           => '16:00',
-			'duration_min'       => 20,
+			'work_end'           => '15:00',
+			'duration_min'       => 30,
 			'step_min'           => 30,
-			'notice_hours'       => 24,
+			'notice_hours'       => 0,
+			'min_booking_days'   => 1,
 			'horizon_days'       => 60,
 			'retention_months'   => 12,
 			'weekdays'           => array( 1, 2, 3, 4, 5 ),
@@ -47,6 +48,27 @@ final class IABC_Plugin {
 		$settings['timezone'] = 'Europe/Warsaw';
 		$settings['retention_months'] = 12;
 		return $settings;
+	}
+
+	/** @param array<string,mixed> $settings @param string $installed_version @return array<string,mixed> */
+	public static function migrate_settings( array $settings, $installed_version ) {
+		if ( version_compare( (string) $installed_version, '1.3.0', '>=' ) ) {
+			return $settings;
+		}
+
+		// Version 1.3.0 changes the public offer itself. Apply it once while
+		// preserving notification, weekday and horizon choices.
+		return array_merge(
+			$settings,
+			array(
+				'work_start'       => '10:00',
+				'work_end'         => '15:00',
+				'duration_min'     => 30,
+				'step_min'         => 30,
+				'notice_hours'     => 0,
+				'min_booking_days' => 1,
+			)
+		);
 	}
 
 	/** @param mixed $input @return array<string,mixed> */
@@ -69,6 +91,9 @@ final class IABC_Plugin {
 			$weekdays = $defaults['weekdays'];
 		}
 
+		$horizon_days     = max( 1, min( 365, absint( isset( $input['horizon_days'] ) ? $input['horizon_days'] : $defaults['horizon_days'] ) ) );
+		$min_booking_days = max( 0, min( $horizon_days, absint( isset( $input['min_booking_days'] ) ? $input['min_booking_days'] : $defaults['min_booking_days'] ) ) );
+
 		return array(
 			'notification_email' => $email && is_email( $email ) ? $email : $defaults['notification_email'],
 			'work_start'         => $start,
@@ -76,7 +101,8 @@ final class IABC_Plugin {
 			'duration_min'       => max( 5, min( 240, absint( isset( $input['duration_min'] ) ? $input['duration_min'] : $defaults['duration_min'] ) ) ),
 			'step_min'           => max( 5, min( 120, absint( isset( $input['step_min'] ) ? $input['step_min'] : $defaults['step_min'] ) ) ),
 			'notice_hours'       => max( 0, min( 720, absint( isset( $input['notice_hours'] ) ? $input['notice_hours'] : $defaults['notice_hours'] ) ) ),
-			'horizon_days'       => max( 1, min( 365, absint( isset( $input['horizon_days'] ) ? $input['horizon_days'] : $defaults['horizon_days'] ) ) ),
+			'min_booking_days'   => $min_booking_days,
+			'horizon_days'       => $horizon_days,
 			'retention_months'   => 12,
 			'weekdays'           => $weekdays,
 			'timezone'           => 'Europe/Warsaw',
@@ -109,9 +135,12 @@ final class IABC_Plugin {
 	public static function activate() {
 		global $wpdb;
 
-		$current = get_option( self::OPTION_SETTINGS, array() );
-		$current = is_array( $current ) ? $current : array();
-		update_option( self::OPTION_SETTINGS, array_merge( self::defaults(), $current ) );
+		$installed_version = (string) get_option( self::OPTION_VERSION, '0.0.0' );
+		$current           = get_option( self::OPTION_SETTINGS, array() );
+		$current           = is_array( $current ) ? $current : array();
+		$settings          = self::migrate_settings( array_merge( self::defaults(), $current ), $installed_version );
+
+		update_option( self::OPTION_SETTINGS, self::sanitize_settings( $settings ) );
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$table           = self::table_name();
@@ -163,8 +192,8 @@ final class IABC_Plugin {
 		require_once IABC_PLUGIN_DIR . 'includes/class-iabc-ics.php';
 		require_once IABC_PLUGIN_DIR . 'includes/class-iabc-admin.php';
 
+		add_action( 'init', array( $this, 'maybe_upgrade' ), 1 );
 		add_action( 'init', array( $this, 'load_textdomain' ) );
-		add_action( 'admin_init', array( $this, 'maybe_upgrade' ), 1 );
 		add_action( 'iabc_cleanup_bookings', array( 'IABC_Bookings', 'delete_expired' ) );
 		( new IABC_REST() )->init();
 		( new IABC_Public() )->init();

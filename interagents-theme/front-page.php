@@ -8,9 +8,9 @@
 get_header();
 
 $booking_settings = class_exists( 'IABC_Plugin' ) ? IABC_Plugin::settings() : array(
-	'duration_min' => 20,
+	'duration_min' => 30,
 	'work_start'   => '10:00',
-	'work_end'     => '16:00',
+	'work_end'     => '15:00',
 	'weekdays'     => array( 1, 2, 3, 4, 5 ),
 );
 $booking_duration = (int) $booking_settings['duration_min'];

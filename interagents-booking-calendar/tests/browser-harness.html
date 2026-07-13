@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>interagents booking browser harness</title>
+</head>
+<body>
+  <section id="booking-test" data-iabc-booking>
+    <script type="application/json" class="iabc-booking__config">
+      {
+        "slotsUrl": "/slots",
+        "bookUrl": "/book",
+        "nonce": "test",
+        "lang": "en",
+        "weekdays": [1, 2, 3, 4, 5],
+        "minDate": "2026-07-13",
+        "maxDate": "2026-09-11",
+        "suggestedDate": "2026-07-13",
+        "strings": {
+          "calendarLabel": "Choose a meeting date",
+          "previousMonth": "Previous month",
+          "nextMonth": "Next month",
+          "previousShort": "Previous",
+          "nextShort": "Next",
+          "loading": "Loading",
+          "noSlots": "No slots",
+          "chooseSlot": "Choose a slot",
+          "loadError": "Load error",
+          "submitting": "Submitting",
+          "genericError": "Error",
+          "slotSelected": "Selected time",
+          "replacementSelected": "We selected the next available time",
+          "invalidFields": "Complete required fields",
+          "invalidPhone": "Enter a phone number containing at least 6 digits."
+        }
+      }
+    </script>
+    <div data-iabc-calendar hidden></div>
+    <div data-iabc-date-fallback>
+      <label for="booking-test-date">Date</label>
+      <input class="iabc-booking__date" id="booking-test-date" type="date">
+    </div>
+    <div class="iabc-booking__slots"></div>
+    <div class="iabc-booking__status iabc-booking__status--slots" tabindex="-1"></div>
+    <button id="clear-test-date" type="button" onclick="var date = document.querySelector('.iabc-booking__date'); date.value = ''; date.dispatchEvent(new Event('change', { bubbles: true }));">Clear test date</button>
+    <form class="iabc-booking__form" novalidate>
+      <input name="start" type="hidden">
+      <label for="booking-test-phone">Phone</label>
+      <input id="booking-test-phone" name="phone" type="tel" required>
+      <button class="iabc-booking__submit" type="submit">Submit</button>
+      <div class="iabc-booking__status iabc-booking__status--form" tabindex="-1"></div>
+    </form>
+  </section>
+
+  <script>
+    window.fetch = function () {
+      return Promise.resolve({
+        ok: true,
+        json: function () {
+          return Promise.resolve({
+            booking_nonce: 'fresh-test',
+            min_date: '2026-07-14',
+            max_date: '2026-09-11',
+            suggested_date: '2026-07-14',
+            slots: [
+              { start: '2026-07-14T10:00:00+02:00', end: '2026-07-14T10:30:00+02:00', label: '10:00–10:30' },
+              { start: '2026-07-14T10:30:00+02:00', end: '2026-07-14T11:00:00+02:00', label: '10:30–11:00' }
+            ]
+          });
+        }
+      });
+    };
+  </script>
+  <script src="../assets/js/interagents-booking-calendar.js"></script>
+</body>
+</html>

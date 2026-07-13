@@ -43,9 +43,9 @@ final class IABC_Mailer {
 	/** @param array<string,mixed> $booking @param string $when @param string $lang @return string */
 	private static function admin_body( array $booking, $when, $lang ) {
 		if ( 'pl' === $lang ) {
-			return "Nowa rezerwacja spotkania interagents.\n\nTermin: {$when}\nImię i nazwisko: {$booking['customer_name']}\nE-mail służbowy: {$booking['customer_email']}\nFirma: {$booking['company']}\nTelefon: {$booking['phone']}\nWąskie gardło procesu: {$booking['workflow_bottleneck']}\n\nLink do spotkania i szczegóły należy wysłać klientowi osobno.";
+			return "Nowa rezerwacja spotkania interagents.\n\nTermin: {$when}\nImię i nazwisko: {$booking['customer_name']}\nE-mail służbowy: {$booking['customer_email']}\nFirma: {$booking['company']}\nTelefon: {$booking['phone']}\nWiadomość: {$booking['workflow_bottleneck']}\n\nLink do spotkania i szczegóły należy wysłać klientowi osobno.";
 		}
 
-		return "New interagents workflow-call booking.\n\nTime: {$when}\nName: {$booking['customer_name']}\nBusiness email: {$booking['customer_email']}\nCompany: {$booking['company']}\nPhone: {$booking['phone']}\nWorkflow bottleneck: {$booking['workflow_bottleneck']}\n\nSend the meeting link and joining details to the customer separately.";
+		return "New interagents workflow-call booking.\n\nTime: {$when}\nName: {$booking['customer_name']}\nBusiness email: {$booking['customer_email']}\nCompany: {$booking['company']}\nPhone: {$booking['phone']}\nMessage: {$booking['workflow_bottleneck']}\n\nSend the meeting link and joining details to the customer separately.";
 	}
 }

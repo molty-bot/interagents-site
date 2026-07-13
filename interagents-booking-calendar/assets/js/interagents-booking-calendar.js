@@ -35,6 +35,30 @@
     if (start) start.value = '';
   }
 
+  function selectSlot(widget, config, slots, button, announce) {
+    slots.querySelectorAll('.iabc-booking__slot').forEach(function (candidate) {
+      candidate.classList.remove('is-selected');
+      candidate.setAttribute('aria-pressed', 'false');
+    });
+    button.classList.add('is-selected');
+    button.setAttribute('aria-pressed', 'true');
+    var start = widget.querySelector('input[name="start"]');
+    if (start) start.value = button.dataset.start;
+    if (announce) {
+      setStatus(widget, 'slots', config.strings.slotSelected + ': ' + button.dataset.label, false);
+    }
+    setStatus(widget, 'form', '', false);
+  }
+
+  function validatePhone(form, config) {
+    var phone = form.querySelector('input[name="phone"]');
+    if (!phone) return true;
+    var digitCount = (phone.value.match(/\d/g) || []).length;
+    var valid = digitCount >= 6;
+    phone.setCustomValidity(valid ? '' : config.strings.invalidPhone);
+    return valid;
+  }
+
   function parseIsoDate(value) {
     var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ''));
     if (!match) return null;
@@ -314,13 +338,18 @@
   async function loadSlots(widget, config) {
     var date = widget.querySelector('.iabc-booking__date');
     var slots = widget.querySelector('.iabc-booking__slots');
-    if (!date || !slots || !date.value) return;
+    if (!date || !slots) return;
 
-    var requestedDate = date.value;
     var requestId = (widget._iabcSlotsRequestId || 0) + 1;
     widget._iabcSlotsRequestId = requestId;
-
     clearSlots(widget);
+    if (!date.value) {
+      slots.removeAttribute('aria-busy');
+      setStatus(widget, 'slots', '', false);
+      return;
+    }
+
+    var requestedDate = date.value;
     slots.setAttribute('aria-busy', 'true');
     setStatus(widget, 'slots', config.strings.loading, false);
 
@@ -335,6 +364,23 @@
 
       if (data.booking_nonce) config.nonce = String(data.booking_nonce);
 
+      var serverMinDate = String(data.min_date || config.minDate);
+      var serverMaxDate = String(data.max_date || config.maxDate);
+      var serverSuggestedDate = String(data.suggested_date || serverMinDate);
+      var boundsChanged = serverMinDate !== config.minDate || serverMaxDate !== config.maxDate;
+      config.minDate = serverMinDate;
+      config.maxDate = serverMaxDate;
+      config.suggestedDate = serverSuggestedDate;
+      date.min = serverMinDate;
+      date.max = serverMaxDate;
+      if (requestedDate < serverMinDate || requestedDate > serverMaxDate) {
+        date.value = serverSuggestedDate;
+        syncCalendar(widget, config);
+        loadSlots(widget, config);
+        return;
+      }
+      if (boundsChanged) syncCalendar(widget, config);
+
       var available = Array.isArray(data.slots) ? data.slots : [];
       if (!available.length) {
         setStatus(widget, 'slots', config.strings.noSlots, false);
@@ -342,6 +388,7 @@
       }
 
       setStatus(widget, 'slots', '', false);
+      var firstButton = null;
       available.forEach(function (slot) {
         var button = document.createElement('button');
         var fullLabel = String(slot.label || '');
@@ -362,18 +409,12 @@
         button.appendChild(interval);
         button.appendChild(start);
         button.addEventListener('click', function () {
-          slots.querySelectorAll('.iabc-booking__slot').forEach(function (candidate) {
-            candidate.classList.remove('is-selected');
-            candidate.setAttribute('aria-pressed', 'false');
-          });
-          button.classList.add('is-selected');
-          button.setAttribute('aria-pressed', 'true');
-          widget.querySelector('input[name="start"]').value = button.dataset.start;
-          setStatus(widget, 'slots', config.strings.slotSelected + ': ' + button.dataset.label, false);
-          setStatus(widget, 'form', '', false);
+          selectSlot(widget, config, slots, button, true);
         });
+        if (!firstButton) firstButton = button;
         slots.appendChild(button);
       });
+      if (firstButton) selectSlot(widget, config, slots, firstButton, true);
     } catch (error) {
       if (widget._iabcSlotsRequestId !== requestId || date.value !== requestedDate) return;
       setStatus(widget, 'slots', error.message || config.strings.loadError, true);
@@ -392,6 +433,7 @@
       focusStatus(widget, 'slots');
       return;
     }
+    validatePhone(form, config);
     if (!form.checkValidity()) {
       form.reportValidity();
       setStatus(widget, 'form', config.strings.invalidFields, true);
@@ -442,7 +484,11 @@
       submit.disabled = false;
       if (error.status === 409) {
         await loadSlots(widget, config);
-        setStatus(widget, 'slots', message, true);
+        var replacement = widget.querySelector('.iabc-booking__slot.is-selected');
+        var conflictMessage = replacement
+          ? message + ' ' + config.strings.replacementSelected + ': ' + replacement.dataset.label
+          : message;
+        setStatus(widget, 'slots', conflictMessage, true);
         focusStatus(widget, 'slots');
       } else {
         setStatus(widget, 'form', message, true);
@@ -467,6 +513,10 @@
       syncCalendar(widget, config);
       loadSlots(widget, config);
     });
+    var phone = form.querySelector('input[name="phone"]');
+    if (phone) {
+      phone.addEventListener('input', function () { validatePhone(form, config); });
+    }
     form.addEventListener('submit', function (event) { submitBooking(event, widget, config); });
     try {
       buildCalendar(widget, config, date);

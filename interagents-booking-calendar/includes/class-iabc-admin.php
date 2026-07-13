@@ -102,8 +102,8 @@ final class IABC_Admin {
 							<td><input id="iabc-step" name="iabc_settings[step_min]" type="number" min="5" max="120" step="5" value="<?php echo esc_attr( $settings['step_min'] ); ?>"> <?php esc_html_e( 'minutes', 'interagents-booking-calendar' ); ?></td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="iabc-notice"><?php esc_html_e( 'Minimum notice', 'interagents-booking-calendar' ); ?></label></th>
-							<td><input id="iabc-notice" name="iabc_settings[notice_hours]" type="number" min="0" max="720" value="<?php echo esc_attr( $settings['notice_hours'] ); ?>"> <?php esc_html_e( 'hours', 'interagents-booking-calendar' ); ?></td>
+							<th scope="row"><label for="iabc-min-booking-days"><?php esc_html_e( 'Minimum booking distance', 'interagents-booking-calendar' ); ?></label></th>
+							<td><input id="iabc-min-booking-days" name="iabc_settings[min_booking_days]" type="number" min="0" max="30" value="<?php echo esc_attr( $settings['min_booking_days'] ); ?>"> <?php esc_html_e( 'calendar days', 'interagents-booking-calendar' ); ?></td>
 						</tr>
 						<tr>
 							<th scope="row"><label for="iabc-horizon"><?php esc_html_e( 'Booking horizon', 'interagents-booking-calendar' ); ?></label></th>
@@ -123,7 +123,7 @@ final class IABC_Admin {
 					<th><?php esc_html_e( 'Name', 'interagents-booking-calendar' ); ?></th>
 					<th><?php esc_html_e( 'Business email', 'interagents-booking-calendar' ); ?></th>
 					<th><?php esc_html_e( 'Company / phone', 'interagents-booking-calendar' ); ?></th>
-					<th><?php esc_html_e( 'Workflow bottleneck', 'interagents-booking-calendar' ); ?></th>
+					<th><?php esc_html_e( 'Message', 'interagents-booking-calendar' ); ?></th>
 					<th><?php esc_html_e( 'Language', 'interagents-booking-calendar' ); ?></th>
 					<th><?php esc_html_e( 'Emails', 'interagents-booking-calendar' ); ?></th>
 					<th><?php esc_html_e( 'Action', 'interagents-booking-calendar' ); ?></th>

@@ -1,6 +1,6 @@
 # interagents booking calendar
 
-Standalone WordPress plugin for free 20-minute interagents workflow-call bookings. It is a clean interagents implementation inspired by the Ksymena calendar flow; it does not modify or depend on Ksymena, WooCommerce, a payment provider, user accounts, or an external calendar.
+Standalone WordPress plugin for free 30-minute interagents workflow-call bookings. It is a clean interagents implementation inspired by the Ksymena calendar flow; it does not modify or depend on Ksymena, WooCommerce, a payment provider, user accounts, or an external calendar.
 
 ## Install and use
 
@@ -10,7 +10,7 @@ Standalone WordPress plugin for free 20-minute interagents workflow-call booking
 
 When a page already supplies the booking headline and introduction, use `[interagents_booking_calendar embedded="1"]`. Embedded mode omits the duplicate plugin header and gives the calendar region its own accessible label.
 
-Safe activation defaults are Europe/Warsaw, Monday–Friday 10:00–16:00, 20-minute meetings starting every 30 minutes, 24-hour notice, 60-day horizon, and notifications to `hello@interagents.ai`. The final default start is 15:30, so every meeting ends before 16:00.
+Safe activation defaults are Europe/Warsaw, Monday–Friday 10:00–15:00, 30-minute meetings starting every 30 minutes, booking from the next calendar day, a 60-day horizon, and notifications to `hello@interagents.ai`. The final default start is 14:30, so every meeting ends by 15:00.
 
 The widget follows the site language (`ia_get_lang()` when available), then its `lang` attribute, URL/cookie/WordPress locale fallback. Its progressive interface adds a localized, keyboard-accessible month grid with bounded navigation while preserving the native date field as a fallback. It sends localized EN/PL customer and admin emails. Confirmation says that the meeting link and joining details will follow by email and provides a token-protected `.ics` download.
 
@@ -26,6 +26,7 @@ The widget follows the site language (`ia_get_lang()` when available), then its 
 
 ```sh
 php interagents-booking-calendar/tests/slot-engine-test.php
+php interagents-booking-calendar/tests/settings-migration-test.php
 ```
 
-The harness covers weekday/default slot count, final end time, weekends, exact 24-hour notice, 60-day horizon, Europe/Warsaw DST, and overlap behavior without requiring WordPress or a database.
+The harness covers weekday/default slot count, final end time, weekends, the next-calendar-day rule, 60-day horizon, Europe/Warsaw DST, and overlap behavior without requiring WordPress or a database.

@@ -23,13 +23,14 @@ final class IABC_Slot_Engine {
 		}
 
 		$today   = $now->setTime( 0, 0, 0 );
+		$minimum_day = $today->modify( '+' . max( 0, (int) ( isset( $settings['min_booking_days'] ) ? $settings['min_booking_days'] : 1 ) ) . ' days' );
 		$horizon = $today->modify( '+' . max( 1, (int) $settings['horizon_days'] ) . ' days' );
-		if ( $day < $today || $day > $horizon ) {
+		if ( $day < $minimum_day || $day > $horizon ) {
 			return array();
 		}
 
 		$open_parts  = self::time_parts( isset( $settings['work_start'] ) ? (string) $settings['work_start'] : '10:00', array( 10, 0 ) );
-		$close_parts = self::time_parts( isset( $settings['work_end'] ) ? (string) $settings['work_end'] : '16:00', array( 16, 0 ) );
+		$close_parts = self::time_parts( isset( $settings['work_end'] ) ? (string) $settings['work_end'] : '15:00', array( 15, 0 ) );
 		$open        = $day->setTime( $open_parts[0], $open_parts[1], 0 );
 		$close       = $day->setTime( $close_parts[0], $close_parts[1], 0 );
 		$duration    = max( 5, (int) $settings['duration_min'] );

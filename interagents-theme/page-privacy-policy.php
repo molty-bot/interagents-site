@@ -16,7 +16,7 @@ $is_pl = $lang === 'pl';
   <div class="privacy-container">
 
     <h1 id="privacy-title"><?php echo $is_pl ? 'Polityka Prywatności' : 'Privacy Policy'; ?></h1>
-    <p class="privacy-updated"><?php echo $is_pl ? 'Ostatnia aktualizacja: 11 lipca 2026' : 'Last updated: July 11, 2026'; ?></p>
+    <p class="privacy-updated"><?php echo $is_pl ? 'Ostatnia aktualizacja: 13 lipca 2026' : 'Last updated: July 13, 2026'; ?></p>
 
     <?php if ( $is_pl ) : ?>
 
@@ -34,7 +34,7 @@ $is_pl = $lang === 'pl';
         <li><strong>Dane techniczne:</strong> adres IP, typ urządzenia, wersja systemu operacyjnego, logi serwera</li>
         <li><strong>Dane analityczne:</strong> anonimowe statystyki użytkowania (Google Analytics 4)</li>
         <li><strong>Dane głosowe:</strong> nagrania głosowe (wyłącznie gdy użytkownik aktywuje funkcję mowy) — przetwarzane w celu transkrypcji i natychmiast usuwane</li>
-        <li><strong>Dane rezerwacji spotkania:</strong> wybrany termin, imię i nazwisko, służbowy adres e-mail oraz — opcjonalnie — firma, telefon i opis procesu. Rejestrujemy także moment potwierdzenia zapoznania się z tą polityką. W celu ograniczania nadużyć używamy pseudonimowego identyfikatora utworzonego z adresu IP, przechowywanego przez 15 minut.</li>
+        <li><strong>Dane rezerwacji spotkania:</strong> wybrany termin, imię i nazwisko, służbowy adres e-mail i numer telefonu oraz — opcjonalnie — firma i wiadomość. Rejestrujemy także moment potwierdzenia zapoznania się z tą polityką. W celu ograniczania nadużyć używamy pseudonimowego identyfikatora utworzonego z adresu IP, przechowywanego przez 15 minut.</li>
       </ul>
     </section>
 
@@ -48,7 +48,7 @@ $is_pl = $lang === 'pl';
         <li>Bezpieczeństwa — wykrywanie nadużyć i ochrona przed nieautoryzowanym dostępem</li>
         <li>Umawiania, obsługi i potwierdzania bezpłatnych spotkań oraz dalszego kontaktu w sprawie wskazanego procesu biznesowego</li>
       </ul>
-      <p>W przypadku rezerwacji spotkania podstawą przetwarzania danych wymaganych do umówienia rozmowy są działania podejmowane na żądanie osoby przed ewentualnym zawarciem umowy (art. 6 ust. 1 lit. b RODO). Ochrona formularza przed nadużyciami i prowadzenie niezbędnej dokumentacji zgłoszeń opierają się na naszym prawnie uzasadnionym interesie (art. 6 ust. 1 lit. f RODO). Pola oznaczone jako opcjonalne nie są wymagane. Bez imienia, adresu e-mail, terminu i potwierdzenia zapoznania się z polityką nie można dokonać rezerwacji online; nadal można skontaktować się z nami e-mailem.</p>
+      <p>W przypadku rezerwacji spotkania podstawą przetwarzania danych wymaganych do umówienia rozmowy są działania podejmowane na żądanie osoby przed ewentualnym zawarciem umowy (art. 6 ust. 1 lit. b RODO). Ochrona formularza przed nadużyciami i prowadzenie niezbędnej dokumentacji zgłoszeń opierają się na naszym prawnie uzasadnionym interesie (art. 6 ust. 1 lit. f RODO). Pola oznaczone jako opcjonalne nie są wymagane. Bez imienia, adresu e-mail, numeru telefonu, terminu i potwierdzenia zapoznania się z polityką nie można dokonać rezerwacji online; nadal można skontaktować się z nami e-mailem.</p>
     </section>
 
     <section>
@@ -132,7 +132,7 @@ $is_pl = $lang === 'pl';
         <li><strong>Technical data:</strong> IP address, device type, operating system version, server logs</li>
         <li><strong>Analytics data:</strong> anonymous usage statistics (Google Analytics 4)</li>
         <li><strong>Voice data:</strong> voice recordings (only when the user activates the speech feature) — processed for transcription and immediately deleted</li>
-        <li><strong>Meeting booking data:</strong> selected time, full name, business email and—optionally—company, phone number and workflow description. We also record when you acknowledged this policy. To limit abuse, we use a pseudonymous identifier derived from the IP address and retain it for 15 minutes.</li>
+        <li><strong>Meeting booking data:</strong> selected time, full name, business email, and phone number; company and a message are optional. We also record when you acknowledged this policy. To limit abuse, we use a pseudonymous identifier derived from the IP address and retain it for 15 minutes.</li>
       </ul>
     </section>
 
@@ -146,7 +146,7 @@ $is_pl = $lang === 'pl';
         <li>Security — detecting abuse and protecting against unauthorized access</li>
         <li>Scheduling, administering and confirming free meetings and following up about the business workflow you identify</li>
       </ul>
-      <p>For meeting bookings, the legal basis for processing the data required to arrange the call is taking steps at your request before a possible contract (Article 6(1)(b) GDPR). Protecting the form against abuse and keeping necessary request records rely on our legitimate interests (Article 6(1)(f) GDPR). Fields marked optional are not required. Without a name, email address, selected time and acknowledgement of this policy, an online booking cannot be completed; you may still contact us by email.</p>
+      <p>For meeting bookings, the legal basis for processing the data required to arrange the call is taking steps at your request before a possible contract (Article 6(1)(b) GDPR). Protecting the form against abuse and keeping necessary request records rely on our legitimate interests (Article 6(1)(f) GDPR). Fields marked optional are not required. Without a name, email address, phone number, selected time and acknowledgement of this policy, an online booking cannot be completed; you may still contact us by email.</p>
     </section>
 
     <section>
