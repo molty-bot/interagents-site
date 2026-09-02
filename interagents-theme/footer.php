@@ -22,9 +22,9 @@
 			</div>
 			<div class="footer-company">
 				<h4><?php echo esc_html( ia_t( 'Norwegia', 'Norway' ) ); ?></h4>
-				<p class="company-name">Demring Consult AS</p>
-				<p class="company-detail"><?php echo ia_t( 'Org. nr.', 'Reg. no.' ); ?> 932 394 235</p>
-				<p class="company-detail">Tellnes Næringspark 1<br>5357 Fjell</p>
+				<p class="company-name">SKANDO AS</p>
+				<p class="company-detail"><?php echo ia_t( 'Org. nr.', 'Reg. no.' ); ?> 927 866 129</p>
+				<p class="company-detail">Møvikvegen 213<br>5357 Fjell</p>
 				<p class="company-detail"><a href="tel:+4746702028"><?php echo ia_t( 'Tel.', 'Phone:' ); ?> +47 467 02 028</a></p>
 			</div>
 		</div>
